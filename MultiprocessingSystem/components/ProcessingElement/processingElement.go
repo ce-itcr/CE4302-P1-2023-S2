@@ -7,20 +7,24 @@ import (
     "bufio"
     "os"
     "strings"
-    "time"
+    //"time"
+    "MultiprocessingSystem/utils"
 )
 
 // Represents a processing element.
 type ProcessingElement struct {
-    ID          int
-    Name        string
-    Instructions []string
-    Control     chan bool // Channel for external control
-    Done        chan bool // Channel to signal completion
+    ID          int                 // Identifier of the PE
+    Name        string              // Name for the PE
+    Instructions []string           // Array of instructions loaded
+    Control     chan bool           // Channel for external control
+    Done        chan bool           // Channel to signal completion
+    RequestChannel chan utils.Request     // Channel to send a request to a CacheController
+    ResponseChannel chan utils.Response   // Channel to wait for a response from a CacheController
+    register int                    // The one and only register
 }
 
 // New creates a new ProcessingElement instance.
-func New(id int, name string, filename string) (*ProcessingElement, error) {
+func New(id int, name string, RequestChannelCC chan utils.Request, ResponseChannelCC chan utils.Response ,filename string) (*ProcessingElement, error) {
 
     // Load the program from the text file
     instructions, err := readInstructionsFromFile(filename)
@@ -32,8 +36,11 @@ func New(id int, name string, filename string) (*ProcessingElement, error) {
         ID:           id,
         Name:         name,
         Instructions: instructions,
+        RequestChannel: RequestChannelCC,
+        ResponseChannel: ResponseChannelCC,
         Control:      make(chan bool),
         Done:         make(chan bool),
+        register: 0,
     }, nil
 }
 
@@ -44,16 +51,75 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
     fmt.Printf("PE %d (%s) is ready to execute instructions:\n", pe.ID, pe.Name)
     for i, instruction := range pe.Instructions {
         select {
-        case <-pe.Control:
+        case <- pe.Control:
             fmt.Printf(" - PE %d (%s) received external signal to execute instruction %d: %s\n", pe.ID, pe.Name, i+1, instruction)
-            // Simulate execution time (you can replace this with the actual work)
-            time.Sleep(1 * time.Second)
+            // Execute the instruction **********************************************************************************************
+            words := strings.Fields(instruction)
+            operation := words[0]
+
+            switch operation {
+            case "INC":
+                fmt.Printf(" - PE %d (%s) is executing a %s operation\n", pe.ID, pe.Name, operation)
+                pe.register++
+
+            case "READ":
+                fmt.Printf(" - PE %d (%s) is executing a %s operation\n", pe.ID, pe.Name, operation)
+                // Create a request structure
+                address, err := strconv.Atoi(words[1])
+                if err != nil {
+                    // Error parsing the integer
+                    return
+                }
+                request := utils.Request{
+                    Type: operation,
+                    Address: address,                    
+                    Data: 0,                      
+                }
+
+                // Send the request to the CacheController
+                pe.RequestChannel <- request
+
+                // Wait for the response from the CacheController
+                response := <- pe.ResponseChannel
+
+                // Process the response
+                fmt.Printf(" - PE %d (%s) received the response --> Status: %v, Type: %s, Data: %d\n", pe.ID, pe.Name, response.Status, response.Type, response.Data)
+
+
+            case "WRITE":
+                fmt.Printf(" - PE %d (%s) is executing a %s operation\n", pe.ID, pe.Name, operation)
+                // Create a request structure
+                address, err := strconv.Atoi(words[1])
+                if err != nil {
+                    // Error parsing the integer
+                    return
+                }
+                request := utils.Request{
+                    Type: operation,
+                    Address: address,                   
+                    Data: pe.register,                     
+                }
+
+                // Send the request to the CacheController
+                pe.RequestChannel <- request
+
+                // Wait for the response from the CacheController
+                response := <- pe.ResponseChannel
+
+                // Process the response
+                fmt.Printf(" - PE %d (%s) received the response --> Status: %v, Type: %s, Data: %d\n", pe.ID, pe.Name, response.Status, response.Type, response.Data)
+
+
+            }
+            fmt.Printf(" - PE %d (%s) has finished with the instruction.\n", pe.ID, pe.Name)
+            
         case <-pe.Done:
             fmt.Printf(" - PE %d (%s) has completed execution of instructions.\n", pe.ID, pe.Name)
             return
         }
     }
     fmt.Printf(" - PE %d (%s) has executed all instructions.\n", pe.ID, pe.Name)
+    return
 }
 
 // Reads lines from a text file and returns them as a slice of strings.
@@ -103,6 +169,5 @@ func isValidInstruction(instruction string) bool {
     // Invalid instruction format
     return false
 }
-
 
 
