@@ -1,9 +1,13 @@
-PE12023/09/24 21:14:22  - PE 1 (PE1) is ready to execute instructions
-PE12023/09/24 21:14:37  - PE 1 (PE1) received external signal to execute instruction 1: INC
-PE12023/09/24 21:14:37  - PE 1 (PE1) is executing a INC operation
-PE12023/09/24 21:14:37  - PE 1 (PE1) has finished with the instruction.
-PE12023/09/24 21:14:41  - PE 1 (PE1) received external signal to execute instruction 2: READ 12
-PE12023/09/24 21:14:41  - PE 1 (PE1) is executing a READ operation
-PE12023/09/24 21:14:51  - PE 1 (PE1) received the response --> Status: true, Type: READ, Data: 12
-PE12023/09/24 21:14:51  - PE 1 (PE1) has finished with the instruction.
-PE12023/09/24 21:14:54  - PE 1 (PE1) received termination signal and is exiting gracefully.
+PE1_2023/09/24 21:35:15  - PE 1 is ready to execute instructions.
+PE1_2023/09/24 21:35:31  - PE 1 received external signal to execute instruction 1: INC.
+PE1_2023/09/24 21:35:31  - PE 1 is executing a INC operation.
+PE1_2023/09/24 21:35:31  - Now the value of the register is 1.
+PE1_2023/09/24 21:35:31  - PE 1 has finished with the instruction.
+PE1_2023/09/24 21:35:35  - PE 1 received external signal to execute instruction 2: READ 12.
+PE1_2023/09/24 21:35:35  - PE 1 is executing a READ operation.
+PE1_2023/09/24 21:35:35  - PE 1 sent (Type: READ, Address: 12) to the Cache Controller.
+PE1_2023/09/24 21:35:35  - PE 1 is waiting for a response from the Cache Controller....
+PE1_2023/09/24 21:35:45  - PE 1 received --> Status: true, Type: READ, Data: 12.
+PE1_2023/09/24 21:35:45  - Now the value of the register is 12.
+PE1_2023/09/24 21:35:45  - PE 1 has finished with the instruction.
+PE1_2023/09/24 21:36:08  - PE 1 received termination signal and is exiting gracefully.

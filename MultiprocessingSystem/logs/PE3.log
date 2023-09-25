@@ -1,6 +1,8 @@
-PE32023/09/24 21:14:22  - PE 3 (PE3) is ready to execute instructions
-PE32023/09/24 21:14:37  - PE 3 (PE3) received external signal to execute instruction 1: WRITE 3
-PE32023/09/24 21:14:37  - PE 3 (PE3) is executing a WRITE operation
-PE32023/09/24 21:14:47  - PE 3 (PE3) received the response --> Status: true, Type: WRITE, Data: 12
-PE32023/09/24 21:14:47  - PE 3 (PE3) has finished with the instruction.
-PE32023/09/24 21:14:54  - PE 3 (PE3) received termination signal and is exiting gracefully.
+PE3_2023/09/24 21:35:15  - PE 3 is ready to execute instructions.
+PE3_2023/09/24 21:35:31  - PE 3 received external signal to execute instruction 1: WRITE 3.
+PE3_2023/09/24 21:35:31  - PE 3 is executing a WRITE operation.
+PE3_2023/09/24 21:35:31  - PE 3 sent (Type: WRITE, Address: 3, Data: 0) to the Cache Controller.
+PE3_2023/09/24 21:35:31  - PE 3 is waiting for a response from the Cache Controller....
+PE3_2023/09/24 21:35:41  - PE 3 received --> Status: true, Type: WRITE.
+PE3_2023/09/24 21:35:41  - PE 3 has finished with the instruction.
+PE3_2023/09/24 21:36:08  - PE 3 received termination signal and is exiting gracefully.
