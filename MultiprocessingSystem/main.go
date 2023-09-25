@@ -12,77 +12,85 @@ import (
 )
 
 func main() {
-	// Create channels for communication
-	requestChannelCC := make(chan utils.Request)
-	responseChannelCC := make(chan utils.Response)
+    // Create channels for communication
+    requestChannelCC := make(chan utils.Request)
+    responseChannelCC := make(chan utils.Response)
 
-	// Instantiate CacheController
-	cacheController, err := CacheController.New(requestChannelCC, responseChannelCC)
-	if err != nil {
-		fmt.Printf("Error initializing CacheController: %v\n", err)
-		return
-	}
+    // Create a termination channel to signal termination
+    terminate := make(chan struct{})
+    
 
-	// Instantiate ProcessingElement
-	processingElement, err := processingElement.New(1, "PE1", requestChannelCC, responseChannelCC, "programs/program1.txt")
-	if err != nil {
-		fmt.Printf("Error initializing ProcessingElement: %v\n", err)
-		return
-	}
+    // Instantiate CacheController
+    cacheController, err := CacheController.New(requestChannelCC, responseChannelCC, terminate)
+    if err != nil {
+        fmt.Printf("Error initializing CacheController: %v\n", err)
+        return
+    }
 
-	// Use WaitGroup to synchronize goroutines
-	var wg sync.WaitGroup
+    // Instantiate ProcessingElement
+    processingElement, err := processingElement.New(1, "PE1", requestChannelCC, responseChannelCC, "programs/program1.txt", terminate)
+    if err != nil {
+        fmt.Printf("Error initializing ProcessingElement: %v\n", err)
+        return
+    }
 
-	// Start CacheController in a goroutine
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		cacheController.Run(&wg)
-	}()
+    // Use separate WaitGroups for CacheController and ProcessingElement
+    var wg sync.WaitGroup
 
-	// Start ProcessingElement in a goroutine
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		processingElement.Run(&wg)
-	}()
+    // Start CacheController in a goroutine
+    wg.Add(1)
+    go func() {
+        defer wg.Done()
+        cacheController.Run(&wg)
+    }()
 
-	// Create a simple command-line interface for controlling your program
-	fmt.Println("Welcome to your program CLI!")
-	fmt.Println("Available commands:")
-	fmt.Println("1. step - Send the Control signal to PE")
-	fmt.Println("2. lj   - Terminate the program")
+    // Start ProcessingElement in a goroutine
+    wg.Add(1)
+    go func() {
+        defer wg.Done()
+        processingElement.Run(&wg)
+    }()
 
-	reader := bufio.NewReader(os.Stdin)
+    // Create a simple command-line interface for controlling your program
+    fmt.Println("Welcome to your program CLI!")
+    fmt.Println("Available commands:")
+    fmt.Println("1. step - Send the Control signal to PE")
+    fmt.Println("2. lj   - Terminate the program")
 
-	for {
-		fmt.Print("Enter a command: ")
-		command, _ := reader.ReadString('\n')
-		command = trimNewline(command)
+    reader := bufio.NewReader(os.Stdin)
+PELoop:
+    for {
+        fmt.Print("Enter a command: ")
+        command, _ := reader.ReadString('\n')
+        command = trimNewline(command)
 
-		switch command {
-		case "step":
-			// Sending a control signal to ProcessingElement
-			processingElement.Control <- true
-			fmt.Println("Sent 'step' command to ProcessingElement")
-		case "lj":
-			// Perform cleanup here if needed
+        switch command {
+        case "step":
+            if !processingElement.IsDone  && !processingElement.IsExecutingInstruction{
+                // Sending a control signal to ProcessingElement
+                processingElement.Control <- true
+                fmt.Println("Sent 'step' command to ProcessingElement")
+            } else {
+                fmt.Println("PE is not available")
+            }
+        case "lj":
+            // Signal termination to both components
+            fmt.Println("Sent 'lj' command to terminate the program")
+            close(terminate)
 
-			// Signal the ProcessingElement to finish
-			processingElement.Done <- true
-			fmt.Println("Sent 'lj' command to terminate the program")
-			// Wait for both goroutines to finish
-			wg.Wait()
-			// Close channels when done to avoid goroutine leaks
-			close(requestChannelCC)
-			close(responseChannelCC)
-			return
-		default:
-			fmt.Println("Invalid command. Please enter 'step' or 'lj'.")
-		}
-	}
+
+            wg.Wait() // Wait for both goroutines to finish gracefully
+        
+            close(requestChannelCC)
+            close(responseChannelCC)
+            break PELoop
+        default:
+            fmt.Println("Invalid command. Please enter 'step' or 'lj'.")
+        }
+    }
 }
 
+
 func trimNewline(s string) string {
-	return s[:len(s)-1]
+    return s[:len(s)-1]
 }
