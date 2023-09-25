@@ -1,0 +1,9 @@
+PE12023/09/24 21:14:22  - PE 1 (PE1) is ready to execute instructions
+PE12023/09/24 21:14:37  - PE 1 (PE1) received external signal to execute instruction 1: INC
+PE12023/09/24 21:14:37  - PE 1 (PE1) is executing a INC operation
+PE12023/09/24 21:14:37  - PE 1 (PE1) has finished with the instruction.
+PE12023/09/24 21:14:41  - PE 1 (PE1) received external signal to execute instruction 2: READ 12
+PE12023/09/24 21:14:41  - PE 1 (PE1) is executing a READ operation
+PE12023/09/24 21:14:51  - PE 1 (PE1) received the response --> Status: true, Type: READ, Data: 12
+PE12023/09/24 21:14:51  - PE 1 (PE1) has finished with the instruction.
+PE12023/09/24 21:14:54  - PE 1 (PE1) received termination signal and is exiting gracefully.

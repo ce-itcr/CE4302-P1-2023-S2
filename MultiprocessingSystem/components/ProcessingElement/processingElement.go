@@ -2,11 +2,12 @@ package processingElement
 
 import (
 	"strconv"
-    "fmt"
     "sync"
     "bufio"
     "os"
     "strings"
+    "log"
+
     "MultiprocessingSystem/utils"
 )
 
@@ -15,6 +16,7 @@ type ProcessingElement struct {
     ID          int                         // Identifier of the PE
     Name        string                      // Name for the PE
     Instructions []string                   // Array of instructions loaded
+    Logger          *log.Logger              //
     Control     chan bool                   // Channel for external control
     RequestChannel chan utils.Request       // Channel to send a request to a CacheController
     ResponseChannel chan utils.Response     // Channel to wait for a response from a CacheController
@@ -33,10 +35,20 @@ func New(id int, name string, RequestChannelCC chan utils.Request, ResponseChann
         return nil, err
     }
 
+    // Create the log file
+    logFile, err := os.Create("logs/" + name + ".log")
+    if err != nil {
+        log.Fatalf("Error creating log file for %s: %v", name, err)
+    }
+
+    // Initialize logger for the PE using its respective log file
+    logger1 := log.New(logFile, name, log.Ldate|log.Ltime)
+
     return &ProcessingElement{
         ID:           id,
         Name:         name,
         Instructions: instructions,
+        Logger: logger1,
         RequestChannel: RequestChannelCC,
         ResponseChannel: ResponseChannelCC,
         Control:      make(chan bool),
@@ -49,6 +61,7 @@ func New(id int, name string, RequestChannelCC chan utils.Request, ResponseChann
 
 // Run simulates the execution of instructions for a ProcessingElement.
 func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
+    pe.Logger.Printf(" - PE %d (%s) is ready to execute instructions\n", pe.ID, pe.Name)
     for i, instruction := range pe.Instructions {
         select {
             // When the PE receives a signal to execute an instruction
@@ -56,22 +69,22 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                 // Let others know the PE is currently busy executing an instruction
                 pe.IsExecutingInstruction = true
 
-                fmt.Printf(" - PE %d (%s) received external signal to execute instruction %d: %s\n", pe.ID, pe.Name, i+1, instruction)
+                pe.Logger.Printf(" - PE %d (%s) received external signal to execute instruction %d: %s\n", pe.ID, pe.Name, i+1, instruction)
                 words := strings.Fields(instruction)
                 operation := words[0]
 
                 switch operation {
                 // Increment
                 case "INC":
-                    fmt.Printf(" - PE %d (%s) is executing a %s operation\n", pe.ID, pe.Name, operation)
+                    pe.Logger.Printf(" - PE %d (%s) is executing a %s operation\n", pe.ID, pe.Name, operation)
                     pe.register++
-                    fmt.Printf(" - PE %d (%s) has finished with the instruction.\n", pe.ID, pe.Name)
+                    pe.Logger.Printf(" - PE %d (%s) has finished with the instruction.\n", pe.ID, pe.Name)
                     // Let others know the PE is now available
                     pe.IsExecutingInstruction = false
 
                 // Read a data from an specific memory address
                 case "READ":
-                    fmt.Printf(" - PE %d (%s) is executing a %s operation\n", pe.ID, pe.Name, operation)
+                    pe.Logger.Printf(" - PE %d (%s) is executing a %s operation\n", pe.ID, pe.Name, operation)
                     // Create a request structure
                     address, err := strconv.Atoi(words[1])
                     if err != nil {
@@ -92,15 +105,15 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                     response := <- pe.ResponseChannel
 
                     // Process the response
-                    fmt.Printf(" - PE %d (%s) received the response --> Status: %v, Type: %s, Data: %d\n", pe.ID, pe.Name, response.Status, response.Type, response.Data)
-                    fmt.Printf(" - PE %d (%s) has finished with the instruction.\n", pe.ID, pe.Name)
+                    pe.Logger.Printf(" - PE %d (%s) received the response --> Status: %v, Type: %s, Data: %d\n", pe.ID, pe.Name, response.Status, response.Type, response.Data)
+                    pe.Logger.Printf(" - PE %d (%s) has finished with the instruction.\n", pe.ID, pe.Name)
 
                     // Let others know the PE is now available
                     pe.IsExecutingInstruction = false
 
                 // Write dato into an specific memory address
                 case "WRITE":
-                    fmt.Printf(" - PE %d (%s) is executing a %s operation\n", pe.ID, pe.Name, operation)
+                    pe.Logger.Printf(" - PE %d (%s) is executing a %s operation\n", pe.ID, pe.Name, operation)
                     // Create a request structure
                     address, err := strconv.Atoi(words[1])
                     if err != nil {
@@ -122,8 +135,8 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                     response := <- pe.ResponseChannel
 
                     // Process the response
-                    fmt.Printf(" - PE %d (%s) received the response --> Status: %v, Type: %s, Data: %d\n", pe.ID, pe.Name, response.Status, response.Type, response.Data)
-                    fmt.Printf(" - PE %d (%s) has finished with the instruction.\n", pe.ID, pe.Name)
+                    pe.Logger.Printf(" - PE %d (%s) received the response --> Status: %v, Type: %s, Data: %d\n", pe.ID, pe.Name, response.Status, response.Type, response.Data)
+                    pe.Logger.Printf(" - PE %d (%s) has finished with the instruction.\n", pe.ID, pe.Name)
 
                     // Let others know the PE is now available
                     pe.IsExecutingInstruction = false
@@ -132,12 +145,12 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
 
             // When the PE receives a signal terminate
             case <- pe.Quit:
-                fmt.Printf(" - PE %d (%s) received termination signal and is exiting gracefully.\n", pe.ID, pe.Name)
+                pe.Logger.Printf(" - PE %d (%s) received termination signal and is exiting gracefully.\n", pe.ID, pe.Name)
                 return
         }
 
     }
-    fmt.Printf(" - PE %d (%s) has executed all instructions.\n", pe.ID, pe.Name)
+    pe.Logger.Printf(" - PE %d (%s) has executed all instructions.\n", pe.ID, pe.Name)
     // Notify the main that this PE has executed all instructions
     pe.IsDone = true
     return

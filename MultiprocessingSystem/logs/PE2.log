@@ -1,0 +1,6 @@
+PE22023/09/24 21:14:22  - PE 2 (PE2) is ready to execute instructions
+PE22023/09/24 21:14:37  - PE 2 (PE2) received external signal to execute instruction 1: READ 12
+PE22023/09/24 21:14:37  - PE 2 (PE2) is executing a READ operation
+PE22023/09/24 21:14:47  - PE 2 (PE2) received the response --> Status: true, Type: READ, Data: 12
+PE22023/09/24 21:14:47  - PE 2 (PE2) has finished with the instruction.
+PE22023/09/24 21:14:54  - PE 2 (PE2) received termination signal and is exiting gracefully.

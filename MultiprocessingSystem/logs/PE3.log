@@ -1,0 +1,6 @@
+PE32023/09/24 21:14:22  - PE 3 (PE3) is ready to execute instructions
+PE32023/09/24 21:14:37  - PE 3 (PE3) received external signal to execute instruction 1: WRITE 3
+PE32023/09/24 21:14:37  - PE 3 (PE3) is executing a WRITE operation
+PE32023/09/24 21:14:47  - PE 3 (PE3) received the response --> Status: true, Type: WRITE, Data: 12
+PE32023/09/24 21:14:47  - PE 3 (PE3) has finished with the instruction.
+PE32023/09/24 21:14:54  - PE 3 (PE3) received termination signal and is exiting gracefully.
