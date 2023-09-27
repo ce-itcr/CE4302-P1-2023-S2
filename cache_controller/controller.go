@@ -2,26 +2,20 @@ package cache_controller
 
 import (
 	"math/rand"
+	"sync"
+	"cache_controller.com/utils"
+	"time"
 )
 
 type Controller struct{
 	cache	*Cache
+	RequestChannel chan utils.Request
+	ResponseChannel chan utils.Response
+	RequestMemChannel chan utils.RequestMem
+	ResponseMemChannel chan utils.ResponseMem
+		Quit chan struct{}
 }
 
-// Structure for read/write requests
-type Request struct {
-    Type string                     // WRITE or READ operation
-    Address int                     // The address to READ or WRITE from
-    Data int                        // (Only for WRITE) The data to store
-}
-
-type Response struct {
-    Status bool                     // Status to know if the request was successfull
-    Type string                     // WRITE or READ operation
-    Data int                        // (Only for READ) The data to store in the register
-	Address int
-	Status_Data string
-}
 
 func NewController() *Controller{
 	return &Controller{
@@ -29,37 +23,37 @@ func NewController() *Controller{
 	}
 }
 
-func (controller *Controller) Write(pos int, data int, address int, state string){
-	if(data >= 0){
-		controller.cache.setData(pos, data);
-	}
+func (cc *Controller) Run(wg *sync.WaitGroup){
+	for {
+		select{
+		case request := <- cc.RequestChannel:
+			time.Sleep(10 * time.Second)
 
-	if(address >= 0){
-		controller.cache.setAddress(pos, address);
-	}
+			response := utils.Response{
+				Status: true,
+				Type: request.Type,
+				Data: 12,
+			}
 
-	if(state != ""){
-		controller.cache.setState(pos, state);
+			cc.ResponseChannel <- response
+
+		case <- cc.Quit:
+		}
 	}
 }
 
-func (controller *Controller) Write(pos int, data int, address int, state string){
-	if(data >= 0){
-		controller.cache.setData(pos, data);
+func (controller *Controller) Write(req *utils.RequestMem){
+	utils.RequestMem{
+		Type: "Write",
+		Address: req.Address,
+		Data: req.Data,
 	}
-
-	if(address >= 0){
-		controller.cache.setAddress(pos, address);
-	}
-
-	if(state != ""){
-		controller.cache.setState(pos, state);
-	}
+	// Hacer algo en Memoria
 }
 
 //write cambiar status
 
-func (controller *Controller) Read(address int) *Response{
+func (controller *Controller) Read(address int) *utils.ResponseMem{
 	pos := 0
 	found := false
 	for _, addr := range controller.cache.address{
@@ -71,41 +65,41 @@ func (controller *Controller) Read(address int) *Response{
 	}
 
 	if(found == false){
-		Request{
+		utils.RequestMem{
 			Type: "READ",
 			Address: address,
-			Data: 0,
 		}
 		// Make request
 
 
 		//Check cache
-		return &Response{
+		return &utils.ResponseMem{
 			Status: true,
-			Type: "READ",
-			Data: "Response.Data",
+			Address: 3,
+			Data: 0,
+			StatusData: "E",
 		}
 	}else{
 		if(controller.cache.status[pos] == "I"){
-			Request{
+			utils.RequestMem{
 				Type: "READ",
 				Address: controller.cache.address[pos],
-				Data: 0,
 			}
 			// Make request
 			 
 		}
 
-		return &Response{
+		return &utils.ResponseMem{
 			Status: true,
-			Type: "READ",
-			Data: "Response.Data",
-		} 
+			Address: 3,
+			Data: 0,
+			StatusData: "E",
+		}
 	}
 	
 }
 
-func (controller *Controller) CacheReplace (res *Response){
+func (controller *Controller) CacheReplace (res *utils.ResponseMem){
 	pos := 0
 	for _, status := range controller.cache.status{
 		if(status == "I" || status == ""){
@@ -117,7 +111,7 @@ func (controller *Controller) CacheReplace (res *Response){
 	if(pos == 5){
 		pos = rand.Intn(4)
 		if(controller.cache.status[pos] == "M"){
-			Request{
+			utils.RequestMem{
 				Type: "WRITE",
 				Address: controller.cache.address[pos],
 				Data: controller.cache.data[pos],
@@ -128,7 +122,24 @@ func (controller *Controller) CacheReplace (res *Response){
 
 	controller.cache.address[pos] = res.Address
 	controller.cache.data[pos] = res.Data
-	controller.cache.status[pos] = res.Status_Data
+	controller.cache.status[pos] = res.StatusData
+}
+
+func (controller *Controller) GetAddressStatus(address int) string{
+	pos := 0
+	for _, addr := range controller.cache.address{
+		if(address == addr){
+			break
+		}
+		pos++
+	}
+
+	if(pos == 5){
+		return ""
+	}
+
+	return controller.cache.status[pos]
+
 }
 
 
