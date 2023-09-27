@@ -14,12 +14,11 @@ import (
 // Represents a processing element.
 type ProcessingElement struct {
     ID          int                         // Identifier of the PE
-    Name        string                      // Name for the PE
     Instructions []string                   // Array of instructions loaded
     Logger          *log.Logger              //
     Control     chan bool                   // Channel for external control
-    RequestChannel chan utils.Request       // Channel to send a request to a CacheController
-    ResponseChannel chan utils.Response     // Channel to wait for a response from a CacheController
+    RequestChannel chan utils.RequestM1        // Channel to send a request to a CacheController
+    ResponseChannel chan utils.ResponseM1      // Channel to wait for a response from a CacheController
     register int                            // The one and only register
     IsDone bool                             // Flag to know when a PE hasn't finished executing instructions
     IsExecutingInstruction bool             // Flag to know when a PE is currently executing an instruction
@@ -27,8 +26,7 @@ type ProcessingElement struct {
 }
 
 // New creates a new ProcessingElement instance.
-func New(id int, name string, RequestChannelCC chan utils.Request, ResponseChannelCC chan utils.Response ,filename string, quit chan struct{}) (*ProcessingElement, error) {
-
+func New(id int, RequestChannelCC chan utils.RequestM1 , ResponseChannelCC chan utils.ResponseM1  ,filename string, quit chan struct{}) (*ProcessingElement, error) {
     // Load the program from the text file
     instructions, err := readInstructionsFromFile(filename)
     if err != nil {
@@ -36,17 +34,17 @@ func New(id int, name string, RequestChannelCC chan utils.Request, ResponseChann
     }
 
     // Create the log file
-    logFile, err := os.Create("logs/" + name + ".log")
+    logFile, err := os.Create("logs/PE/PE" + strconv.Itoa(id) + ".log")
     if err != nil {
-        log.Fatalf("Error creating log file for %s: %v", name, err)
+        log.Fatalf("Error creating log file for PE%d: %v", id, err)
     }
 
     // Initialize logger for the PE using its respective log file
-    logger1 := log.New(logFile, name + "_", log.Ldate|log.Ltime)
+    logger1 := log.New(logFile, "PE" + strconv.Itoa(id) + "_", log.Ldate|log.Ltime)
+	
 
     return &ProcessingElement{
         ID:           id,
-        Name:         name,
         Instructions: instructions,
         Logger: logger1,
         RequestChannel: RequestChannelCC,
@@ -61,7 +59,7 @@ func New(id int, name string, RequestChannelCC chan utils.Request, ResponseChann
 
 // Run simulates the execution of instructions for a ProcessingElement.
 func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
-    pe.Logger.Printf(" - PE %d is ready to execute instructions.\n", pe.ID)
+    pe.Logger.Printf(" - PE%d is ready to execute instructions.\n", pe.ID)
     for i, instruction := range pe.Instructions {
         select {
             // When the PE receives a signal to execute an instruction
@@ -69,23 +67,23 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                 // Let others know the PE is currently busy executing an instruction
                 pe.IsExecutingInstruction = true
 
-                pe.Logger.Printf(" - PE %d received external signal to execute instruction %d: %s.\n", pe.ID, i+1, instruction)
+                pe.Logger.Printf(" - PE%d received external signal to execute instruction %d: %s.\n", pe.ID, i+1, instruction)
                 words := strings.Fields(instruction)
                 operation := words[0]
 
                 switch operation {
                 // Increment
                 case "INC":
-                    pe.Logger.Printf(" - PE %d is executing a %s operation.\n", pe.ID, operation)
+                    pe.Logger.Printf(" - PE%d is executing a %s operation.\n", pe.ID, operation)
                     pe.register++
                     pe.Logger.Printf(" - Now the value of the register is %d.\n", pe.register)
-                    pe.Logger.Printf(" - PE %d has finished with the instruction.\n", pe.ID)
+                    pe.Logger.Printf(" - PE%d has finished with the instruction.\n", pe.ID)
                     // Let others know the PE is now available
                     pe.IsExecutingInstruction = false
 
                 // Read a data from an specific memory address
                 case "READ":
-                    pe.Logger.Printf(" - PE %d is executing a %s operation.\n", pe.ID, operation)
+                    pe.Logger.Printf(" - PE%d is executing a %s operation.\n", pe.ID, operation)
                     // Create a request structure
                     address, err := strconv.Atoi(words[1])
                     if err != nil {
@@ -93,7 +91,7 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                         return
                     }
                     // Prepare the request message
-                    request := utils.Request{
+                    request := utils.RequestM1 {
                         Type: operation,
                         Address: address,                    
                         Data: 0,                      
@@ -101,24 +99,24 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
 
                     // Send the request to the CacheController
                     pe.RequestChannel <- request
-                    pe.Logger.Printf(" - PE %d sent (Type: %s, Address: %d) to the Cache Controller.\n", pe.ID, operation, address)
+                    pe.Logger.Printf(" - PE%d sent (Type: %s, Address: %d) to the Cache Controller.\n", pe.ID, operation, address)
 
                     // Wait for the response from the CacheController
-                    pe.Logger.Printf(" - PE %d is waiting for a response from the Cache Controller....\n", pe.ID)
+                    pe.Logger.Printf(" - PE%d is waiting for a response from the Cache Controller....\n", pe.ID)
                     response := <- pe.ResponseChannel
 
                     // Process the response
-                    pe.Logger.Printf(" - PE %d received --> Status: %v, Type: %s, Data: %d.\n", pe.ID,response.Status, response.Type, response.Data)
+                    pe.Logger.Printf(" - PE%d received --> Status: %v, Type: %s, Data: %d.\n", pe.ID,response.Status, response.Type, response.Data)
                     pe.register = response.Data
                     pe.Logger.Printf(" - Now the value of the register is %d.\n", pe.register)
-                    pe.Logger.Printf(" - PE %d has finished with the instruction.\n", pe.ID)
+                    pe.Logger.Printf(" - PE%d has finished with the instruction.\n", pe.ID)
 
                     // Let others know the PE is now available
                     pe.IsExecutingInstruction = false
 
                 // Write dato into an specific memory address
                 case "WRITE":
-                    pe.Logger.Printf(" - PE %d is executing a %s operation.\n", pe.ID, operation)
+                    pe.Logger.Printf(" - PE%d is executing a %s operation.\n", pe.ID, operation)
                     // Create a request structure
                     address, err := strconv.Atoi(words[1])
                     if err != nil {
@@ -127,7 +125,7 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                     }
 
                     // Prepare the request message
-                    request := utils.Request{
+                    request := utils.RequestM1 {
                         Type: operation,
                         Address: address,                   
                         Data: pe.register,                     
@@ -135,16 +133,16 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
 
                     // Send the request to the CacheController
                     pe.RequestChannel <- request
-                    pe.Logger.Printf(" - PE %d sent (Type: %s, Address: %d, Data: %d) to the Cache Controller.\n", pe.ID, operation, address, pe.register)
+                    pe.Logger.Printf(" - PE%d sent (Type: %s, Address: %d, Data: %d) to the Cache Controller.\n", pe.ID, operation, address, pe.register)
 
 
                     // Wait for the response from the CacheController
-                    pe.Logger.Printf(" - PE %d is waiting for a response from the Cache Controller....\n", pe.ID)
+                    pe.Logger.Printf(" - PE%d is waiting for a response from the Cache Controller....\n", pe.ID)
                     response := <- pe.ResponseChannel
 
                     // Process the response
-                    pe.Logger.Printf(" - PE %d received --> Status: %v, Type: %s.\n", pe.ID, response.Status, response.Type)
-                    pe.Logger.Printf(" - PE %d has finished with the instruction.\n", pe.ID)
+                    pe.Logger.Printf(" - PE%d received --> Status: %v, Type: %s.\n", pe.ID, response.Status, response.Type)
+                    pe.Logger.Printf(" - PE%d has finished with the instruction.\n", pe.ID)
 
                     // Let others know the PE is now available
                     pe.IsExecutingInstruction = false
@@ -153,12 +151,12 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
 
             // When the PE receives a signal terminate
             case <- pe.Quit:
-                pe.Logger.Printf(" - PE %d received termination signal and is exiting gracefully.\n", pe.ID)
+                pe.Logger.Printf(" - PE%d received termination signal and is exiting gracefully.\n", pe.ID)
                 return
         }
 
     }
-    pe.Logger.Printf(" - PE %d has executed all instructions.\n", pe.ID)
+    pe.Logger.Printf(" - PE%d has executed all instructions.\n", pe.ID)
     // Notify the main that this PE has executed all instructions
     pe.IsDone = true
     return

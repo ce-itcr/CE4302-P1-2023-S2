@@ -10,6 +10,7 @@ import (
 
 	"MultiprocessingSystem/components/CacheController"
 	"MultiprocessingSystem/components/ProcessingElement"
+	"MultiprocessingSystem/components/Interconnect"
 	"MultiprocessingSystem/utils"
 )
 
@@ -20,41 +21,53 @@ func main() {
 	// Create WaitGroup for PEs and CCs
 	var wg sync.WaitGroup
 
-	// Declare the Communication Channels for PE-CC
-	RequestChannels := make([]chan utils.Request, 3)
-	ResponseChannels := make([]chan utils.Response, 3)
+	// Declare the Communication Channels array for PE-CC
+	RequestChannelsM1 := make([]chan utils.RequestM1, 3)
+	ResponseChannelsM1 := make([]chan utils.ResponseM1, 3)
 
-	// Create and start 3 Cache Controllers
+	// Declare the Communication Channels array for CC-IC
+	RequestChannelsM2 := make([]chan utils.RequestM2, 3)
+	ResponseChannelsM2 := make([]chan utils.ResponseM2, 3)
+
+	// Create and start 3 Cache Controllers with the communication channels
 	cacheControllers := make([]*CacheController.CacheController, 3) // Create an array of Cache Controllers
 
 	for i := 0; i < 3; i++ {
-		requestChannel := make(chan utils.Request)
-		responseChannel := make(chan utils.Response)
+		// Create the Request and Response channels for PE and IC communications
+		requestChannelM1 := make(chan utils.RequestM1)
+		responseChannelM1 := make(chan utils.ResponseM1)
 
-		cacheController, err := CacheController.New(requestChannel, responseChannel, terminate)
+		requestChannelM2 := make(chan utils.RequestM2)
+		responseChannelM2 := make(chan utils.ResponseM2)
+
+		// Create the CacheController with its ID and communication channels
+		cacheController, err := CacheController.New(i, requestChannelM1, responseChannelM1, requestChannelM2, responseChannelM2,terminate)
 		if err != nil {
 			fmt.Printf("Error initializing CacheController %d: %v\n", i+1, err)
 			return
 		}
 
+		// Add the CacheController to the Wait Group
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
 			cacheController.Run(&wg)
 		}()
 
+		// Save the CacheController and the communicatio channels created
 		cacheControllers[i] = cacheController
-		RequestChannels[i] = requestChannel
-		ResponseChannels[i] = responseChannel
+		RequestChannelsM1[i] = requestChannelM1
+		ResponseChannelsM1[i] = responseChannelM1
+
+		RequestChannelsM2[i] = requestChannelM2
+		ResponseChannelsM2[i] = responseChannelM2
 	}
 
 	// Create and start 3 Processing Elements
 	pes := make([]*processingElement.ProcessingElement, 3) // Create an array of PEs
 
 	for i := 0; i < 3; i++ {
-		peName := fmt.Sprintf("PE%d", i+1)
-
-		pe, err := processingElement.New(i+1, peName, RequestChannels[i], ResponseChannels[i], fmt.Sprintf("programs/program%d.txt", i+1), terminate)
+		pe, err := processingElement.New(i, RequestChannelsM1[i], ResponseChannelsM1[i], fmt.Sprintf("programs/program%d.txt", i+1), terminate)
 		if err != nil {
 			fmt.Printf("Error initializing ProcessingElement %d: %v\n", i+1, err)
 			return
@@ -69,7 +82,22 @@ func main() {
 		pes[i] = pe
 	}
 
-	// Create a simple command-line interface for controlling your program
+	// Create the Interconnect and attach the communication channels with the 3 CacheControllers
+	// Create Interconnect
+	interconnect, err := interconnect.New(RequestChannelsM2, ResponseChannelsM2, terminate)
+	if err != nil {
+		fmt.Printf("Error initializing Interconnect: %v\n", err)
+		return
+	}
+
+	// Start Interconnect
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		interconnect.Run(&wg)
+	}()
+
+	// THIS IS WHERE THE CLI STARTS *****************************************************************************
 	fmt.Println("WELCOME TO MCKEVINHO CLI")
 	fmt.Println("The available commands are:")
 	fmt.Println("1. step <PE> - Send the Control signal to a specific PE (e.g., 'step 1' or 'step all')")
@@ -99,24 +127,24 @@ PELoop:
 				for i, pe := range pes {
 					if !pe.IsDone && !pe.IsExecutingInstruction {
 						pe.Control <- true
-						fmt.Printf("Sent 'step' command to %s %d\n", pe.Name, i)
+						fmt.Printf("Sent 'step' command to PE%d...\n", i)
 					} else {
-						fmt.Printf("%s is not available\n", pe.Name)
+						fmt.Printf("PE%d is not available...\n", pe.ID)
 					}
 				}
 			} else {
 				peIndex, err := strconv.Atoi(args[1])
-				if err != nil || peIndex < 1 || peIndex > len(pes) {
+				if err != nil || peIndex < -1 || peIndex > len(pes)-1 {
 					fmt.Println("Invalid PE number. Please enter a valid PE number or 'all'.")
 					continue
 				}
 
-				pe := pes[peIndex-1]
+				pe := pes[peIndex]
 				if !pe.IsDone && !pe.IsExecutingInstruction {
 					pe.Control <- true
-					fmt.Printf("Sent 'step' command to %s\n", pe.Name)
+					fmt.Printf("Sent 'step' command to PE%d...\n", pe.ID)
 				} else {
-					fmt.Printf("%s is not available\n", pe.Name)
+					fmt.Printf("PE%d is not available...\n", pe.ID)
 				}
 			}
 		case "lj":
@@ -132,8 +160,10 @@ PELoop:
             }
 
 			for i := 0; i < 3; i++ {
-				close(RequestChannels[i])
-				close(ResponseChannels[i])
+				close(RequestChannelsM1[i])
+				close(ResponseChannelsM1[i])
+				close(RequestChannelsM2[i])
+				close(ResponseChannelsM2[i])
 			}
 			break PELoop
 		default:
