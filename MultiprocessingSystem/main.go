@@ -4,13 +4,14 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"sync"
+	"strconv"
 	"strings"
-    "strconv"
+	"sync"
 
 	"MultiprocessingSystem/components/CacheController"
-	"MultiprocessingSystem/components/ProcessingElement"
-	"MultiprocessingSystem/components/Interconnect"
+	interconnect "MultiprocessingSystem/components/Interconnect"
+	mainMemory "MultiprocessingSystem/components/MainMemory"
+	processingElement "MultiprocessingSystem/components/ProcessingElement"
 	"MultiprocessingSystem/utils"
 )
 
@@ -32,6 +33,10 @@ func main() {
 	// Create and start 3 Cache Controllers with the communication channels
 	cacheControllers := make([]*CacheController.CacheController, 3) // Create an array of Cache Controllers
 
+	// Declare the Communication Channels array for MM-IC
+	RequestChannelsMM := make(chan utils.RequestMemory)
+	ResponseChannelsMM := make(chan utils.ResponseMemory)
+
 	for i := 0; i < 3; i++ {
 		// Create the Request and Response channels for PE and IC communications
 		requestChannelM1 := make(chan utils.RequestM1)
@@ -41,7 +46,7 @@ func main() {
 		responseChannelM2 := make(chan utils.ResponseM2)
 
 		// Create the CacheController with its ID and communication channels
-		cacheController, err := CacheController.New(i, requestChannelM1, responseChannelM1, requestChannelM2, responseChannelM2,terminate)
+		cacheController, err := CacheController.New(i, requestChannelM1, responseChannelM1, requestChannelM2, responseChannelM2, terminate)
 		if err != nil {
 			fmt.Printf("Error initializing CacheController %d: %v\n", i+1, err)
 			return
@@ -81,6 +86,15 @@ func main() {
 
 		pes[i] = pe
 	}
+
+	// Create Main Memory with two channels, ready to connect the interconect
+	mainMemory, err := mainMemory.New(RequestChannelsMM, ResponseChannelsMM, terminate)
+
+	// Start Main Memory
+	go func() {
+		defer wg.Done()
+		mainMemory.Run(&wg)
+	}()
 
 	// Create the Interconnect and attach the communication channels with the 3 CacheControllers
 	// Create Interconnect
@@ -154,10 +168,10 @@ PELoop:
 
 			wg.Wait() // Wait for all goroutines to finish gracefully
 
-                // Close the log files for all PEs
-            for _, pe := range pes {
-                pe.Logger.Writer().(*os.File).Close()
-            }
+			// Close the log files for all PEs
+			for _, pe := range pes {
+				pe.Logger.Writer().(*os.File).Close()
+			}
 
 			for i := 0; i < 3; i++ {
 				close(RequestChannelsM1[i])
