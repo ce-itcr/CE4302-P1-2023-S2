@@ -1,126 +1,177 @@
 package main
 
 import (
-    "fmt"
-    "os"
-    "os/signal"
+	"bufio"
+	"fmt"
+	"os"
+	"sync"
+	"strings"
     "strconv"
-    "sync"
-    "syscall"
-    "MultiprocessingSystem/components/ProcessingElement"
+
+	"MultiprocessingSystem/components/CacheController"
+	"MultiprocessingSystem/components/ProcessingElement"
+	"MultiprocessingSystem/components/Interconnect"
+	"MultiprocessingSystem/utils"
 )
 
 func main() {
-    // Create three ProcessingElement instances with different instructions
-    pe1, err1 := processingElement.New(1, "PE1", "programs/program1.txt")
-    pe2, err2 := processingElement.New(2, "PE2", "programs/program2.txt")
-    pe3, err3 := processingElement.New(3, "PE3", "programs/program3.txt")
+	// Create termination channel to signal termination
+	terminate := make(chan struct{})
 
-    if err1 != nil || err2 != nil || err3 != nil {
-        fmt.Println("Error:", err1, err2, err3)
-        return
-    }
+	// Create WaitGroup for PEs and CCs
+	var wg sync.WaitGroup
 
-    var wg sync.WaitGroup
+	// Declare the Communication Channels array for PE-CC
+	RequestChannelsM1 := make([]chan utils.RequestM1, 3)
+	ResponseChannelsM1 := make([]chan utils.ResponseM1, 3)
 
-    // Start each ProcessingElement as a goroutine (Thread)
-    wg.Add(3)
-    go pe1.Run(&wg)
-    go pe2.Run(&wg)
-    go pe3.Run(&wg)
+	// Declare the Communication Channels array for CC-IC
+	RequestChannelsM2 := make([]chan utils.RequestM2, 3)
+	ResponseChannelsM2 := make([]chan utils.ResponseM2, 3)
 
-    // Set up a signal handler for external control
-    sigCh := make(chan os.Signal, 1)
-    signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
+	// Create and start 3 Cache Controllers with the communication channels
+	cacheControllers := make([]*CacheController.CacheController, 3) // Create an array of Cache Controllers
 
-    // Channel to receive special termination word
-    specialTerminationCh := make(chan struct{})
+	for i := 0; i < 3; i++ {
+		// Create the Request and Response channels for PE and IC communications
+		requestChannelM1 := make(chan utils.RequestM1)
+		responseChannelM1 := make(chan utils.ResponseM1)
 
-    // Map to keep track of active PEs
-    activePEs := map[int]*processingElement.ProcessingElement{
-        pe1.ID: pe1,
-        pe2.ID: pe2,
-        pe3.ID: pe3,
-    }
+		requestChannelM2 := make(chan utils.RequestM2)
+		responseChannelM2 := make(chan utils.ResponseM2)
 
-    fmt.Println("Press Ctrl+C to control the Processing Elements.")
-    fmt.Println("Type 'terminate' to stop all Processing Elements.")
+		// Create the CacheController with its ID and communication channels
+		cacheController, err := CacheController.New(i, requestChannelM1, responseChannelM1, requestChannelM2, responseChannelM2,terminate)
+		if err != nil {
+			fmt.Printf("Error initializing CacheController %d: %v\n", i+1, err)
+			return
+		}
 
-    // Listen for external control signals
-    go func() {
-        for sig := range sigCh {
-            fmt.Printf("Received signal: %v\n", sig)
-            handleSignal(sig, activePEs)
-        }
-    }()
+		// Add the CacheController to the Wait Group
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			cacheController.Run(&wg)
+		}()
 
-    // Listen for the special termination word
-    go func() {
-        var specialWord string
-        fmt.Scanln(&specialWord)
-        if specialWord == "terminate" {
-            fmt.Println("Terminating all Processing Elements...")
-            close(specialTerminationCh)
-        }
-    }()
+		// Save the CacheController and the communicatio channels created
+		cacheControllers[i] = cacheController
+		RequestChannelsM1[i] = requestChannelM1
+		ResponseChannelsM1[i] = responseChannelM1
 
-    // Wait for all processing elements to finish or special termination word
-    select {
-    case <-specialTerminationCh:
-        // Termination word received
-        // Signal all active PEs to terminate
-        for _, pe := range activePEs {
-            pe.Done <- true
-        }
-    case <-pe1.Done:
-        // PE1 completed, remove it from active PEs
-        delete(activePEs, pe1.ID)
-    case <-pe2.Done:
-        // PE2 completed, remove it from active PEs
-        delete(activePEs, pe2.ID)
-    case <-pe3.Done:
-        // PE3 completed, remove it from active PEs
-        delete(activePEs, pe3.ID)
-    }
+		RequestChannelsM2[i] = requestChannelM2
+		ResponseChannelsM2[i] = responseChannelM2
+	}
 
-    // Wait for all remaining PEs to finish
-    wg.Wait()
+	// Create and start 3 Processing Elements
+	pes := make([]*processingElement.ProcessingElement, 3) // Create an array of PEs
 
-    fmt.Println("All Processing Elements have finished.")
+	for i := 0; i < 3; i++ {
+		pe, err := processingElement.New(i, RequestChannelsM1[i], ResponseChannelsM1[i], fmt.Sprintf("programs/program%d.txt", i+1), terminate)
+		if err != nil {
+			fmt.Printf("Error initializing ProcessingElement %d: %v\n", i+1, err)
+			return
+		}
+
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			pe.Run(&wg)
+		}()
+
+		pes[i] = pe
+	}
+
+	// Create the Interconnect and attach the communication channels with the 3 CacheControllers
+	// Create Interconnect
+	interconnect, err := interconnect.New(RequestChannelsM2, ResponseChannelsM2, terminate)
+	if err != nil {
+		fmt.Printf("Error initializing Interconnect: %v\n", err)
+		return
+	}
+
+	// Start Interconnect
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		interconnect.Run(&wg)
+	}()
+
+	// THIS IS WHERE THE CLI STARTS *****************************************************************************
+	fmt.Println("WELCOME TO MCKEVINHO CLI")
+	fmt.Println("The available commands are:")
+	fmt.Println("1. step <PE> - Send the Control signal to a specific PE (e.g., 'step 1' or 'step all')")
+	fmt.Println("2. lj        - Terminate the program")
+
+	reader := bufio.NewReader(os.Stdin)
+PELoop:
+	for {
+		fmt.Print("\nEnter a command: ")
+		command, _ := reader.ReadString('\n')
+		command = trimNewline(command)
+
+		args := strings.Split(command, " ")
+		if len(args) < 1 {
+			fmt.Println("Invalid command. Please enter 'step <PE>' or 'lj'.")
+			continue
+		}
+
+		switch args[0] {
+		case "step":
+			if len(args) != 2 {
+				fmt.Println("Invalid 'step' command. Please use 'step <PE>' or 'step all'.")
+				continue
+			}
+
+			if args[1] == "all" {
+				for i, pe := range pes {
+					if !pe.IsDone && !pe.IsExecutingInstruction {
+						pe.Control <- true
+						fmt.Printf("Sent 'step' command to PE%d...\n", i)
+					} else {
+						fmt.Printf("PE%d is not available...\n", pe.ID)
+					}
+				}
+			} else {
+				peIndex, err := strconv.Atoi(args[1])
+				if err != nil || peIndex < -1 || peIndex > len(pes)-1 {
+					fmt.Println("Invalid PE number. Please enter a valid PE number or 'all'.")
+					continue
+				}
+
+				pe := pes[peIndex]
+				if !pe.IsDone && !pe.IsExecutingInstruction {
+					pe.Control <- true
+					fmt.Printf("Sent 'step' command to PE%d...\n", pe.ID)
+				} else {
+					fmt.Printf("PE%d is not available...\n", pe.ID)
+				}
+			}
+		case "lj":
+			// Signal termination to both components
+			fmt.Println("Sent 'lj' command to terminate the program")
+			close(terminate)
+
+			wg.Wait() // Wait for all goroutines to finish gracefully
+
+                // Close the log files for all PEs
+            for _, pe := range pes {
+                pe.Logger.Writer().(*os.File).Close()
+            }
+
+			for i := 0; i < 3; i++ {
+				close(RequestChannelsM1[i])
+				close(ResponseChannelsM1[i])
+				close(RequestChannelsM2[i])
+				close(ResponseChannelsM2[i])
+			}
+			break PELoop
+		default:
+			fmt.Println("Invalid command. Please enter 'step <PE>' or 'lj'.")
+		}
+	}
 }
 
-// handleSignal handles external control signals to start execution of instructions.
-func handleSignal(sig os.Signal, activePEs map[int]*processingElement.ProcessingElement) {
-    if sig == syscall.SIGINT {
-        var peIDs []string
-        for id := range activePEs {
-            peIDs = append(peIDs, strconv.Itoa(id))
-        }
-        fmt.Println("Available Processing Elements:", peIDs)
-        fmt.Print("Enter the ID of the PE to execute an instruction (or 'all'): ")
-        var input string
-        fmt.Scanln(&input)
-
-        if input == "all" {
-            for _, pe := range activePEs {
-                pe.Control <- true
-            }
-        } else {
-            peID, err := strconv.Atoi(input)
-            if err != nil {
-                fmt.Println("Invalid input. Please enter a valid PE ID or 'all'.")
-                return
-            }
-
-            if pe, ok := activePEs[peID]; ok {
-                pe.Control <- true
-            } else {
-                fmt.Println("PE with ID", peID, "not found.")
-            }
-        }
-    } else if sig == syscall.SIGTERM {
-        for _, pe := range activePEs {
-            pe.Done <- true
-        }
-    }
+func trimNewline(s string) string {
+	return s[:len(s)-1]
 }
