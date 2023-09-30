@@ -1,0 +1,12 @@
+CC1_2023/09/27 00:53:00  - CC1 is running.
+CC1_2023/09/27 00:53:04  - CC1 is Received request from PE1.
+CC1_2023/09/27 00:53:04  - CC1 is processing a WRITE request.
+CC1_2023/09/27 00:53:04  - Address: 12, Data: 0.
+CC1_2023/09/27 00:53:09  - CC1 is about to send a request to the Interconnect.
+CC1_2023/09/27 00:53:11  - CC1 sent (Type: WRITE, Address: 12) to the Interconnect.
+CC1_2023/09/27 00:53:11  - CC1 is waiting for a response from the Interconnect....
+CC1_2023/09/27 00:53:13  - CC1 received --> Status: true, Type: WRITE, Data: 42.
+CC1_2023/09/27 00:53:13  - CC1 is making a response object.
+CC1_2023/09/27 00:53:13  - CC1 is about to send the response to PE1.
+CC1_2023/09/27 00:53:13  - CC1 has sent the response back to PE1.
+CC1_2023/09/27 00:53:24  - CC1 has received an external signal to terminate.
