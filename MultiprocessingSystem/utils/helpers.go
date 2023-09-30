@@ -25,7 +25,20 @@ type RequestM2 struct {
 
 // Response structure for the CacheController - Interconnect communication
 type ResponseM2 struct {
-    Status bool   // Status to know if the request was successful
-    Type   string // WRITE or READ operation
-    Data   int    // (Only for READ) The data to store in the register
+    Status bool         // Status to know if the request was successful
+    Data   int          // (Only for READ) The data to store in the register
+    StatusData string   // Current Status of Data
 }
+
+// Request structure for the Interconnect communication - CacheController
+type RequestM3 struct {
+    Address int    // The address to READ or WRITE from
+    NewStatusData string
+}
+
+// Response structure for the Interconnect communication - CacheController
+type ResponseM3 struct {
+    Status bool         // Status to know if the request was successful
+    Data   int          // (Only for READ) The data to store in the register
+}
+
