@@ -3,6 +3,7 @@ package mainMemory
 import (
 	"MultiprocessingSystem/utils"
 	"log"
+	"math/rand"
 	"os"
 	"sync"
 	"time"
@@ -10,8 +11,8 @@ import (
 
 // MainMemory representa la memoria principal del sistema.
 type MainMemory struct {
-	datos           [16]uint32                // Array de 16 entradas de 32 bits.
-	mutex           sync.Mutex                // Mutex para garantizar RequestChannel seguro a la memoria.
+	datos [16]uint32 // Array de 16 entradas de 32 bits.
+	// mutex           sync.Mutex                // Mutex para garantizar RequestChannel seguro a la memoria.
 	RequestChannel  chan utils.RequestMemory  // Canal para solicitudes de interconect a la memoria.
 	ResponseChannel chan utils.ResponseMemory // Canal para respond de memoria a interconect.
 	Quit            chan struct{}
@@ -25,8 +26,15 @@ func New(requestChannel chan utils.RequestMemory, responseChannel chan utils.Res
 		// RequestChannel: make(chan *RequestChannelMemoria),
 	}
 
+	// Create seed for random numbers
+	source := rand.NewSource(time.Now().UnixNano())
+	generator := rand.New(source)
+
 	// Inicializa la memoria con valuees predeterminados si es necesario.
-	dataInicialized := [16]uint32{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	dataInitialized := [16]uint32{}
+	for i := 0; i < len(dataInitialized); i++ {
+		dataInitialized[i] = uint32(generator.Intn(51)) // Genera números entre 0 y 50.
+	}
 
 	logger := log.New(logFile, "MM"+"_", log.Ldate|log.Ltime)
 
@@ -34,7 +42,7 @@ func New(requestChannel chan utils.RequestMemory, responseChannel chan utils.Res
 	// go mm.gestionarRequestChannels()
 
 	return &MainMemory{
-		datos:           dataInicialized,
+		datos:           dataInitialized,
 		RequestChannel:  requestChannel,
 		ResponseChannel: responseChannel,
 		Quit:            quit,
@@ -44,15 +52,15 @@ func New(requestChannel chan utils.RequestMemory, responseChannel chan utils.Res
 
 // Read accede a la memoria principal para Read un value en una dirección.
 func (mm *MainMemory) Read(address int) uint32 {
-	mm.mutex.Lock()
-	defer mm.mutex.Unlock()
+	// mm.mutex.Lock()
+	// defer mm.mutex.Unlock()
 	return mm.datos[address]
 }
 
 // Write actualiza un value en una dirección en la memoria principal.
 func (mm *MainMemory) Write(address int, value uint32) {
-	mm.mutex.Lock()
-	defer mm.mutex.Unlock()
+	// mm.mutex.Lock()
+	// defer mm.mutex.Unlock()
 	mm.datos[address] = value
 }
 
