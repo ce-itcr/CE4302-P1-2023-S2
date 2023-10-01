@@ -31,7 +31,7 @@ func (cc *Controller) Run(wg *sync.WaitGroup){
 		case request := <- cc.RequestChannel:
 			
 			if(request.Type == "Write"){
-				cc.Write(request.Address, request.Data)
+				cc.Write(request.Address, request.Data) // Función Write
 				response := utils.ResponseM1{
 					Status: true,
 					Type: request.Type,
@@ -70,7 +70,7 @@ func (cc *Controller) Run(wg *sync.WaitGroup){
 
 func (controller *Controller) Write(address int, data int){
 
-	for pos, addr := range controller.cache.Address{
+	for pos, addr := range controller.cache.Address{	//Busca address en cache y escribe
 		if(address == addr){
 			controller.cache.Address[pos] = address
 			controller.cache.Data[pos] = data
@@ -81,12 +81,10 @@ func (controller *Controller) Write(address int, data int){
 
 }
 
-//write cambiar status
-
 func (controller *Controller) Read(address int) int{
 	pos := 0
 	found := false
-	for _, addr := range controller.cache.Address{
+	for _, addr := range controller.cache.Address{	//Busca address en Cache
 		if(address == addr){
 			found = true
 			break
@@ -94,23 +92,23 @@ func (controller *Controller) Read(address int) int{
 		pos++
 	}
 
-	if(!found){
+	if(!found){	// No está en cache
 		requestMem := utils.RequestM2{
 			Type: "READ",
 			Address: address,
 		}
 
-		controller.RequestMemChannel <- requestMem
+		controller.RequestMemChannel <- requestMem		//Pide a memoria
 
 		response := <- controller.ResponseMemChannel
 		
 
-		pos = controller.CacheReplace(&response, address)
+		pos = controller.CacheReplace(&response, address)	//Busca espacio en cache para el dato
 
 		return pos
 
 	}else{
-		if(controller.cache.Status[pos] == "I"){
+		if(controller.cache.Status[pos] == "I"){		//Sí está, revisa si es invalido
 			requestMem := utils.RequestM2{
 				Type: "READ",
 				Address: controller.cache.Address[pos],
@@ -120,7 +118,7 @@ func (controller *Controller) Read(address int) int{
 			response := <- controller.ResponseMemChannel
 		
 
-			controller.cache.Data[pos] = response.Data
+			controller.cache.Data[pos] = response.Data			//Escribe dato actualizado
 			controller.cache.Status[pos] = response.StatusData
 			 
 		}
@@ -133,16 +131,16 @@ func (controller *Controller) Read(address int) int{
 func (controller *Controller) CacheReplace(res *utils.ResponseM2, address int) int{
 	currentState := res.StatusData
 	pos := 0
-	for _, status := range controller.cache.Status{
+	for _, status := range controller.cache.Status{		//Busca vacio o Invalido para cambiar
 		if(status == "I" || status == ""){
 			break
 		}
 		pos++
 	}
 
-	if(pos == 5){
+	if(pos == 5){		//Si no encuentra lo hace random
 		pos = rand.Intn(4)
-		if(controller.cache.Status[pos] == "M"){
+		if(controller.cache.Status[pos] == "M"){	//Si es modified lo cambia en memoria
 			requestMem := utils.RequestM2{
 				Type: "WRITE",
 				Address: controller.cache.Address[pos],
@@ -154,14 +152,14 @@ func (controller *Controller) CacheReplace(res *utils.ResponseM2, address int) i
 		}
 	}
 
-	controller.cache.Address[pos] = address
+	controller.cache.Address[pos] = address		//Escribe datos nuevos
 	controller.cache.Data[pos] = res.Data
 	controller.cache.Status[pos] = currentState
 
 	return pos
 }
 
-func (controller *Controller) GetAddressStatus(req *utils.RequestM3) *utils.ResponseM3{
+func (controller *Controller) GetAddressStatus(req *utils.RequestM3) *utils.ResponseM3{ //Revisar que hay en cache y asignar state nuevo
 	goToMem := false
 	respStatus := false
 	for pos, addr := range controller.cache.Address{
@@ -185,11 +183,3 @@ func (controller *Controller) GetAddressStatus(req *utils.RequestM3) *utils.Resp
 		GoToMem: goToMem,
 	}
 }
-
-
-//Buscar dato 
-//revisar estados de coerencia
-//transiciones
-
-//direct mapping
-//revisar lo que hay en cada registro
