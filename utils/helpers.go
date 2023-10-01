@@ -1,29 +1,45 @@
 package utils
 
-// Structure for read/write requests
-type Request struct {
-    Type string                     // WRITE or READ operation
-    Address int                     // The address to READ or WRITE from
-    Data int                        // (Only for WRITE) The data to store
+import ()
+
+// Request structure for the PE - CacheController communication
+type RequestM1 struct {
+    Type    string // WRITE or READ operation
+    Address int    // The address to READ or WRITE from
+    Data    int    // (Only for WRITE) The data to store
 }
 
-type Response struct {
-    Status bool                     // Status to know if the request was successfull
-    Type string                     // WRITE or READ operation
-    Data int                        // (Only for READ) The data to store in the register
+// Response structure for the PE - CacheController communication
+type ResponseM1 struct {
+    Status bool   // Status to know if the request was successful
+    Type   string // WRITE or READ operation
+    Data   int    // (Only for READ) The data to store in the register
 }
 
-// Structure for read/write requests
-type RequestMem struct {
-    Type string                     // WRITE or READ operation
-    Address int                     // The address to READ or WRITE from
-	Data int
+// Request structure for the CacheController - Interconnect communication
+type RequestM2 struct {
+    Type    string // WRITE or READ operation
+    Address int    // The address to READ or WRITE from
+    Data    int    // (Only for WRITE) The data to store
 }
 
-type ResponseMem struct {
-    Status bool                     // Status to know if the request was successfull
-    Data int                        // (Only for READ) The data to store in the register
-	Address int
-	StatusData string
+// Response structure for the CacheController - Interconnect communication
+type ResponseM2 struct {
+    Status bool         // Status to know if the request was successful
+    Data   int          // (Only for READ) The data to store in the register
+    StatusData string   // Current Status of Data
 }
 
+// Request structure for the Interconnect communication - CacheController
+type RequestM3 struct {
+    Address int    // The address to READ or WRITE from
+    NewStatusData string
+}
+
+// Response structure for the Interconnect communication - CacheController
+type ResponseM3 struct {
+    Status bool         // Status to know if the request was successful
+    Data   int          // (Only for READ) The data to store in the register
+    newStatus string
+    GoToMem bool
+}

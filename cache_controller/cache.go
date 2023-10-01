@@ -1,40 +1,40 @@
 package cache_controller
 
 type Cache struct{
-	data	[4]int
-	address	[4]int
-	status	[4]string
+	Data	[4]int
+	Address	[4]int
+	Status	[4]string
 }
 
 func NewCache() *Cache{
 	return &Cache{
-		data: [4]int{0, 0, 0, 0},
-		address: [4]int{0, 0, 0, 0},
-		status: [4]string{"", "", "", ""},
+		Data: [4]int{0, 0, 0, 0},
+		Address: [4]int{0, 0, 0, 0},
+		Status: [4]string{"", "", "", ""},
 	}
 }
 
 func (cache *Cache) setData(pos int, res int){
-	cache.data[pos] = res
+	cache.Data[pos] = res
 }
 
 func (cache *Cache) setAddress(pos int, res int){
-	cache.address[pos] = res
+	cache.Address[pos] = res
 }
 
 func (cache *Cache) setState(pos int, res string){
-	cache.status[pos] = res
+	cache.Status[pos] = res
 }
 
 func (cache *Cache) getData(pos int) int{
-	return cache.data[pos]
+	return cache.Data[pos]
 }
 
 func (cache *Cache) getAddress(pos int) int{
-	return cache.address[pos]
+	return cache.Address[pos]
 }
 
 func (cache *Cache) getState(pos int) string{
-	return cache.status[pos]
+	return cache.Status[pos]
 }
 

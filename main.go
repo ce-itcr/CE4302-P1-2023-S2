@@ -4,26 +4,29 @@ package main
 import (
 	"fmt"
 	"cache_controller.com/cache_controller"
+	"cache_controller.com/utils"
 )
 
 func main(){
-	var cc1 *cache_controller.Controller = cache_controller.NewController()
-	var cc2 *cache_controller.Controller = cache_controller.NewController()
-	var cc3 *cache_controller.Controller = cache_controller.NewController()
+	RequestChannel := make(chan utils.RequestM1)
+	ResponseChannel := make(chan utils.ResponseM1)
+	RequestMemChannel := make(chan utils.RequestM2)
+	ResponseMemChannel := make(chan utils.ResponseM2)
+	RequestMemChannelToCC := make(chan utils.RequestM3)
+	ResponseMemChannelToCC := make(chan utils.ResponseM3)
+
+	var cc1 *cache_controller.Controller = cache_controller.NewController(
+	RequestChannel,
+	ResponseChannel,
+	RequestMemChannel,
+	ResponseMemChannel,
+	RequestMemChannelToCC,
+	ResponseMemChannelToCC,
+	)
 
 
 	cc1.Write(0, 2, 3, "E")
-	fmt.Println(cc1.Read(0)[0])
-	fmt.Println(cc1.Read(0)[1])
-	cc2.Write(0, 5, 5, "S")
-	fmt.Println(cc1.Read(0)[2])
-	fmt.Println(cc2.Read(0)[0])
-	fmt.Println(cc2.Read(0)[1])
-	cc3.Write(1, 5, 5, "S")
-	fmt.Println(cc2.Read(0)[2])
-	fmt.Println(cc3.Read(1)[0])
-	fmt.Println(cc3.Read(1)[1])
-	fmt.Println(cc3.Read(1)[2])
+
 
 
 
