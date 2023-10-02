@@ -1,0 +1,10 @@
+PE2_2023/10/01 19:25:52  - PE2 is ready to execute instructions.
+PE2_2023/10/01 19:25:58  - PE2 received external signal to execute instruction 1: READ 6.
+PE2_2023/10/01 19:25:58  - PE2 is executing a READ operation.
+PE2_2023/10/01 19:25:58  - PE2 sent (Type: READ, Address: 6) to the Cache Controller.
+PE2_2023/10/01 19:25:58  - PE2 is waiting for a response from the Cache Controller....
+PE2_2023/10/01 19:26:09  - PE2 received a response from the Cache Controller.
+PE2_2023/10/01 19:26:09  - PE2 received Data: 42.
+PE2_2023/10/01 19:26:09  - Updated local register: Rs = 42.
+PE2_2023/10/01 19:26:09  - PE2 has finished with the instruction.
+PE2_2023/10/01 19:26:34  - PE2 received termination signal and is exiting gracefully.

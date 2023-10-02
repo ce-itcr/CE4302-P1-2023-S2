@@ -1,8 +1,0 @@
-PE2_2023/09/27 00:53:00  - PE2 is ready to execute instructions.
-PE2_2023/09/27 00:53:04  - PE2 received external signal to execute instruction 1: WRITE 3.
-PE2_2023/09/27 00:53:04  - PE2 is executing a WRITE operation.
-PE2_2023/09/27 00:53:04  - PE2 sent (Type: WRITE, Address: 3, Data: 0) to the Cache Controller.
-PE2_2023/09/27 00:53:04  - PE2 is waiting for a response from the Cache Controller....
-PE2_2023/09/27 00:53:15  - PE2 received --> Status: true, Type: WRITE.
-PE2_2023/09/27 00:53:15  - PE2 has finished with the instruction.
-PE2_2023/09/27 00:53:24  - PE2 received termination signal and is exiting gracefully.

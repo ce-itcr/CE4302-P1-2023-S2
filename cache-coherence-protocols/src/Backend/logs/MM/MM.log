@@ -1,0 +1,8 @@
+MM_2023/10/01 19:25:52  - MM is running.
+MM_2023/10/01 19:26:03  - MM is Received request from Interconect.
+MM_2023/10/01 19:26:03  - MM is initializing a response object.
+MM_2023/10/01 19:26:03  - MM is processing a READ request.
+MM_2023/10/01 19:26:03  - Address: 6.
+MM_2023/10/01 19:26:08  - MM is about to send the response to IC.
+MM_2023/10/01 19:26:08  - MM has sent the response back to IC.
+MM_2023/10/01 19:26:34  - MM has received an external signal to terminate.

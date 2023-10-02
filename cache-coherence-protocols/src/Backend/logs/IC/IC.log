@@ -1,0 +1,31 @@
+IC_2023/10/01 19:25:52  - IC is running.
+IC_2023/10/01 19:26:00  - IC received a ReadRequest from CC2.
+IC_2023/10/01 19:26:00  - IC is about to send a broadcast message to the other CCs.
+IC_2023/10/01 19:26:00  - IC is about to send a broadcast 'readRequest' to CC0.
+IC_2023/10/01 19:26:00  - IC sent a broadcast 'readRequest' to CC0.
+IC_2023/10/01 19:26:00  - CC0 doesn't have the data.
+IC_2023/10/01 19:26:00  - IC is about to send a broadcast 'readRequest' to CC1.
+IC_2023/10/01 19:26:00  - IC sent a broadcast 'readRequest' to CC1.
+IC_2023/10/01 19:26:00  - CC1 doesn't have the data.
+IC_2023/10/01 19:26:03  - IC has sent a READ request to the Main Memory.
+IC_2023/10/01 19:26:08  - IC received the value 42 from Main Memory.
+IC_2023/10/01 19:26:08  - IC sent a data response back to CC2.
+IC_2023/10/01 19:26:11  - IC received a ReadRequest from CC0.
+IC_2023/10/01 19:26:11  - IC is about to send a broadcast message to the other CCs.
+IC_2023/10/01 19:26:11  - IC is about to send a broadcast 'readRequest' to CC1.
+IC_2023/10/01 19:26:11  - IC sent a broadcast 'readRequest' to CC1.
+IC_2023/10/01 19:26:11  - CC1 doesn't have the data.
+IC_2023/10/01 19:26:11  - IC is about to send a broadcast 'readRequest' to CC2.
+IC_2023/10/01 19:26:11  - IC sent a broadcast 'readRequest' to CC2.
+IC_2023/10/01 19:26:11  - CC2 has the data and its status is Exclusive.
+IC_2023/10/01 19:26:14  - IC sent a data response back to CC0.
+IC_2023/10/01 19:26:17  - IC received a ReadRequest from CC1.
+IC_2023/10/01 19:26:17  - IC is about to send a broadcast message to the other CCs.
+IC_2023/10/01 19:26:17  - IC is about to send a broadcast 'readRequest' to CC0.
+IC_2023/10/01 19:26:17  - IC sent a broadcast 'readRequest' to CC0.
+IC_2023/10/01 19:26:17  - CC0 has the data and its status is Shared.
+IC_2023/10/01 19:26:17  - IC is about to send a broadcast 'readRequest' to CC2.
+IC_2023/10/01 19:26:17  - IC sent a broadcast 'readRequest' to CC2.
+IC_2023/10/01 19:26:17  - CC2 has the data and its status is Shared.
+IC_2023/10/01 19:26:20  - IC sent a data response back to CC1.
+IC_2023/10/01 19:26:34  - IC has received an external signal to terminate.
