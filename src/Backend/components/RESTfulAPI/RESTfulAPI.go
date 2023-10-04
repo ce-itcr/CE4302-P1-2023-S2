@@ -1,8 +1,9 @@
-package RESTfulAPI
+package restfulapi
 
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"sync"
 
@@ -24,9 +25,13 @@ var (
 	}
 )
 
-func RESTfulAPI() {
+func homeLink(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Welcome home!")
+}
+
+func Restfulapi() {
 	// Configura el enrutador.
-	router := mux.NewRouter()
+	router := mux.NewRouter().StrictSlash(true)
 
 	// Ruta para obtener los datos actuales.
 	router.HandleFunc("/data", GetData).Methods("GET")
@@ -38,13 +43,21 @@ func RESTfulAPI() {
 	go StartWebSocketServer()
 
 	// Servidor HTTP.
-	http.Handle("/", router)
+	router.HandleFunc("/", homeLink)
 
 	// Inicia el servidor HTTP.
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", router)
+	log.Fatal(err)
 	if err != nil {
 		fmt.Println("Error al iniciar el servidor:", err)
 	}
+}
+
+func Test() {
+	mutex.Lock()
+	defer mutex.Unlock()
+
+	fmt.Printf("Teeeeest del servidor sin correr \n")
 }
 
 // Handler para obtener los datos actuales.
@@ -62,14 +75,76 @@ func SetData(w http.ResponseWriter, r *http.Request) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	// Decodifica el JSON recibido en el cuerpo de la solicitud y actualiza los datos.
-	var newData Datos
-	if err := json.NewDecoder(r.Body).Decode(&newData); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+	// Intenta decodificar el JSON en la primera estructura.
+	var newData1 struct {
+		Type     string `json:"type"`
+		LastCode bool   `json:"lastCode"`
 	}
 
-	data = newData
+	if err := json.NewDecoder(r.Body).Decode(&newData1); err == nil {
+		// Verifica si el JSON corresponde al primer tipo.
+		if newData1.Type == "MESI" && newData1.LastCode {
+			SetProtocol("MESI")
+			// Envía una actualización a través del websocket.
+			BroadcastUpdate()
+			return
+		}
+		if newData1.Type == "MOESI" && newData1.LastCode {
+			SetProtocol("MOESI")
+			// Envía una actualización a través del websocket.
+			BroadcastUpdate()
+			return
+		}
+	}
+
+	// Si no coincide con el primer tipo, intenta decodificarlo en la segunda estructura.
+	var newData2 []struct {
+		Number string   `json:"number"`
+		Code   []string `json:"code"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&newData2); err == nil {
+		// Verifica el contenido del JSON y ejecuta la función si es necesario.
+		for _, item := range newData2 {
+			if item.Number == "pe1" {
+				SetProcessCode(item.Number, item.Code)
+				BroadcastUpdate()
+				return
+			} else if item.Number == "pe2" {
+				SetProcessCode(item.Number, item.Code)
+				BroadcastUpdate()
+				return
+			} else if item.Number == "pe3" {
+				SetProcessCode(item.Number, item.Code)
+				BroadcastUpdate()
+				return
+			}
+		}
+
+	}
+
+	var newData3 struct {
+		Action string `json:"action"`
+		Number string `json:"number"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&newData3); err != nil {
+		http.Error(w, "JSON no válido", http.StatusBadRequest)
+		return
+	} else {
+		if newData3.Action == "Step" && (newData3.Number == "pe1" || newData3.Number == "pe2" || newData3.Number == "pe3") {
+			SetProcessAction("Step", newData3.Number)
+			// Envía una actualización a través del websocket.
+			BroadcastUpdate()
+			return
+		}
+		if newData3.Action == "Start" && (newData3.Number == "pe1" || newData3.Number == "pe2" || newData3.Number == "pe3") {
+			SetProcessAction("Start", newData3.Number)
+			// Envía una actualización a través del websocket.
+			BroadcastUpdate()
+			return
+		}
+	}
 
 	// Envía una actualización a través del websocket.
 	BroadcastUpdate()
@@ -126,4 +201,25 @@ func StartWebSocketServer() {
 	})
 
 	http.ListenAndServe(":8081", nil)
+}
+
+func SetProtocol(Protocol string) {
+	mutex.Lock()
+	defer mutex.Unlock()
+
+	fmt.Printf("Protocolo seleccionado %s \n", Protocol)
+}
+
+func SetProcessCode(Process string, code []string) {
+	mutex.Lock()
+	defer mutex.Unlock()
+
+	fmt.Printf("Proceso: %s Codigo: %q \n", Process, code)
+}
+
+func SetProcessAction(Action string, Process string) {
+	mutex.Lock()
+	defer mutex.Unlock()
+
+	fmt.Printf("Action: %s Proceso: %s \n", Action, Process)
 }
