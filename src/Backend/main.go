@@ -4,15 +4,14 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
-    "strconv"
 
 	"Backend/components/MultiprocessingSystem"
-
 )
 
 func main() {
-	// Create a new Multiprocessing system 
+	// Create a new Multiprocessing system
 	mps := MultiprocessingSystem.Start("MESI", true, 10)
 
 	// THIS IS WHERE THE CLI STARTS *****************************************************************************
@@ -45,7 +44,7 @@ PELoop:
 			if args[1] == "all" {
 				// Start executing all instructions for all Processing Elements
 				// mps.StartProcessingElements()
-				
+
 			} else {
 				peIndex, err := strconv.Atoi(args[1])
 				if err != nil || peIndex < -1 || peIndex > len(mps.ProcessingElements)-1 {
@@ -68,7 +67,7 @@ PELoop:
 
 			// Stop/Delete the Multiprocessing system ****************************
 			mps.Stop()
-		
+
 			break PELoop
 		default:
 			fmt.Println("Invalid command. Please enter 'step <PE>' or 'lj'.")
