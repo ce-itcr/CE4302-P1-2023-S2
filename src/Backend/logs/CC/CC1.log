@@ -1,5 +1,41 @@
-CC1_2023/10/05 00:18:35  - CC1 is running.
-CC1_2023/10/05 00:23:29  - CC1 received a broadcast message from Interconnect for the address 8.
-CC1_2023/10/05 00:23:29  - The type of request is ReadExclusiveRequest.
-CC1_2023/10/05 00:23:29  - CC1 responded to the Broadcast Message with Match: false, Data: -1, Status: I.
-CC1_2023/10/05 00:25:28  - CC1 has received an external signal to terminate.
+CC1_2023/10/05 01:02:31  - CC1 is running.
+CC1_2023/10/05 01:02:35  - CC1 received a request from PE1.
+CC1_2023/10/05 01:02:35  - CC1 is processing a READ request.
+CC1_2023/10/05 01:02:35  - The Address to read from is: 11.
+CC1_2023/10/05 01:02:35  - The address 11 is not in the local cache.
+CC1_2023/10/05 01:02:37  - CC1 is about to send a ReadRequest to the Interconnect.
+CC1_2023/10/05 01:02:37  - CC1 sent a ReadRequest to the Interconnect
+CC1_2023/10/05 01:02:37  - CC1 is waiting for the data from the Interconnect.
+CC1_2023/10/05 01:02:45  - CC1 received a response from the Interconnect with the value: 29.
+CC1_2023/10/05 01:02:45  - CC1 is storing the value 29 into the local cache at the address 11.
+CC1_2023/10/05 01:02:45  - The address doesn't exist in the local cache.
+CC1_2023/10/05 01:02:45  - CC1 stored the value 29 at the memory address 11 and the cache block 0.
+CC1_2023/10/05 01:02:45  - The new state of address 11 is 'E'.
+CC1_2023/10/05 01:02:46  - CC1 will send a response to the PE.
+CC1_2023/10/05 01:02:46  - CC1 sent the response to the PE.
+CC1_2023/10/05 01:02:48  - CC1 received a broadcast message from Interconnect for the address 1.
+CC1_2023/10/05 01:02:48  - The type of request is ReadExclusiveRequest.
+CC1_2023/10/05 01:02:48  - CC1 responded to the Broadcast Message with Match: false, Data: -1, Status: I.
+CC1_2023/10/05 01:03:35  - CC1 received a broadcast message from Interconnect for the address 7.
+CC1_2023/10/05 01:03:35  - The type of request is ReadRequest.
+CC1_2023/10/05 01:03:35  - The data is not in the local cache.
+CC1_2023/10/05 01:03:35  - CC1 responded to the Broadcast Message with Match: false, Data: -1, Status: I.
+CC1_2023/10/05 01:03:46  - CC1 received a broadcast message from Interconnect for the address 1.
+CC1_2023/10/05 01:03:46  - The type of request is ReadRequest.
+CC1_2023/10/05 01:03:46  - The data is not in the local cache.
+CC1_2023/10/05 01:03:46  - CC1 responded to the Broadcast Message with Match: false, Data: -1, Status: I.
+CC1_2023/10/05 01:03:55  - CC1 received a request from PE1.
+CC1_2023/10/05 01:03:55  - CC1 is processing a WRITE request.
+CC1_2023/10/05 01:03:55  - The Address to write to is: 12.
+CC1_2023/10/05 01:03:55  - The address 12 is not in the local cache.
+CC1_2023/10/05 01:03:57  - CC1 is about to send a ReadExclusiveRequest to the Interconnect.
+CC1_2023/10/05 01:03:57  - CC1 sent a ReadExclusiveRequest to the Interconnect
+CC1_2023/10/05 01:03:57  - CC1 is waiting for the data from the Interconnect.
+CC1_2023/10/05 01:04:05  - CC1 received a response from the Interconnect with the value: 42.
+CC1_2023/10/05 01:04:05  - CC1 is storing the value 29 into the local cache at the address 12.
+CC1_2023/10/05 01:04:05  - The address doesn't exist in the local cache.
+CC1_2023/10/05 01:04:05  - CC1 stored the value 29 at the memory address 12 and the cache block 1.
+CC1_2023/10/05 01:04:05  - The new state of address 12 is 'M'.
+CC1_2023/10/05 01:04:06  - CC1 will send a response to the PE.
+CC1_2023/10/05 01:04:06  - CC1 sent the response to the PE.
+CC1_2023/10/05 01:04:35  - CC1 has received an external signal to terminate.

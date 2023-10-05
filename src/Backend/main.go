@@ -32,7 +32,7 @@ func main() {
 		}
 	}
 
-
+	
 	// Create termination channel to signal the termination to all threads
 	terminate := make(chan struct{})
 

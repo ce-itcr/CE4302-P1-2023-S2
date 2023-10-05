@@ -58,6 +58,6 @@ type TransactionObjectList [] TransactionObject
 type AboutInterconnect struct {
 	Status      string    `json:"Status"`
 	Transactions TransactionObjectList `json:"Transactions"`
-	PowerConsumption int	`json:"PowerConsumption"`
+	PowerConsumption float64	`json:"PowerConsumption"`
 
 }
