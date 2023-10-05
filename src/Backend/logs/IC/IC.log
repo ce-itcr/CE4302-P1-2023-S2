@@ -1,2 +1,11 @@
-IC_2023/10/04 21:36:28  - IC is running.
-IC_2023/10/04 21:36:41  - IC has received an external signal to terminate.
+IC_2023/10/05 00:18:35  - IC is running.
+IC_2023/10/05 00:23:29  - IC received a ReadExclusiveRequest from CC0.
+IC_2023/10/05 00:23:29  - IC will send a broadcast message to the CCs.
+IC_2023/10/05 00:23:29  - IC sent a broadcast ReadExclusiveRequest to CC2.
+IC_2023/10/05 00:23:29  - IC sent a broadcast ReadExclusiveRequest to CC1.
+IC_2023/10/05 00:23:29  - CC2 doesn't have the data.
+IC_2023/10/05 00:23:29  - CC1 doesn't have the data.
+IC_2023/10/05 00:23:32  - IC has sent a READ request to the Main Memory.
+IC_2023/10/05 00:23:37  - IC received the value 17 from Main Memory.
+IC_2023/10/05 00:23:37  - IC sent a data response back to CC0.
+IC_2023/10/05 00:25:28  - IC has received an external signal to terminate.

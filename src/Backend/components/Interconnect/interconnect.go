@@ -5,6 +5,7 @@ import (
     "os"
     "sync"
 	"time"
+	"encoding/json"
 
     "Backend/utils"
 )
@@ -21,6 +22,9 @@ type Interconnect struct {
     Quit            chan struct{}
 	Protocol string
     Logger          *log.Logger
+	Transactions utils.QueueS
+	Status string
+	PowerConsumption int
 
 }
 
@@ -43,6 +47,9 @@ func New(
     // Initialize logger for the Interconnect using its respective log file
     logger := log.New(logFile, "IC" +"_", log.Ldate|log.Ltime)
 
+	// Create a new queue to handle the cache lines replacement
+	myQueue := utils.QueueS{}
+
     return &Interconnect{
         RequestChannelsCacheController: requestChannelsCC,
         ResponseChannelsCacheController: responseChannelsCC,
@@ -53,10 +60,46 @@ func New(
         Quit:            quit,
 		Protocol: protocol,
         Logger:          logger,
+		Transactions: myQueue,
+		Status: "Active",
+		PowerConsumption: 0,
     }, nil
 }
 
+// Function to get a JSON string with the current state of the Interconnect
+func (ic *Interconnect) About()(string, error){
+    // Create an empty TransactionObjectList
+    transactions := utils.TransactionObjectList{}
 
+    // Get the values from the transactions queue of the Interconnect
+    for i, item := range ic.Transactions.Items{
+		// Create an TransactionObject
+        transactionObj := utils.TransactionObject{
+            Order: i,
+            Transaction: item,
+        }
+        // Append the transaction object to the list
+        transactions = append(transactions, transactionObj)
+	}
+
+    // Create a struct
+    aboutIC := utils.AboutInterconnect {
+        Status: ic.Status,
+        Transactions: transactions,
+		PowerConsumption: ic.PowerConsumption,
+    }
+
+	// Marshal the PE struct into a JSON string
+	jsonData, err := json.MarshalIndent((aboutIC), "", "    ")
+	if err != nil {
+		return "", err
+	}
+
+	// Convert the byte slice to a string
+	jsonString := string(jsonData)
+
+	return jsonString, nil
+}
 // Function to send a write request to Main Memory
 func (ic *Interconnect) WriteToMainMemory(address int, data int) bool{
 	// Create a struct for the request
@@ -328,30 +371,40 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 	requestAR := request.AR
 	ic.Logger.Printf(" - IC received a %s from CC%d.\n",requestType, ccID)
 
+	// Get the current time
+	currentTime := time.Now()
+	timeString := currentTime.Format("15:04:05")
+
 	// Send a broadcast message to the IDLE Cache Controllers
 	RemoteFound, RemoteStatus, RemoteData := ic.BroadcastMessage(ccID, requestType, requestAddress)
 	switch requestType {
 	// Handle Read-Request
 	case "ReadRequest":
+		ic.Transactions.Enqueue(timeString + "-read-request")
+
 		time.Sleep(3 * time.Second)
 		// MESI protocol ***************************************************************************************************************
 		if (ic.Protocol == "MESI"){
+
 			// The data was found in a remote cache
 			if (RemoteFound){
 				// The Action Required is a Data Response
 				if (requestAR == "DataResponse"){
-					// The data was found with a 'E' status
+					// The data was found with a 'E' or 'S' status
 					if (RemoteStatus == "E" || RemoteStatus == "S"){
 						// Send the Data provided by the remote cache back to the requesting Cache Controller
 						ic.SendDataResponseToCacheController(ccID, RemoteData, "S")
+						ic.Transactions.Enqueue(timeString + "-data-response")
 					}
 					// The data was found with a 'M' status
 					if (RemoteStatus == "M"){
 						// Flush the data back to Main Memory
+						ic.Transactions.Enqueue(timeString + "-read-from-memory")
 						ic.WriteToMainMemory(requestAddress, RemoteData)
 
 						// Send the Data provided by the remote cache back to the requesting Cache Controller
 						ic.SendDataResponseToCacheController(ccID, RemoteData, "S")
+						ic.Transactions.Enqueue(timeString + "-data-response")
 					}
 
 				}
@@ -360,8 +413,11 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 			if (!RemoteFound){
 				// Bring the data from Main Memory
 				dataFromMemory := ic.ReadFromMainMemory(requestAddress)
+				ic.Transactions.Enqueue(timeString + "-read-from-memory")
+
 				// Send the data response back to the Cache Controller waiting for a response
 				ic.SendDataResponseToCacheController(ccID, dataFromMemory, "E")
+				ic.Transactions.Enqueue(timeString + "-data-response")
 				
 			}
 		}
@@ -376,6 +432,7 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 					if (RemoteStatus == "M" || RemoteStatus == "E" || RemoteStatus == "S"){
 						// Send the Data provided by the remote cache back to the requesting Cache Controller
 						ic.SendDataResponseToCacheController(ccID, RemoteData, "S")
+						ic.Transactions.Enqueue(timeString + "-data-response")
 					}
 
 					// The data was found with a 'O' status
@@ -383,9 +440,8 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 	
 						// Send the Data provided by the remote cache back to the requesting Cache Controller
 						ic.SendDataResponseToCacheController(ccID, RemoteData, "S")
+						ic.Transactions.Enqueue(timeString + "-data-response")
 					}
-
-				
 				}
 			}
 			// The data was not found in a remote cache
@@ -394,13 +450,17 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 				if (requestAR == "DataResponse"){
 					// Bring the data from Main Memory
 					dataFromMemory := ic.ReadFromMainMemory(requestAddress)
+					ic.Transactions.Enqueue(timeString + "-read-from-memory")
 					// Send the data response back to the Cache Controller waiting for a response
 					ic.SendDataResponseToCacheController(ccID, dataFromMemory, "E")
+					ic.Transactions.Enqueue(timeString + "-data-response")
 				}
 			}
 		}
 	// Handle Read-Request
 	case "ReadExclusiveRequest":
+		ic.Transactions.Enqueue(timeString + "-read-exclusive-request")
+
 		time.Sleep(3 * time.Second)
 		// MESI protocol *****************************************************************************************************************
 		if (ic.Protocol == "MESI"){
@@ -413,18 +473,22 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 					if (RemoteStatus == "E"){
 						// Send the Data provided by the remote cache back to the requesting Cache Controller
 						ic.SendDataResponseToCacheController(ccID, RemoteData, "M")
+						ic.Transactions.Enqueue(timeString + "-data-response")
 					}
 					// The data was found with a 'M' status
 					if (RemoteStatus == "M"){
 						// Flush the data back to Main Memory
 						ic.WriteToMainMemory(requestAddress, RemoteData)
+						ic.Transactions.Enqueue(timeString + "-write-to-memory")
 
 						// Send the Data provided by the remote cache back to the requesting Cache Controller
 						ic.SendDataResponseToCacheController(ccID, RemoteData, "M")
+						ic.Transactions.Enqueue(timeString + "-data-response")
 					}
 				}
 				// The Action Required is Invalidate
 				if (requestAR == "Invalidate"){
+					ic.Transactions.Enqueue(timeString + "-invalidate")
 					// The data was found with a 'S' status
 					if (RemoteStatus == "S"){
 						// Send the status response back to the requesting Cache Controller
@@ -436,9 +500,11 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 			if (!RemoteFound){
 				// Bring the data from Main Memory
 				dataFromMemory := ic.ReadFromMainMemory(requestAddress)
+				ic.Transactions.Enqueue(timeString + "-read-from-memory")
 
 				// Send the data response back to the Cache Controller waiting for a response
 				ic.SendDataResponseToCacheController(ccID, dataFromMemory, "M")
+				ic.Transactions.Enqueue(timeString + "-data-response")
 				
 			}
 		}
@@ -453,14 +519,17 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 					if (RemoteStatus == "E"){
 						// Send the Data provided by the remote cache back to the requesting Cache Controller
 						ic.SendDataResponseToCacheController(ccID, RemoteData, "M")
+						ic.Transactions.Enqueue(timeString + "-data-response")
 					}
 					// The data was found with a 'M' status
 					if (RemoteStatus == "M"){
 						// Flush the data back to Main Memory
 						ic.WriteToMainMemory(requestAddress, RemoteData)
+						ic.Transactions.Enqueue(timeString + "-write-to-memory")
 
 						// Send the Data provided by the remote cache back to the requesting Cache Controller
 						ic.SendDataResponseToCacheController(ccID, RemoteData, "M")
+						ic.Transactions.Enqueue(timeString + "-data-response")
 					}
 
 					// The data was found with a 'O' status
@@ -468,10 +537,12 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 
 						// Send the Data provided by the remote cache back to the requesting Cache Controller
 						ic.SendDataResponseToCacheController(ccID, RemoteData, "M")
+						ic.Transactions.Enqueue(timeString + "-data-response")
 					}
 				}
 				// The Action Required is Invalidate
 				if (requestAR == "Invalidate"){
+					ic.Transactions.Enqueue(timeString + "-invalidate")
 					// The data was found with a 'S' status
 					if (RemoteStatus == "S" || RemoteStatus == "O"){
 						// Send the status response back to the requesting Cache Controller
@@ -485,9 +556,11 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 				if (requestAR == "DataResponse"){
 					// Bring the data from Main Memory
 					dataFromMemory := ic.ReadFromMainMemory(requestAddress)
+					ic.Transactions.Enqueue(timeString + "-read-from-memory")
 
 					// Send the data response back to the Cache Controller waiting for a response
 					ic.SendDataResponseToCacheController(ccID, dataFromMemory, "M")
+					ic.Transactions.Enqueue(timeString + "-data-response")
 				}
 			}
 		}

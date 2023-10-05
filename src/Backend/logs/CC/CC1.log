@@ -1,2 +1,5 @@
-CC1_2023/10/04 21:36:28  - CC1 is running.
-CC1_2023/10/04 21:36:41  - CC1 has received an external signal to terminate.
+CC1_2023/10/05 00:18:35  - CC1 is running.
+CC1_2023/10/05 00:23:29  - CC1 received a broadcast message from Interconnect for the address 8.
+CC1_2023/10/05 00:23:29  - The type of request is ReadExclusiveRequest.
+CC1_2023/10/05 00:23:29  - CC1 responded to the Broadcast Message with Match: false, Data: -1, Status: I.
+CC1_2023/10/05 00:25:28  - CC1 has received an external signal to terminate.

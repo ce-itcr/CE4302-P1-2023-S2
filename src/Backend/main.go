@@ -15,7 +15,24 @@ import (
 	"Backend/utils"
 )
 
+
+
 func main() {
+	// generate the program files ****************************************************************************************************
+	instructionsPerCore := 10
+	instructions := utils.GenerateRandomInstructions(3, instructionsPerCore)
+	// Write instructions to files
+	for coreID, coreInstructions := range instructions {
+		filename := fmt.Sprintf("generated-programs/program%d.txt", coreID)
+		err := utils.WriteInstructionsToFile(filename, coreInstructions)
+		if err != nil {
+			fmt.Printf("Error writing to file for Core %d: %v\n", coreID, err)
+		} else {
+			fmt.Printf("Instructions for Core %d written to %s\n", coreID, filename)
+		}
+	}
+
+
 	// Create termination channel to signal the termination to all threads
 	terminate := make(chan struct{})
 
@@ -224,6 +241,12 @@ PELoop:
 			if args[1] == "mm" {
 				aboutMM, _ := mainMemory.About()
 				fmt.Println(aboutMM + "\n\n")
+
+			}
+
+			if args[1] == "ic" {
+				aboutIC, _ := interconnect.About()
+				fmt.Println(aboutIC + "\n\n")
 
 			}
 

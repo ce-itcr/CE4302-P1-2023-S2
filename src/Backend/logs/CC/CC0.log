@@ -1,2 +1,16 @@
-CC0_2023/10/04 21:36:28  - CC0 is running.
-CC0_2023/10/04 21:36:41  - CC0 has received an external signal to terminate.
+CC0_2023/10/05 00:18:35  - CC0 is running.
+CC0_2023/10/05 00:23:27  - CC0 received a request from PE0.
+CC0_2023/10/05 00:23:27  - CC0 is processing a WRITE request.
+CC0_2023/10/05 00:23:27  - The Address to write to is: 8.
+CC0_2023/10/05 00:23:27  - The address 8 is not in the local cache.
+CC0_2023/10/05 00:23:29  - CC0 is about to send a ReadExclusiveRequest to the Interconnect.
+CC0_2023/10/05 00:23:29  - CC0 sent a ReadExclusiveRequest to the Interconnect
+CC0_2023/10/05 00:23:29  - CC0 is waiting for the data from the Interconnect.
+CC0_2023/10/05 00:23:37  - CC0 received a response from the Interconnect with the value: 17.
+CC0_2023/10/05 00:23:37  - CC0 is storing the value 0 into the local cache at the address 8.
+CC0_2023/10/05 00:23:37  - The address doesn't exist in the local cache.
+CC0_2023/10/05 00:23:37  - CC0 stored the value 0 at the memory address 8 and the cache block 0.
+CC0_2023/10/05 00:23:37  - The new state of address 8 is 'M'.
+CC0_2023/10/05 00:23:38  - CC0 will send a response to the PE.
+CC0_2023/10/05 00:23:38  - CC0 sent the response to the PE.
+CC0_2023/10/05 00:25:28  - CC0 has received an external signal to terminate.

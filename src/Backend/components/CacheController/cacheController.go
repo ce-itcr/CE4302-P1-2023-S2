@@ -29,6 +29,8 @@ type CacheController struct {
 	Logger *log.Logger
 	ReplacementQueue utils.Queue
 	Status string
+	CacheHits int
+	CacheMisses int
 }
 
 func New(
@@ -70,6 +72,8 @@ func New(
 		Quit: quit,
 		ReplacementQueue: myQueue,
 		Status: "Active",
+		CacheMisses: 0,
+		CacheHits: 0,
     }, nil
 }
 
@@ -94,6 +98,8 @@ func (cc *CacheController) About()(string, error){
 		ID: cc.ID,
 		Status: cc.Status,
 		Cache: cacheBlocks,
+		CacheMisses: cc.CacheMisses,
+		CacheHits: cc.CacheHits,
 	}
 
 	// Marshal the PE struct into a JSON string
@@ -293,6 +299,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 								if (cc.Protocol == "MESI") {
 									// The address is not in the local cache
 									if (cacheLineStatus == "I"){
+										cc.CacheMisses++
 										cc.Logger.Printf(" - The address %d is not in the local cache.\n", requestAddress)
 				
 										// Send a Read-Request to the Interconnect
@@ -309,6 +316,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 									}
 									// The address is in the local cache
 									if (cacheLineStatus == "E" || cacheLineStatus == "M" || cacheLineStatus == "S") {
+										cc.CacheHits++
 										cc.Logger.Printf(" - The address %d is in the local cache.\n", requestAddress)
 										cc.Logger.Printf(" - Communication with the Interconnect is no required.\n")
 
@@ -327,6 +335,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 								if (cc.Protocol == "MOESI") {
 									// The address is not in the local cache
 									if (cacheLineStatus == "I"){
+										cc.CacheMisses++
 										cc.Logger.Printf(" - The address %d is not in the local cache.\n", requestAddress)
 				
 										// Send a Read-Request to the Interconnect
@@ -343,6 +352,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 									}
 									// The address is in the local cache
 									if (cacheLineStatus == "E" || cacheLineStatus == "M" || cacheLineStatus == "O") {
+										cc.CacheHits++
 										cc.Logger.Printf(" - The address %d is in the local cache.\n", requestAddress)
 										cc.Logger.Printf(" - Communication with the Interconnect is no required.\n")
 
@@ -358,6 +368,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 
 									// If the address status is Shared
 									if (cacheLineStatus == "S") {
+										cc.CacheHits++
 										cc.Logger.Printf(" - The address %d is in the local cache.\n", requestAddress)
 
 										// Send a Read-Request to the Interconnect
@@ -380,6 +391,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 								if (cc.Protocol == "MESI"){
 									// The address is not in the local cache
 									if (cacheLineStatus == "I"){
+										cc.CacheMisses++
 										cc.Logger.Printf(" - The address %d is not in the local cache.\n", requestAddress)
 				
 										// Send a Read-Exclusive-Request to the Interconnect
@@ -398,6 +410,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 				
 									// The address is in the local cache and its status is 'Shared'
 									if (cacheLineStatus == "S"){
+										cc.CacheHits++
 										cc.Logger.Printf(" - The address %d is in the local cache.\n", requestAddress)
 				
 										// Send a Read-Exclusive-Request to the Interconnect
@@ -415,6 +428,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 				
 									// The address is in the local cache and its status is 'Exclusive'
 									if (cacheLineStatus == "E" || cacheLineStatus == "M"){
+										cc.CacheHits++
 										cc.Logger.Printf(" - The address %d is in the local cache.\n", requestAddress)
 										cc.Logger.Printf(" - The new data can be writen without using the Interconnect.\n")
 
@@ -433,6 +447,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 								if (cc.Protocol == "MOESI") {
 									// The address is not in the local cache
 									if (cacheLineStatus == "I"){
+										cc.CacheMisses++
 										cc.Logger.Printf(" - The address %d is not in the local cache.\n", requestAddress)
 				
 										// Send a Read-Exclusive-Request to the Interconnect
@@ -451,6 +466,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 				
 									// The address is in the local cache and its status is 'Shared'
 									if (cacheLineStatus == "S"){
+										cc.CacheHits++
 										cc.Logger.Printf(" - The address %d is in the local cache.\n", requestAddress)
 				
 										// Send a Read-Exclusive-Request to the Interconnect
@@ -468,6 +484,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 				
 									// The address is in the local cache and its status is 'Exclusive'
 									if (cacheLineStatus == "E" || cacheLineStatus == "M"){
+										cc.CacheHits++
 										cc.Logger.Printf(" - The address %d is in the local cache.\n", requestAddress)
 										cc.Logger.Printf(" - The new data can be writen without using the Interconnect.\n")
 
@@ -483,6 +500,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 
 									// The address is in the local cache and its status is 'Exclusive'
 									if (cacheLineStatus == "O"){
+										cc.CacheHits++
 										cc.Logger.Printf(" - The address %d is in the local cache.\n", requestAddress)
 										cc.Logger.Printf(" - The new data can be writen without using the Interconnect.\n")
 
