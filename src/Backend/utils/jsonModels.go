@@ -1,6 +1,5 @@
 package utils
 
-
 // Struct to represent the time stamp of a Processing Element **************************************************
 type InstructionObject struct {
 	Position		int    	`json:"Position"`
@@ -14,6 +13,8 @@ type AboutProcessingElement struct {
 	Status      string    `json:"Status"`
 	Instructions InstructionObjectList `json:"Instructions"`
 }
+
+type AboutProcessingElementList [] AboutProcessingElement
 
 // Struct to represent the time stamp of a Cache Controller **************************************************
 type CacheObject struct {
@@ -34,6 +35,8 @@ type AboutCacheController struct {
 	CacheMisses	int			`json:"CacheMisses"`
 	CacheHits	int			`json:"CacheHits"`
 }
+
+type AboutCacheControllerList [] AboutCacheController
 
 // Struct to represent the time stamp of a Main Memory **************************************************
 type BlockObject struct {
@@ -60,4 +63,13 @@ type AboutInterconnect struct {
 	Transactions TransactionObjectList `json:"Transactions"`
 	PowerConsumption float64	`json:"PowerConsumption"`
 
+}
+
+// Main Object Structure
+
+type MultiprocessingSystemState struct {
+	PEs AboutProcessingElementList `json:"PEs"`
+	CCs AboutCacheControllerList `json:"CCs"`
+	IC AboutInterconnect `json:"IC"`
+	MM AboutMainMemory
 }

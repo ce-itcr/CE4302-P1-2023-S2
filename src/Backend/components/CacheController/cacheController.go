@@ -85,9 +85,9 @@ func (cc *CacheController) About()(string, error){
         // Create a new CacheObject instance
 		cacheObj := utils.CacheObject{
 			Block:   i,
-			Address: cc.Cache.getAddress(i),
-			Data:    cc.Cache.getData(i),
-			State:   cc.Cache.getState(i),
+			Address: cc.Cache.GetAddress(i),
+			Data:    cc.Cache.GetData(i),
+			State:   cc.Cache.GetState(i),
 		}
 		// Append the new CacheObject to the CacheObjectList
 		cacheBlocks = append(cacheBlocks, cacheObj)
@@ -169,9 +169,9 @@ func (cc *CacheController) WriteDataToCache(address int, data int, status string
 	}
 	
 	// Replace the contents of the cache line
-	cc.Cache.setData(newLine, data)
-	cc.Cache.setAddress(newLine, address)
-	cc.Cache.setState(newLine, status)
+	cc.Cache.SetData(newLine, data)
+	cc.Cache.SetAddress(newLine, address)
+	cc.Cache.SetState(newLine, status)
 
 	// Add the cache line to the queue
 	cc.ReplacementQueue.Enqueue(newLine)
@@ -196,7 +196,7 @@ func (cc *CacheController) ChangeCacheLineStatus(address int, newStatus string) 
 	}
 
 	// Change the status of that cache line
-	cc.Cache.setState(cacheLine, newStatus)
+	cc.Cache.SetState(cacheLine, newStatus)
 	cc.Logger.Printf(" - CC%d changed the status of the cache block %d to %s.\n", cc.ID, cacheLine, newStatus)
 
 	return true
@@ -213,7 +213,7 @@ func (cc *CacheController) GetDataFromCache(address int) int{
 	}
 
 	// Return the data at the required address
-	return cc.Cache.getData(cacheLine)
+	return cc.Cache.GetData(cacheLine)
 }
 
 // Function to send a read-request to the Interconnect

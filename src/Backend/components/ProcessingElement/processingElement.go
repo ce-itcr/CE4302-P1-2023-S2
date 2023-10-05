@@ -21,7 +21,7 @@ type ProcessingElement struct {
     Control     chan bool                                   // Channel for external control
     RequestChannel chan utils.RequestProcessingElement      // Channel to send a request to a CacheController
     ResponseChannel chan utils.ResponseProcessingElement    // Channel to wait for a response from a CacheController
-    register int                                            // The one and only register
+    Register int                                            // The one and only register
     IsDone bool                                             // Flag to know when a PE hasn't finished executing instructions
     IsExecutingInstruction bool                             // Flag to know when a PE is currently executing an instruction
     Quit chan struct{}                                      // A signal to terminate the goroutine
@@ -60,7 +60,7 @@ func New(
         RequestChannel: RequestChannelCC,
         ResponseChannel: ResponseChannelCC,
         Control:      make(chan bool),
-        register: 0,
+        Register: 0,
         IsDone : false,
         IsExecutingInstruction: false,
         Quit: quit,
@@ -88,7 +88,7 @@ func (pe *ProcessingElement) About()(string, error){
     // Create a struct
     aboutPE := utils.AboutProcessingElement {
         ID: pe.ID,
-        Register: pe.register,
+        Register: pe.Register,
         Status: pe.Status,
         Instructions: instructions,
     }
@@ -167,8 +167,8 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                 case "INC":
                     pe.Status = "Executing INC"
                     pe.Logger.Printf(" - PE%d is executing a %s operation.\n", pe.ID, operation)
-                    pe.register++
-                    pe.Logger.Printf(" - Now the value of the register is %d.\n", pe.register)
+                    pe.Register++
+                    pe.Logger.Printf(" - Now the value of the register is %d.\n", pe.Register)
                     pe.Logger.Printf(" - PE%d has finished with the instruction.\n", pe.ID)
                     // Let others know the PE is now available
                     pe.IsExecutingInstruction = false
@@ -190,8 +190,8 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                     // Process the response values
                     pe.Logger.Printf(" - PE%d received Data: %d.\n", pe.ID, Data)
                     pe.Status = "Updating Register"
-                    pe.register = Data
-                    pe.Logger.Printf(" - Updated local register: Rs = %d.\n", pe.register)
+                    pe.Register = Data
+                    pe.Logger.Printf(" - Updated local register: Rs = %d.\n", pe.Register)
                     pe.Logger.Printf(" - PE%d has finished with the instruction.\n", pe.ID)
 
                     // Let others know the PE is now available
@@ -210,7 +210,7 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                     }
 
                     // Send a READ request to the Cache Controller
-                    _, Status := pe.RequestCacheController(operation, address, pe.register)
+                    _, Status := pe.RequestCacheController(operation, address, pe.Register)
 
                     // Process the response values
                     pe.Logger.Printf(" - PE%d received --> Status: %v.\n", pe.ID, Status)

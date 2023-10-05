@@ -12,7 +12,7 @@ import (
 
 // MainMemory representa la memoria principal del sistema.
 type MainMemory struct {
-	data [16]uint32 // Array de 16 entradas de 32 bits.
+	Data [16]uint32 // Array de 16 entradas de 32 bits.
 	RequestChannel  chan utils.RequestMainMemory  // Canal para solicitudes de interconect a la memoria.
 	ResponseChannel chan utils.ResponseMainMemory // Canal para respond de memoria a interconect.
 	Quit            chan struct{}
@@ -40,7 +40,7 @@ func New(requestChannel chan utils.RequestMainMemory, responseChannel chan utils
 
 	// Inicia el goroutine para gestionar las solicitudes de RequestChannel a la memoria.
 	return &MainMemory{
-		data:           dataInitialized,
+		Data:           dataInitialized,
 		RequestChannel:  requestChannel,
 		ResponseChannel: responseChannel,
 		Quit:            quit,
@@ -56,7 +56,7 @@ func (mm *MainMemory) About()(string, error){
         // Create a new BlockObject instance
 		blockObj := utils.BlockObject{
 			Address: i,
-			Data: int(mm.data[i]),
+			Data: int(mm.Data[i]),
 		}
 		// Append the new BlockObject to the BlockObjectList
 		memoryBlocks = append(memoryBlocks, blockObj)
@@ -82,12 +82,12 @@ func (mm *MainMemory) About()(string, error){
 
 // Read accede a la memoria principal para Read un value en una dirección.
 func (mm *MainMemory) Read(address int) uint32 {
-	return mm.data[address]
+	return mm.Data[address]
 }
 
 // Write actualiza un value en una dirección en la memoria principal.
 func (mm *MainMemory) Write(address int, value uint32) {
-	mm.data[address] = value
+	mm.Data[address] = value
 }
 
 func (mm *MainMemory) Run(wg *sync.WaitGroup) {

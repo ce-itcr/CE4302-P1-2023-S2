@@ -14,26 +14,26 @@ func NewCache() *Cache{
 	}
 }
 
-func (cache *Cache) setData(pos int, res int){
+func (cache *Cache) SetData(pos int, res int){
 	cache.data[pos] = res
 }
 
-func (cache *Cache) setAddress(pos int, res int){
+func (cache *Cache) SetAddress(pos int, res int){
 	cache.address[pos] = res
 }
 
-func (cache *Cache) setState(pos int, res string){
+func (cache *Cache) SetState(pos int, res string){
 	cache.status[pos] = res
 }
 
-func (cache *Cache) getData(pos int) int{
+func (cache *Cache) GetData(pos int) int{
 	return cache.data[pos]
 }
 
-func (cache *Cache) getAddress(pos int) int{
+func (cache *Cache) GetAddress(pos int) int{
 	return cache.address[pos]
 }
 
-func (cache *Cache) getState(pos int) string{
+func (cache *Cache) GetState(pos int) string{
 	return cache.status[pos]
 }

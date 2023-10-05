@@ -1,22 +1,2 @@
-MM_2023/10/05 01:02:31  - MM is running.
-MM_2023/10/05 01:02:40  - MM Received request from Interconect.
-MM_2023/10/05 01:02:40  - MM is processing a READ request.
-MM_2023/10/05 01:02:40  - Address: 11.
-MM_2023/10/05 01:02:45  - MM has sent the response back to IC.
-MM_2023/10/05 01:02:51  - MM Received request from Interconect.
-MM_2023/10/05 01:02:51  - MM is processing a READ request.
-MM_2023/10/05 01:02:51  - Address: 1.
-MM_2023/10/05 01:02:56  - MM has sent the response back to IC.
-MM_2023/10/05 01:03:38  - MM Received request from Interconect.
-MM_2023/10/05 01:03:38  - MM is processing a READ request.
-MM_2023/10/05 01:03:38  - Address: 7.
-MM_2023/10/05 01:03:43  - MM has sent the response back to IC.
-MM_2023/10/05 01:03:49  - MM Received request from Interconect.
-MM_2023/10/05 01:03:49  - MM is processing a WRITE request.
-MM_2023/10/05 01:03:49  - Address: 1, Data: 0.
-MM_2023/10/05 01:03:54  - MM has sent the response back to IC.
-MM_2023/10/05 01:04:00  - MM Received request from Interconect.
-MM_2023/10/05 01:04:00  - MM is processing a READ request.
-MM_2023/10/05 01:04:00  - Address: 12.
-MM_2023/10/05 01:04:05  - MM has sent the response back to IC.
-MM_2023/10/05 01:04:35  - MM has received an external signal to terminate.
+MM_2023/10/05 04:52:07  - MM is running.
+MM_2023/10/05 04:52:24  - MM has received an external signal to terminate.

@@ -1,17 +1,2 @@
-PE0_2023/10/05 01:02:31  - PE0 is ready to execute instructions.
-PE0_2023/10/05 01:02:35  - PE0 received external signal to execute instruction: WRITE 1.
-PE0_2023/10/05 01:02:35  - PE0 is executing a WRITE operation.
-PE0_2023/10/05 01:02:46  - PE0 sent (Type: WRITE, Address: 1) to the Cache Controller.
-PE0_2023/10/05 01:02:46  - PE0 is waiting for a response from the Cache Controller....
-PE0_2023/10/05 01:02:57  - PE0 received a response from the Cache Controller.
-PE0_2023/10/05 01:02:57  - PE0 received --> Status: true.
-PE0_2023/10/05 01:02:57  - PE0 has finished with the instruction.
-PE0_2023/10/05 01:03:33  - PE0 received external signal to execute instruction: READ 7.
-PE0_2023/10/05 01:03:33  - PE0 is executing a READ operation.
-PE0_2023/10/05 01:03:33  - PE0 sent (Type: READ, Address: 7) to the Cache Controller.
-PE0_2023/10/05 01:03:33  - PE0 is waiting for a response from the Cache Controller....
-PE0_2023/10/05 01:03:44  - PE0 received a response from the Cache Controller.
-PE0_2023/10/05 01:03:44  - PE0 received Data: 42.
-PE0_2023/10/05 01:03:44  - Updated local register: Rs = 42.
-PE0_2023/10/05 01:03:44  - PE0 has finished with the instruction.
-PE0_2023/10/05 01:04:35  - PE0 received termination signal and is exiting gracefully.
+PE0_2023/10/05 04:52:07  - PE0 is ready to execute instructions.
+PE0_2023/10/05 04:52:24  - PE0 received termination signal and is exiting gracefully.
