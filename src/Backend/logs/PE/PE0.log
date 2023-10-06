@@ -1,2 +1,27 @@
-PE0_2023/10/05 04:52:07  - PE0 is ready to execute instructions.
-PE0_2023/10/05 04:52:24  - PE0 received termination signal and is exiting gracefully.
+PE0_2023/10/05 20:59:26  - PE0 is ready to execute instructions.
+PE0_2023/10/05 20:59:27  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/05 20:59:27  - PE0 is executing a INC operation.
+PE0_2023/10/05 20:59:27  - Now the value of the register is 1.
+PE0_2023/10/05 20:59:27  - PE0 has finished with the instruction.
+PE0_2023/10/05 20:59:33  - PE0 received external signal to execute instruction: WRITE 8.
+PE0_2023/10/05 20:59:33  - PE0 is executing a WRITE operation.
+PE0_2023/10/05 20:59:52  - PE0 sent (Type: WRITE, Address: 8) to the Cache Controller.
+PE0_2023/10/05 20:59:52  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/05 20:59:58  - PE0 received a response from the Cache Controller.
+PE0_2023/10/05 20:59:58  - PE0 received --> Status: true.
+PE0_2023/10/05 20:59:58  - PE0 has finished with the instruction.
+PE0_2023/10/05 20:59:58  - PE0 received external signal to execute instruction: WRITE 10.
+PE0_2023/10/05 20:59:58  - PE0 is executing a WRITE operation.
+PE0_2023/10/05 21:00:20  - PE0 sent (Type: WRITE, Address: 10) to the Cache Controller.
+PE0_2023/10/05 21:00:20  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/05 21:00:31  - PE0 received a response from the Cache Controller.
+PE0_2023/10/05 21:00:31  - PE0 received --> Status: true.
+PE0_2023/10/05 21:00:31  - PE0 has finished with the instruction.
+PE0_2023/10/05 21:00:31  - PE0 received external signal to execute instruction: WRITE 4.
+PE0_2023/10/05 21:00:31  - PE0 is executing a WRITE operation.
+PE0_2023/10/05 21:00:42  - PE0 sent (Type: WRITE, Address: 4) to the Cache Controller.
+PE0_2023/10/05 21:00:42  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/05 21:00:53  - PE0 received a response from the Cache Controller.
+PE0_2023/10/05 21:00:53  - PE0 received --> Status: true.
+PE0_2023/10/05 21:00:53  - PE0 has finished with the instruction.
+PE0_2023/10/05 21:00:53  - PE0 has executed all instructions.

@@ -29,11 +29,10 @@ type CacheObjectList []CacheObject
 
 // MainObject represents the main structure in the JSON
 type AboutCacheController struct {
-	ID     int            `json:"ID"`
-	Status string         `json:"Status"`
-	Cache  CacheObjectList `json:"Cache"`
-	CacheMisses	int			`json:"CacheMisses"`
-	CacheHits	int			`json:"CacheHits"`
+	ID     int            	`json:"ID"`
+	Status string         	`json:"Status"`
+	MemoryAccesses int		`json:"MemoryAccesses"`
+	Cache  CacheObjectList 	`json:"Cache"`
 }
 
 type AboutCacheControllerList [] AboutCacheController
@@ -58,18 +57,38 @@ type TransactionObject struct {
 }
 type TransactionObjectList [] TransactionObject
 
-type AboutInterconnect struct {
-	Status      string    `json:"Status"`
-	Transactions TransactionObjectList `json:"Transactions"`
-	PowerConsumption float64	`json:"PowerConsumption"`
+type LogObject struct {
+	Order				int    	`json:"Order"`
+	Log    				string   `json:"Log"`
+}
+type LogObjectList [] LogObject
 
+type AboutInterconnect struct {
+	Status      		string    	`json:"Status"`
+	Logs LogObjectList		`json:"Logs"`
 }
 
-// Main Object Structure
-
+// Object Structure for data refresh
 type MultiprocessingSystemState struct {
 	PEs AboutProcessingElementList `json:"PEs"`
 	CCs AboutCacheControllerList `json:"CCs"`
 	IC AboutInterconnect `json:"IC"`
 	MM AboutMainMemory
+}
+
+// Object Structure for executio results
+type MultiprocessingSystemResults struct {
+	Transactions 			TransactionObjectList 				`json:"Transactions"`
+	PowerConsumption 		float64		`json:"PowerConsumption"`
+	CacheMisses				int			`json:"CacheMisses"`
+	CacheHits				int			`json:"CacheHits"`
+	MemoryAccesses			int			`json:"MemoryAccesses"`
+	MissRate				float64		`json:"MissRate"`
+	HitRate					float64		`json:"HitRate"`
+	ReadRequests			int			`json:"ReadRequests"`
+	ReadExclusiveRequests	int			`json:"ReadExclusiveRequest"`
+	DataResponses			int			`json:"DataResponses"`
+	Invalidates				int			`json:"Invalidates"`
+	MemoryReads				int			`json:"MemoryReads"`
+	MemoryWrites			int			`json:"MemoryWrites"`
 }

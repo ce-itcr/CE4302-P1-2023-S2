@@ -6,7 +6,7 @@ import (
 	"sync"
 	"os"
 	"encoding/json"
-	// "time"
+	"time"
 
 	"Backend/components/CacheController"
 	"Backend/components/ProcessingElement"
@@ -36,7 +36,8 @@ type MultiprocessingSystem struct {
 
 // Function that initializes a new Multiprocessing System
 func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *MultiprocessingSystem {
-
+	fmt.Println("Starting a new Multiprocessing System...")
+	fmt.Printf("Initializing %s protocol...\n\n\n", Protocol)
 	// Is it necessary to generate a random program for the Processing Elements??
 	if CodeGenerator {
 		instructions := utils.GenerateRandomInstructions(3, InstructionsPerCore)
@@ -50,7 +51,23 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 				fmt.Printf("Instructions for Core %d written to %s\n", coreID, filename)
 			}
 		}
+	} else {
+		fmt.Printf("Reusing the previous generated code")
+		for i := 0; i < 3; i++ {
+			filename := fmt.Sprintf("generated-programs/program%d.txt", i)
+			isEmpty, err := FileIsEmpty(filename)
+			if err != nil {
+				fmt.Printf("Error reading file.")
+			}
+			// Check if the file has no instructions
+			if (isEmpty) {
+				fmt.Printf("generated-programs/program%d.txt is not valid\n", i)
+			}
+
+
+		}
 	}
+
 
 	// Create termination channel to signal the termination to all threads
 	terminate := make(chan struct{})
@@ -250,32 +267,29 @@ func (mps *MultiprocessingSystem) GetState() (string, error){
 			ID: cc.ID,
 			Status: cc.Status,
 			Cache: cacheBlocks,
-			CacheMisses: cc.CacheMisses,
-			CacheHits: cc.CacheHits,
 		}
 		// Add it to the list
 		ccs = append(ccs, aboutCC)
 	}
 
-    // Create an empty TransactionObjectList
-    transactions := utils.TransactionObjectList{}
+    // Create an empty LogObjectList
+    logs := utils.LogObjectList{}
 
     // Get the values from the transactions queue of the Interconnect
-    for i, item := range mps.Interconnect.Transactions.Items{
-		// Create an TransactionObject
-        transactionObj := utils.TransactionObject{
+    for i, item := range mps.Interconnect.Logs.Items{
+		// Create an LogObject
+        logObj := utils.LogObject{
             Order: i,
-            Transaction: item,
+            Log: item,
         }
         // Append the transaction object to the list
-        transactions = append(transactions, transactionObj)
+        logs = append(logs, logObj)
 	}
 
     // Create a struct
     ic := utils.AboutInterconnect {
         Status: mps.Interconnect.Status,
-        Transactions: transactions,
-		PowerConsumption: mps.Interconnect.PowerConsumption,
+		Logs: logs,
     }
 
 	// Create an empty BlockObjectList
@@ -331,56 +345,119 @@ func (mps *MultiprocessingSystem) SteppingProcessingElement(ID int) string {
 	}
 }
 
-// // Function to apply a steping to an individual Processing Element
-// func (mps *MultiprocessingSystem) StartProcessingElements(){
-// 	// Example condition: Continue until all Processing Elements are done
-// 	allDone := false
-// 	for !allDone {
-// 		// Execute the code block
-// 		for i, pe := range mps.ProcessingElements {
-// 			if !pe.IsDone && !pe.IsExecutingInstruction {
-// 				pe.Control <- true
-// 				fmt.Printf("Sent 'step' command to PE%d...\n", i)
-// 			} else {
-// 				fmt.Printf("PE%d is not available...\n", pe.ID)
-// 			}
-// 		}
-// 		// Check the condition to exit the loop
-// 		allDone = true
-// 		for _, pe := range mps.ProcessingElements {
-// 			if !pe.IsDone {
-// 				allDone = false
-// 				break
-// 			}
-// 		}
-// 		// Introduce a delay here to avoid tight loops
-// 		time.Sleep(time.Second * 10)
-// 	}
-// }
+// Function to apply a stepping to an individual Processing Element
+func (mps *MultiprocessingSystem) StartProcessingElements() {
+	allDone := false
 
+	go func() {
+		for !allDone {
+			select {
+			case <-mps.Terminate:
+				fmt.Println("Received termination signal. Gracefully terminating.")
+				return
+			default:
+				// Execute the code block
+				for _, pe := range mps.ProcessingElements {
+					if !pe.IsDone && !pe.IsExecutingInstruction {
+						pe.Control <- true
+						// Introduce a delay here to avoid tight loops
+						time.Sleep(2 * time.Second)
+					}
+				}
+
+				// Check the condition to exit the loop
+				allDone = true
+				for _, pe := range mps.ProcessingElements {
+					if !pe.IsDone {
+						allDone = false
+						break
+					}
+				}
+			}
+		}
+	}()
+}
+
+// Function to obtain the results after the execution of the Multiprocessing System
+func (mps *MultiprocessingSystem) AboutResults() (string, error) {
+    // Create an empty TransactionObjectList
+    transactions := utils.TransactionObjectList{}
+    // Get the values from the transactions queue of the Interconnect
+    for i, item := range mps.Interconnect.Transactions.Items{
+		// Create an TransactionObject
+        transactionObj := utils.TransactionObject{
+            Order: i,
+            Transaction: item,
+        }
+        // Append the transaction object to the list
+        transactions = append(transactions, transactionObj)
+	}
+	// Sum the Cache Misses and Cache Hits for the 3 Cache Controllers
+	CacheMisses := 0
+	CacheHits := 0
+	totalMemoryAccesses := 0
+	for _, cc := range mps.CacheControllers {
+		CacheMisses += cc.CacheMisses
+		CacheHits += cc.CacheHits
+	}
+	totalMemoryAccesses = CacheHits + CacheMisses
+	// Calculate the Miss Rate and Hit Rate
+    MissRate := float64(CacheMisses) / float64(totalMemoryAccesses) * 100
+    HitRate := float64(CacheHits) / float64(totalMemoryAccesses) * 100
+	// Create the JSON object
+	resultsJSON := utils.MultiprocessingSystemResults{
+		Transactions: transactions,
+		PowerConsumption: mps.Interconnect.PowerConsumption,
+		CacheMisses: CacheMisses,
+		CacheHits: CacheHits,
+		MemoryAccesses: totalMemoryAccesses,
+		MissRate: MissRate,
+		HitRate: HitRate,
+		ReadRequests: mps.Interconnect.ReadRequests,
+		ReadExclusiveRequests: mps.Interconnect.ReadExclusiveRequests,
+		DataResponses: mps.Interconnect.DataResponses,
+		Invalidates: mps.Interconnect.Invalidates,
+		MemoryReads: mps.Interconnect.MemoryReads,
+		MemoryWrites: mps.Interconnect.MemoryWrites,
+	}
+	// Marshal the PE struct into a JSON string
+	jsonData, err := json.MarshalIndent(resultsJSON, "", "    ")
+	if err != nil {
+		return "", err
+	}
+	// Convert the byte slice to a string
+	jsonString := string(jsonData)
+	return jsonString, nil
+}
+
+// Function to check if the Multiprocesing System has finished smoothly
+func (mps *MultiprocessingSystem) AreWeFinished() bool {
+	allDone := true
+		for _, pe := range mps.ProcessingElements {
+			if !pe.IsDone {
+				allDone = false
+				break
+			}
+		}
+	return allDone
+}
 
 // Function to stop a new Multiprocessing System after initialized
 func (mps *MultiprocessingSystem) Stop() {
 	close(mps.Terminate)
-
 	mps.WG.Wait() // Wait for all goroutines to finish gracefully
-
 	// Close the log files for all PEs
 	for _, pe := range mps.ProcessingElements {
 		pe.Logger.Writer().(*os.File).Close()
 	}
-
 	// Close the log files for all CCs
 	for _, cc := range mps.CacheControllers {
 		cc.Logger.Writer().(*os.File).Close()
 	}
-
 	// Close the log file for the IC
 	mps.Interconnect.Logger.Writer().(*os.File).Close()
-
 	// Close the log file for the MM
 	mps.MainMemory.Logger.Writer().(*os.File).Close()
-
 	for i := 0; i < 3; i++ {
 		close(mps.RequestChannelsM1[i])
 		close(mps.ResponseChannelsM1[i])
@@ -392,4 +469,26 @@ func (mps *MultiprocessingSystem) Stop() {
 	close(mps.RequestChannelM3)
 	close(mps.ResponseChannelM3)
 	close(mps.Semaphore)
+}
+
+// Function to check if any file is empty
+func FileIsEmpty(filename string) (bool, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return false, err
+	}
+	defer file.Close()
+
+	// Get the file size
+	stat, err := file.Stat()
+	if err != nil {
+		return false, err
+	}
+
+	// If the file size is 0, it's empty
+	if stat.Size() == 0 {
+		return true, nil
+	}
+	
+	return false, nil
 }

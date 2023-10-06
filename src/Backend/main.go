@@ -12,14 +12,17 @@ import (
 
 func main() {
 	// Create a new Multiprocessing system
-	mps := MultiprocessingSystem.Start("MESI", true, 10)
+	mps := MultiprocessingSystem.Start("MESI", true, 4)
 
 	// THIS IS WHERE THE CLI STARTS *****************************************************************************
 	fmt.Println("WELCOME TO MCKEVINHO CLI")
 	fmt.Println("The available commands are:")
-	fmt.Println("1. step <PE> - Send the Control signal to a specific PE (e.g., 'step 1' or 'step all')")
-	fmt.Println("2. about     - Print the time stamp of the Procesing Elements")
-	fmt.Println("3. lj        - Terminate the program")
+	fmt.Println("1. step <PE> 	- Send the Control signal to a specific PE (e.g., 'step 1' or 'step all')")
+	fmt.Println("2. about     	- Print the time stamp of the Procesing Elements")
+	fmt.Println("3. results   	- Print the statistical information")
+	fmt.Println("4. restart   	- Start a new Multiprocessing System")
+	fmt.Println("4. finished? 	- Start a new Multiprocessing System")
+	fmt.Println("5. lj        	- Check iuf the Multiprocessing System has finished")
 
 	reader := bufio.NewReader(os.Stdin)
 PELoop:
@@ -43,7 +46,7 @@ PELoop:
 
 			if args[1] == "all" {
 				// Start executing all instructions for all Processing Elements
-				// mps.StartProcessingElements()
+				mps.StartProcessingElements()
 
 			} else {
 				peIndex, err := strconv.Atoi(args[1])
@@ -59,6 +62,28 @@ PELoop:
 			if len(args) == 1 {
 				aboutMps, _ := mps.GetState()
 				fmt.Println(aboutMps)
+			}
+
+		case "results":
+			if len(args) == 1 {
+				aboutMps, _ := mps.AboutResults()
+				fmt.Println(aboutMps)
+			}
+
+		case "restart":
+			if len(args) == 1 {
+				// Start a new Multiprocessing System
+				mps.Stop()
+				mps = MultiprocessingSystem.Start("MESI", true, 4)
+			}
+		case "finished?":
+			if len(args) == 1 {
+				// Check if the Multiprocessing System is done executing
+				if mps.AreWeFinished() {
+					fmt.Println("The Multiprocessing System has already finished.")
+				} else {
+					fmt.Println("The Multiprocessing System has not finished yet.")
+				}
 			}
 
 		case "lj":

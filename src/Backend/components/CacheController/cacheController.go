@@ -31,6 +31,7 @@ type CacheController struct {
 	Status string
 	CacheHits int
 	CacheMisses int
+	MemoryAccesses int
 }
 
 func New(
@@ -98,8 +99,6 @@ func (cc *CacheController) About()(string, error){
 		ID: cc.ID,
 		Status: cc.Status,
 		Cache: cacheBlocks,
-		CacheMisses: cc.CacheMisses,
-		CacheHits: cc.CacheHits,
 	}
 
 	// Marshal the PE struct into a JSON string
@@ -162,7 +161,7 @@ func (cc *CacheController) WriteDataToCache(address int, data int, status string
 
 	if (!cc.DataInCache(address)){
 		cc.Logger.Printf(" - The address doesn't exist in the local cache.\n")
-		if (newLine == 4){
+		if (newLine >= 3){
 			newLine = cc.ReplacementQueue.Dequeue()
 			cc.Logger.Printf(" - CC%d is replacing the the block %d.\n", cc.ID, newLine)
 		}
