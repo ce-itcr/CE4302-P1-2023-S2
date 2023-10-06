@@ -1,66 +1,59 @@
-CC0_2023/10/06 02:06:44  - CC0 is running.
-CC0_2023/10/06 02:06:45  - CC0 received a request from PE0.
-CC0_2023/10/06 02:06:45  - CC0 is processing a READ request.
-CC0_2023/10/06 02:06:45  - The Address to read from is: 2.
-CC0_2023/10/06 02:06:45  - The address 2 is not in the local cache.
-CC0_2023/10/06 02:06:47  - CC0 is about to send a ReadRequest to the Interconnect.
-CC0_2023/10/06 02:06:47  - CC0 sent a ReadRequest to the Interconnect
-CC0_2023/10/06 02:06:47  - CC0 is waiting for the data from the Interconnect.
-CC0_2023/10/06 02:06:55  - CC0 received a response from the Interconnect with the value: 22.
-CC0_2023/10/06 02:06:55  - CC0 is storing the value 22 into the local cache at the address 2.
-CC0_2023/10/06 02:06:55  - The address doesn't exist in the local cache.
-CC0_2023/10/06 02:06:55  - CC0 stored the value 22 at the memory address 2 and the cache block 0.
-CC0_2023/10/06 02:06:55  - The new state of address 2 is 'E'.
-CC0_2023/10/06 02:06:56  - CC0 will send a response to the PE.
-CC0_2023/10/06 02:06:56  - CC0 sent the response to the PE.
-CC0_2023/10/06 02:06:58  - CC0 received a broadcast message from Interconnect for the address 15.
-CC0_2023/10/06 02:06:58  - The type of request is ReadExclusiveRequest.
-CC0_2023/10/06 02:06:58  - CC0 responded to the Broadcast Message with Match: false, Data: -1, Status: I.
-CC0_2023/10/06 02:07:09  - CC0 received a broadcast message from Interconnect for the address 3.
-CC0_2023/10/06 02:07:09  - The type of request is ReadRequest.
-CC0_2023/10/06 02:07:09  - The data is not in the local cache.
-CC0_2023/10/06 02:07:09  - CC0 responded to the Broadcast Message with Match: false, Data: -1, Status: I.
-CC0_2023/10/06 02:07:18  - CC0 received a request from PE0.
-CC0_2023/10/06 02:07:18  - CC0 is processing a WRITE request.
-CC0_2023/10/06 02:07:18  - The Address to write to is: 13.
-CC0_2023/10/06 02:07:18  - The address 13 is not in the local cache.
-CC0_2023/10/06 02:07:20  - CC0 is about to send a ReadExclusiveRequest to the Interconnect.
-CC0_2023/10/06 02:07:20  - CC0 sent a ReadExclusiveRequest to the Interconnect
-CC0_2023/10/06 02:07:20  - CC0 is waiting for the data from the Interconnect.
-CC0_2023/10/06 02:07:28  - CC0 received a response from the Interconnect with the value: 18.
-CC0_2023/10/06 02:07:28  - CC0 is storing the value 22 into the local cache at the address 13.
-CC0_2023/10/06 02:07:28  - The address doesn't exist in the local cache.
-CC0_2023/10/06 02:07:28  - CC0 stored the value 22 at the memory address 13 and the cache block 1.
-CC0_2023/10/06 02:07:28  - The new state of address 13 is 'M'.
-CC0_2023/10/06 02:07:29  - CC0 will send a response to the PE.
-CC0_2023/10/06 02:07:29  - CC0 sent the response to the PE.
-CC0_2023/10/06 02:07:31  - CC0 received a broadcast message from Interconnect for the address 0.
-CC0_2023/10/06 02:07:31  - The type of request is ReadExclusiveRequest.
-CC0_2023/10/06 02:07:31  - CC0 responded to the Broadcast Message with Match: false, Data: -1, Status: I.
-CC0_2023/10/06 02:07:42  - CC0 received a broadcast message from Interconnect for the address 13.
-CC0_2023/10/06 02:07:42  - The type of request is ReadRequest.
-CC0_2023/10/06 02:07:42  - The data is in the local cache.
-CC0_2023/10/06 02:07:42  - CC0 responded to the Broadcast Message with Match: true, Data: 22, Status: M.
-CC0_2023/10/06 02:07:42  - CC0 changed the status of the cache block 1 to S.
-CC0_2023/10/06 02:07:51  - CC0 received a request from PE0.
-CC0_2023/10/06 02:07:51  - CC0 is processing a READ request.
-CC0_2023/10/06 02:07:51  - The Address to read from is: 14.
-CC0_2023/10/06 02:07:51  - The address 14 is not in the local cache.
-CC0_2023/10/06 02:07:53  - CC0 is about to send a ReadRequest to the Interconnect.
-CC0_2023/10/06 02:07:53  - CC0 sent a ReadRequest to the Interconnect
-CC0_2023/10/06 02:07:53  - CC0 is waiting for the data from the Interconnect.
-CC0_2023/10/06 02:08:01  - CC0 received a response from the Interconnect with the value: 23.
-CC0_2023/10/06 02:08:01  - CC0 is storing the value 23 into the local cache at the address 14.
-CC0_2023/10/06 02:08:01  - The address doesn't exist in the local cache.
-CC0_2023/10/06 02:08:01  - CC0 stored the value 23 at the memory address 14 and the cache block 2.
-CC0_2023/10/06 02:08:01  - The new state of address 14 is 'E'.
-CC0_2023/10/06 02:08:02  - CC0 will send a response to the PE.
-CC0_2023/10/06 02:08:02  - CC0 sent the response to the PE.
-CC0_2023/10/06 02:08:03  - CC0 received a request from PE0.
-CC0_2023/10/06 02:08:03  - CC0 is processing a READ request.
-CC0_2023/10/06 02:08:03  - The Address to read from is: 2.
-CC0_2023/10/06 02:08:03  - The address 2 is in the local cache.
-CC0_2023/10/06 02:08:03  - Communication with the Interconnect is no required.
-CC0_2023/10/06 02:08:04  - CC0 will send a response to the PE.
-CC0_2023/10/06 02:08:04  - CC0 sent the response to the PE.
-CC0_2023/10/06 02:08:19  - CC0 has received an external signal to terminate.
+CC0_2023/10/06 02:41:41  - CC0 is running.
+CC0_2023/10/06 02:41:44  - CC0 received a request from PE0.
+CC0_2023/10/06 02:41:44  - CC0 is processing a READ request.
+CC0_2023/10/06 02:41:44  - The Address to read from is: 3.
+CC0_2023/10/06 02:41:44  - The address 3 is not in the local cache.
+CC0_2023/10/06 02:41:46  - CC0 is about to send a ReadRequest to the Interconnect.
+CC0_2023/10/06 02:41:46  - CC0 sent a ReadRequest to the Interconnect
+CC0_2023/10/06 02:41:46  - CC0 is waiting for the data from the Interconnect.
+CC0_2023/10/06 02:41:54  - CC0 received a response from the Interconnect with the value: 32.
+CC0_2023/10/06 02:41:54  - CC0 is storing the value 32 into the local cache at the address 3.
+CC0_2023/10/06 02:41:54  - The address doesn't exist in the local cache.
+CC0_2023/10/06 02:41:54  - CC0 stored the value 32 at the memory address 3 and the cache block 0.
+CC0_2023/10/06 02:41:54  - The new state of address 3 is 'E'.
+CC0_2023/10/06 02:41:55  - CC0 will send a response to the PE.
+CC0_2023/10/06 02:41:55  - CC0 sent the response to the PE.
+CC0_2023/10/06 02:41:57  - CC0 received a broadcast message from Interconnect for the address 2.
+CC0_2023/10/06 02:41:57  - The type of request is ReadRequest.
+CC0_2023/10/06 02:41:57  - The data is not in the local cache.
+CC0_2023/10/06 02:41:57  - CC0 responded to the Broadcast Message with Match: false, Data: -1, Status: I.
+CC0_2023/10/06 02:42:08  - CC0 received a broadcast message from Interconnect for the address 10.
+CC0_2023/10/06 02:42:08  - The type of request is ReadRequest.
+CC0_2023/10/06 02:42:08  - The data is not in the local cache.
+CC0_2023/10/06 02:42:08  - CC0 responded to the Broadcast Message with Match: false, Data: -1, Status: I.
+CC0_2023/10/06 02:42:17  - CC0 received a request from PE0.
+CC0_2023/10/06 02:42:17  - CC0 is processing a WRITE request.
+CC0_2023/10/06 02:42:17  - The Address to write to is: 3.
+CC0_2023/10/06 02:42:17  - The address 3 is in the local cache.
+CC0_2023/10/06 02:42:17  - The new data can be writen without using the Interconnect.
+CC0_2023/10/06 02:42:17  - CC0 is storing the value 32 into the local cache at the address 3.
+CC0_2023/10/06 02:42:17  - The address exists in the local cache.
+CC0_2023/10/06 02:42:17  - CC0 stored the value 32 at the memory address 3 and the cache block 0.
+CC0_2023/10/06 02:42:17  - The new state of address 3 is 'M'.
+CC0_2023/10/06 02:42:18  - CC0 will send a response to the PE.
+CC0_2023/10/06 02:42:18  - CC0 sent the response to the PE.
+CC0_2023/10/06 02:42:20  - CC0 received a broadcast message from Interconnect for the address 7.
+CC0_2023/10/06 02:42:20  - The type of request is ReadExclusiveRequest.
+CC0_2023/10/06 02:42:20  - CC0 responded to the Broadcast Message with Match: false, Data: -1, Status: I.
+CC0_2023/10/06 02:42:31  - CC0 received a broadcast message from Interconnect for the address 0.
+CC0_2023/10/06 02:42:31  - The type of request is ReadExclusiveRequest.
+CC0_2023/10/06 02:42:31  - CC0 responded to the Broadcast Message with Match: false, Data: -1, Status: I.
+CC0_2023/10/06 02:42:40  - CC0 received a request from PE0.
+CC0_2023/10/06 02:42:40  - CC0 is processing a READ request.
+CC0_2023/10/06 02:42:40  - The Address to read from is: 12.
+CC0_2023/10/06 02:42:40  - The address 12 is not in the local cache.
+CC0_2023/10/06 02:42:42  - CC0 is about to send a ReadRequest to the Interconnect.
+CC0_2023/10/06 02:42:42  - CC0 sent a ReadRequest to the Interconnect
+CC0_2023/10/06 02:42:42  - CC0 is waiting for the data from the Interconnect.
+CC0_2023/10/06 02:42:50  - CC0 received a response from the Interconnect with the value: 37.
+CC0_2023/10/06 02:42:50  - CC0 is storing the value 37 into the local cache at the address 12.
+CC0_2023/10/06 02:42:50  - The address doesn't exist in the local cache.
+CC0_2023/10/06 02:42:50  - CC0 stored the value 37 at the memory address 12 and the cache block 2.
+CC0_2023/10/06 02:42:50  - The new state of address 12 is 'E'.
+CC0_2023/10/06 02:42:51  - CC0 will send a response to the PE.
+CC0_2023/10/06 02:42:51  - CC0 sent the response to the PE.
+CC0_2023/10/06 02:42:53  - CC0 received a broadcast message from Interconnect for the address 11.
+CC0_2023/10/06 02:42:53  - The type of request is ReadRequest.
+CC0_2023/10/06 02:42:53  - The data is not in the local cache.
+CC0_2023/10/06 02:42:53  - CC0 responded to the Broadcast Message with Match: false, Data: -1, Status: I.
+CC0_2023/10/06 02:43:09  - CC0 has received an external signal to terminate.

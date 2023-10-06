@@ -33,7 +33,28 @@ export default function CardResume({ color, metrics }) {
           {/* Projects table */}
           <table className="items-center w-full bg-transparent border-collapse">
             <thead>
-
+            <tr>
+                <th
+                  className={
+                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                    (color === "light"
+                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
+                  }
+                >
+                  Métrica
+                </th>
+                <th
+                  className={
+                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                    (color === "light"
+                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
+                  }
+                >
+                  Valor
+                </th>
+              </tr>
             </thead>
             <tbody>
               {Object.keys(metrics).map(key => (
@@ -50,7 +71,7 @@ export default function CardResume({ color, metrics }) {
                       <div className="relative w-full">
                         <div className="overflow-hidden h-2 text-xs flex rounded bg-red-200">
                           <div
-                            style={{ width: metrics[key] }}
+                            style={{ width: metrics[key] + "%" }}
                             className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
                           ></div>
                         </div>
