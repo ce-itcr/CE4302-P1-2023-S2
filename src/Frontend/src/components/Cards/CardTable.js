@@ -21,13 +21,12 @@ export default function CardTable({ color, transactions }) {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                Resumen de transacciones
+                Transaction Summary
               </h3>
             </div>
           </div>
         </div>
         <div className="block w-full overflow-x-auto">
-          {/* Projects table */}
           <table className="items-center w-full bg-transparent border-collapse">
             <thead>
               <tr>
@@ -39,7 +38,7 @@ export default function CardTable({ color, transactions }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Orden
+                  Order
                 </th>
                 <th
                   className={
@@ -49,7 +48,7 @@ export default function CardTable({ color, transactions }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Transacción
+                  Transaction
                 </th>
               </tr>
             </thead>

@@ -2,10 +2,27 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
 export default function CardResume({ color, metrics }) {
-  console.log(metrics)
 
-  useEffect(() => {
-  }, [])
+  const checkKeys = (key, value) => {
+    if (key === "MissRate" || key === "HitRate") {
+      return (
+        <>
+        <div>%</div>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <div className="overflow-hidden h-2 text-xs flex rounded bg-red-200">
+            <div
+              style={{ width: value + "%" }}
+              className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
+            ></div>
+          </div>
+        </>
+      )
+    }
+  }
 
   return (
     <>
@@ -24,16 +41,15 @@ export default function CardResume({ color, metrics }) {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                Métricas de simulación
+                Simulation Metrics
               </h3>
             </div>
           </div>
         </div>
         <div className="block w-full overflow-x-auto">
-          {/* Projects table */}
           <table className="items-center w-full bg-transparent border-collapse">
             <thead>
-            <tr>
+              <tr>
                 <th
                   className={
                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
@@ -42,7 +58,7 @@ export default function CardResume({ color, metrics }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Métrica
+                  Metric
                 </th>
                 <th
                   className={
@@ -52,15 +68,12 @@ export default function CardResume({ color, metrics }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Valor
+                  Value
                 </th>
               </tr>
             </thead>
             <tbody>
               {Object.keys(metrics).map(key => (
-                // <li key={key}>
-                //   <strong>{key}:</strong> {metrics[key]}
-                // </li>
                 <tr key={key}>
                   <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                     {key}
@@ -69,19 +82,14 @@ export default function CardResume({ color, metrics }) {
                     <div className="flex items-center">
                       <span className="mr-2">{metrics[key]}</span>
                       <div className="relative w-full">
-                        <div className="overflow-hidden h-2 text-xs flex rounded bg-red-200">
-                          <div
-                            style={{ width: metrics[key] + "%" }}
-                            className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
-                          ></div>
-                        </div>
+                        {checkKeys(key, metrics[key])}
+
+
                       </div>
                     </div>
                   </td>
                 </tr>
               ))}
-
-
             </tbody>
           </table>
         </div>

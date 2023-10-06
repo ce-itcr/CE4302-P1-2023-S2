@@ -182,7 +182,7 @@ const Dashboard = () => {
                                 <div style={{ paddingTop: 60, paddingBottom: 5 }}>
                                     <CardStats
                                         statSubtitle={register0}
-                                        statTitle="PE#1"
+                                        statTitle="PE0"
                                         id="0"
                                         code={code0}
                                         lines={lines0}
@@ -193,7 +193,7 @@ const Dashboard = () => {
                                 <div style={{ paddingBottom: 5 }}>
                                     <CardStats
                                         statSubtitle={register1}
-                                        statTitle="PE#2"
+                                        statTitle="PE1"
                                         id="1"
                                         code={code1}
                                         lines={lines1}
@@ -204,7 +204,7 @@ const Dashboard = () => {
                                 <div>
                                     <CardStats
                                         statSubtitle={register2}
-                                        statTitle="PE#3"
+                                        statTitle="PE2"
                                         id="2"
                                         code={code2}
                                         lines={lines2}
@@ -219,7 +219,7 @@ const Dashboard = () => {
                         <div className="w-full md:w-8/12 lg:w-6/12 xl:w-6/12 px-4">
                             <div className="pt-32 sm:pt-0">
                                 <div style={{ paddingTop: 60, paddingBottom: 20 }}>
-                                    <CardLines onClick={ onStart } data={memory} />
+                                    <CardLines onClick={onStart} data={memory} />
                                 </div>
                                 <div>
                                     <CardLogger logs={ICLogs} protocol={currentProtocol} />
@@ -241,10 +241,10 @@ const Dashboard = () => {
             >
                 <div style={{ maxWidth: 400 }}>
                     <div style={{ fontWeight: 'bold', fontSize: 18, paddingBottom: 20, color: "#271744" }}>
-                        Detener proceso de ejecución
+                        Stop process
                     </div>
                     <div style={{ paddingBottom: 30 }}>
-                        ¿Está seguro que desea detener el proceso de ejecución?
+                        Are you sure you want to stop the execution process?
                     </div>
                     <div className="text-center mt-6">
                         <button
@@ -253,7 +253,7 @@ const Dashboard = () => {
                             style={{ borderColor: "#271744", borderWidth: 1, color: "#271744", backgroundColor: '#fff', width: 150 }}
                             onClick={closeModal}
                         >
-                            Cancelar
+                            Cancel
                         </button>
                         <button
                             className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
@@ -261,7 +261,7 @@ const Dashboard = () => {
                             style={{ borderColor: "#271744", borderWidth: 1, backgroundColor: "#271744", width: 150 }}
                             onClick={checkOnResume}
                         >
-                            Detener
+                            Stop
                         </button>
                     </div>
                 </div>

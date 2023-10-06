@@ -32,7 +32,7 @@ const Selector = () => {
   };
 
   let history = useHistory();
-  
+
   const onChangeLastCode = () => {
     setLastCode(!lastCode);
   }
@@ -40,7 +40,7 @@ const Selector = () => {
   const startProcess = async () => {
     console.log(selectedOption, lastCode)
     localStorage.setItem('protocol', selectedOption);
-    postRequest('setinitialize', {"type":selectedOption, "lastCode": lastCode}).then((data) => {
+    postRequest('setinitialize', { "type": selectedOption, "lastCode": lastCode }).then((data) => {
       history.push('/app/dashboard');
     })
   }
@@ -60,19 +60,17 @@ const Selector = () => {
                   Cache Sync - SW Cache Coherence modelling and evaluation.
                 </h2>
                 <p className="mt-4 text-lg leading-relaxed text-blueGray-500">
-                  Cache Sync tiene como objetivo analizar el rendimiento de los modelos de coherencia de caché MOESI y MESI en diversas situaciones,
-                  centrándose en instrucciones particulares (READ, WRITE, INC).
+                  Cache Sync aims to analyze the performance of the MOESI and MESI cache coherence models in various situations, focusing on particular instructions (READ, WRITE, INC).
                 </p>
                 <p className="mt-4 text-lg leading-relaxed text-blueGray-500">
-                  Para obtener información detallada sobre estas especificaciones,
-                  le invitamos a consultar la {" "}
+                  For detailed information on these specifications, we invite you to consult the {" "}
                   <a
                     href=""
                     className="text-blueGray-600"
                     target="_blank"
                     style={{ color: "#271744" }}
                   >
-                    documentación
+                    documentation
                   </a>
                   .
                 </p>
@@ -97,7 +95,7 @@ const Selector = () => {
                               className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                               htmlFor="full-name"
                             >
-                              Protocolo
+                              Protocol
                             </label>
                             <select
                               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
@@ -117,7 +115,7 @@ const Selector = () => {
                               className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                               htmlFor="email"
                             >
-                              Código aleatorio
+                              Random code
                             </label>
                             <input
                               id="customCheckLogin"
@@ -126,7 +124,7 @@ const Selector = () => {
                               onChange={onChangeLastCode}
                             />
                             <span className="ml-2 text-sm font-semibold text-blueGray-600">
-                              Usar código generado anteriormente
+                            Use previously generated code
                             </span>
                           </div>
 
@@ -138,7 +136,7 @@ const Selector = () => {
                               style={{ backgroundColor: "#271744" }}
                               onClick={openModal}
                             >
-                              Seleccionar
+                              Select
                             </button>
                           </div>
                         </div>
@@ -159,27 +157,27 @@ const Selector = () => {
       >
         <div style={{ maxWidth: 400 }}>
           <div style={{ fontWeight: 'bold', fontSize: 18, paddingBottom: 20, color: "#271744" }}>
-            Iniciar proceso de ejecución
+            Start execution process
           </div>
           <div style={{ paddingBottom: 30 }}>
-            ¿Está seguro que desea iniciar el proceso de ejecución para el protocolo <b style={{color: "#271744"}}>{selectedOption}</b>  y código anterior {lastCode ? '' : 'no'} seleccionado?
+          Are you sure you want to start the execution process for the protocol <b style={{ color: "#271744" }}>{selectedOption}</b>  and the latest code {lastCode ? '' : 'not'} selected?
           </div>
           <div className="text-center mt-6">
-          <button
+            <button
               className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
               type="button"
               style={{ borderColor: "#271744", borderWidth: 1, color: "#271744", backgroundColor: '#fff', width: 150 }}
               onClick={closeModal}
             >
-              Cancelar
+              Cancel
             </button>
             <button
               className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
               type="button"
-              style={{ borderColor: "#271744", borderWidth: 1,backgroundColor: "#271744", width: 150 }}
+              style={{ borderColor: "#271744", borderWidth: 1, backgroundColor: "#271744", width: 150 }}
               onClick={startProcess}
             >
-              Iniciar
+              Start
             </button>
           </div>
         </div>
