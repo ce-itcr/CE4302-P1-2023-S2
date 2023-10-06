@@ -1,37 +1,36 @@
 package MultiprocessingSystem
 
-
 import (
-	"fmt"
-	"sync"
-	"os"
 	"encoding/json"
+	"fmt"
+	"os"
+	"sync"
 	"time"
 
 	"Backend/components/CacheController"
-	"Backend/components/ProcessingElement"
-	"Backend/components/Interconnect"
-	"Backend/components/MainMemory"
+	interconnect "Backend/components/Interconnect"
+	mainMemory "Backend/components/MainMemory"
+	processingElement "Backend/components/ProcessingElement"
 	"Backend/utils"
 )
 
 // Create a structure that holds all the references needed to control the multiprocessing system
 type MultiprocessingSystem struct {
-	CacheControllers            []*CacheController.CacheController
-	ProcessingElements          []*processingElement.ProcessingElement
-	Interconnect                *interconnect.Interconnect
-	MainMemory                  *mainMemory.MainMemory
-	Terminate                   chan struct{}
-	WG                          *sync.WaitGroup
-	RequestChannelsM1           []chan utils.RequestProcessingElement
-	ResponseChannelsM1          []chan utils.ResponseProcessingElement
-	RequestChannelsM2           []chan utils.RequestInterconnect
-	ResponseChannelsM2          []chan utils.ResponseInterconnect
-	RequestChannelsBroadcast    []chan utils.RequestBroadcast
-	ResponseChannelsBroadcast   []chan utils.ResponseBroadcast
-	RequestChannelM3            chan utils.RequestMainMemory
-	ResponseChannelM3           chan utils.ResponseMainMemory
-	Semaphore                   chan struct{}
+	CacheControllers          []*CacheController.CacheController
+	ProcessingElements        []*processingElement.ProcessingElement
+	Interconnect              *interconnect.Interconnect
+	MainMemory                *mainMemory.MainMemory
+	Terminate                 chan struct{}
+	WG                        *sync.WaitGroup
+	RequestChannelsM1         []chan utils.RequestProcessingElement
+	ResponseChannelsM1        []chan utils.ResponseProcessingElement
+	RequestChannelsM2         []chan utils.RequestInterconnect
+	ResponseChannelsM2        []chan utils.ResponseInterconnect
+	RequestChannelsBroadcast  []chan utils.RequestBroadcast
+	ResponseChannelsBroadcast []chan utils.ResponseBroadcast
+	RequestChannelM3          chan utils.RequestMainMemory
+	ResponseChannelM3         chan utils.ResponseMainMemory
+	Semaphore                 chan struct{}
 }
 
 // Function that initializes a new Multiprocessing System
@@ -52,7 +51,7 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 			}
 		}
 	} else {
-		fmt.Printf("Reusing the previous generated code")
+		fmt.Printf("Reusing the previous generated code \n")
 		for i := 0; i < 3; i++ {
 			filename := fmt.Sprintf("generated-programs/program%d.txt", i)
 			isEmpty, err := FileIsEmpty(filename)
@@ -60,14 +59,12 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 				fmt.Printf("Error reading file.")
 			}
 			// Check if the file has no instructions
-			if (isEmpty) {
+			if isEmpty {
 				fmt.Printf("generated-programs/program%d.txt is not valid\n", i)
 			}
 
-
 		}
 	}
-
 
 	// Create termination channel to signal the termination to all threads
 	terminate := make(chan struct{})
@@ -85,7 +82,7 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 
 	// Declare the Broadcast Communication Channels array for CC-IC
 	RequestChannelsBroadcast := make([]chan utils.RequestBroadcast, 3)
-	ResponseChannelsBroadcast:= make([]chan utils.ResponseBroadcast, 3)
+	ResponseChannelsBroadcast := make([]chan utils.ResponseBroadcast, 3)
 
 	// Declare the Communication Channels for the Interconnect and Main Memory
 	RequestChannelM3 := make(chan utils.RequestMainMemory)
@@ -95,7 +92,6 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 	ccs := make([]*CacheController.CacheController, 3) // Create an array of Cache Controllers
 
 	semaphore := make(chan struct{}, 1) // Initialize with a count of 1
-
 
 	for i := 0; i < 3; i++ {
 		// Create the Request and Response channels for PE and IC communications
@@ -110,16 +106,16 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 
 		// Create the CacheController with its ID and communication channels
 		cacheController, err := CacheController.New(
-				i, 
-				requestChannelM1, 
-				responseChannelM1, 
-				requestChannelM2, 
-				responseChannelM2, 
-				requestChannelBroadcast, 
-				responseChannelBroadcast,
-				semaphore,
-				Protocol,
-				terminate)
+			i,
+			requestChannelM1,
+			responseChannelM1,
+			requestChannelM2,
+			responseChannelM2,
+			requestChannelBroadcast,
+			responseChannelBroadcast,
+			semaphore,
+			Protocol,
+			terminate)
 		if err != nil {
 			fmt.Printf("Error initializing CacheController %d: %v\n", i+1, err)
 		}
@@ -138,7 +134,7 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 
 		RequestChannelsM2[i] = requestChannelM2
 		ResponseChannelsM2[i] = responseChannelM2
-		
+
 		RequestChannelsBroadcast[i] = requestChannelBroadcast
 		ResponseChannelsBroadcast[i] = responseChannelBroadcast
 	}
@@ -164,14 +160,14 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 	// Create the Interconnect and attach the communication channels with the 3 CacheControllers
 	// Create Interconnect
 	interconnect, err := interconnect.New(
-						RequestChannelsM2, 
-						ResponseChannelsM2, 
-						RequestChannelM3, 
-						ResponseChannelM3, 
-						RequestChannelsBroadcast, 
-						ResponseChannelsBroadcast,
-						Protocol, 
-						terminate)
+		RequestChannelsM2,
+		ResponseChannelsM2,
+		RequestChannelM3,
+		ResponseChannelM3,
+		RequestChannelsBroadcast,
+		ResponseChannelsBroadcast,
+		Protocol,
+		terminate)
 	if err != nil {
 		fmt.Printf("Error initializing Interconnect: %v\n", err)
 	}
@@ -195,52 +191,52 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 		mainMemory.Run(&wg)
 	}()
 
-	return &MultiprocessingSystem {
-		CacheControllers: ccs,            
-		ProcessingElements: pes,        
-		Interconnect: interconnect,              
-		MainMemory: mainMemory,
-		Terminate: terminate,
-		WG: &wg,
-		RequestChannelsM1: RequestChannelsM1,
-		ResponseChannelsM1: ResponseChannelsM1,
-		RequestChannelsM2: RequestChannelsM2,
-		ResponseChannelsM2: ResponseChannelsM2,
-		RequestChannelsBroadcast: RequestChannelsBroadcast,
+	return &MultiprocessingSystem{
+		CacheControllers:          ccs,
+		ProcessingElements:        pes,
+		Interconnect:              interconnect,
+		MainMemory:                mainMemory,
+		Terminate:                 terminate,
+		WG:                        &wg,
+		RequestChannelsM1:         RequestChannelsM1,
+		ResponseChannelsM1:        ResponseChannelsM1,
+		RequestChannelsM2:         RequestChannelsM2,
+		ResponseChannelsM2:        ResponseChannelsM2,
+		RequestChannelsBroadcast:  RequestChannelsBroadcast,
 		ResponseChannelsBroadcast: ResponseChannelsBroadcast,
-		RequestChannelM3: RequestChannelM3,
-		ResponseChannelM3: ResponseChannelM3,
-		Semaphore: semaphore,
+		RequestChannelM3:          RequestChannelM3,
+		ResponseChannelM3:         ResponseChannelM3,
+		Semaphore:                 semaphore,
 	}
 }
 
 // Function to create a JSON object with all the information of the Multiprocessing System
-func (mps *MultiprocessingSystem) GetState() (string, error){
+func (mps *MultiprocessingSystem) GetState() (string, error) {
 
 	// Create the AboutProcessingElementList
 	pes := utils.AboutProcessingElementList{}
-	for _, pe := range mps.ProcessingElements{
+	for _, pe := range mps.ProcessingElements {
 		// Create an empty InstructionObjectList
 		instructions := utils.InstructionObjectList{}
 
 		// Get the values from the instructions queue of the Processing Element
-		for i, item := range pe.Instructions.Items{
+		for i, item := range pe.Instructions.Items {
 			// Create an InstructionObject
 			instructionObj := utils.InstructionObject{
-				Position: i,
+				Position:    i,
 				Instruction: item,
 			}
 			// Append the instruction object to the list
 			instructions = append(instructions, instructionObj)
 		}
 		// Create a struct for the PE
-		aboutPE := utils.AboutProcessingElement {
-			ID: pe.ID,
-			Register: pe.Register,
-			Status: pe.Status,
+		aboutPE := utils.AboutProcessingElement{
+			ID:           pe.ID,
+			Register:     pe.Register,
+			Status:       pe.Status,
 			Instructions: instructions,
 		}
-	
+
 		// Add it to the list
 		pes = append(pes, aboutPE)
 	}
@@ -263,59 +259,59 @@ func (mps *MultiprocessingSystem) GetState() (string, error){
 		}
 
 		// Create a the final JSON struct
-		aboutCC := utils.AboutCacheController {
-			ID: cc.ID,
+		aboutCC := utils.AboutCacheController{
+			ID:     cc.ID,
 			Status: cc.Status,
-			Cache: cacheBlocks,
+			Cache:  cacheBlocks,
 		}
 		// Add it to the list
 		ccs = append(ccs, aboutCC)
 	}
 
-    // Create an empty LogObjectList
-    logs := utils.LogObjectList{}
+	// Create an empty LogObjectList
+	logs := utils.LogObjectList{}
 
-    // Get the values from the transactions queue of the Interconnect
-    for i, item := range mps.Interconnect.Logs.Items{
+	// Get the values from the transactions queue of the Interconnect
+	for i, item := range mps.Interconnect.Logs.Items {
 		// Create an LogObject
-        logObj := utils.LogObject{
-            Order: i,
-            Log: item,
-        }
-        // Append the transaction object to the list
-        logs = append(logs, logObj)
+		logObj := utils.LogObject{
+			Order: i,
+			Log:   item,
+		}
+		// Append the transaction object to the list
+		logs = append(logs, logObj)
 	}
 
-    // Create a struct
-    ic := utils.AboutInterconnect {
-        Status: mps.Interconnect.Status,
-		Logs: logs,
-    }
+	// Create a struct
+	ic := utils.AboutInterconnect{
+		Status: mps.Interconnect.Status,
+		Logs:   logs,
+	}
 
 	// Create an empty BlockObjectList
 	memoryBlocks := utils.BlockObjectList{}
-    for i := 0; i <= 15; i++ {
-        // Create a new BlockObject instance
+	for i := 0; i <= 15; i++ {
+		// Create a new BlockObject instance
 		blockObj := utils.BlockObject{
 			Address: i,
-			Data: int(mps.MainMemory.Data[i]),
+			Data:    int(mps.MainMemory.Data[i]),
 		}
 		// Append the new BlockObject to the BlockObjectList
 		memoryBlocks = append(memoryBlocks, blockObj)
-    }
+	}
 
-    // Create a the final JSON struct
-    mm := utils.AboutMainMemory{
+	// Create a the final JSON struct
+	mm := utils.AboutMainMemory{
 		Status: mps.MainMemory.Status,
 		Blocks: memoryBlocks,
 	}
 
 	// Create the final object
-	JSON := utils.MultiprocessingSystemState {
+	JSON := utils.MultiprocessingSystemState{
 		PEs: pes,
 		CCs: ccs,
-		IC: ic,
-		MM: mm,
+		IC:  ic,
+		MM:  mm,
 	}
 
 	// Return a string with the JSON as a string
@@ -380,17 +376,17 @@ func (mps *MultiprocessingSystem) StartProcessingElements() {
 
 // Function to obtain the results after the execution of the Multiprocessing System
 func (mps *MultiprocessingSystem) AboutResults() (string, error) {
-    // Create an empty TransactionObjectList
-    transactions := utils.TransactionObjectList{}
-    // Get the values from the transactions queue of the Interconnect
-    for i, item := range mps.Interconnect.Transactions.Items{
+	// Create an empty TransactionObjectList
+	transactions := utils.TransactionObjectList{}
+	// Get the values from the transactions queue of the Interconnect
+	for i, item := range mps.Interconnect.Transactions.Items {
 		// Create an TransactionObject
-        transactionObj := utils.TransactionObject{
-            Order: i,
-            Transaction: item,
-        }
-        // Append the transaction object to the list
-        transactions = append(transactions, transactionObj)
+		transactionObj := utils.TransactionObject{
+			Order:       i,
+			Transaction: item,
+		}
+		// Append the transaction object to the list
+		transactions = append(transactions, transactionObj)
 	}
 	// Sum the Cache Misses and Cache Hits for the 3 Cache Controllers
 	CacheMisses := 0
@@ -402,23 +398,23 @@ func (mps *MultiprocessingSystem) AboutResults() (string, error) {
 	}
 	totalMemoryAccesses = CacheHits + CacheMisses
 	// Calculate the Miss Rate and Hit Rate
-    MissRate := float64(CacheMisses) / float64(totalMemoryAccesses) * 100
-    HitRate := float64(CacheHits) / float64(totalMemoryAccesses) * 100
+	MissRate := float64(CacheMisses) / float64(totalMemoryAccesses) * 100
+	HitRate := float64(CacheHits) / float64(totalMemoryAccesses) * 100
 	// Create the JSON object
 	resultsJSON := utils.MultiprocessingSystemResults{
-		Transactions: transactions,
-		PowerConsumption: mps.Interconnect.PowerConsumption,
-		CacheMisses: CacheMisses,
-		CacheHits: CacheHits,
-		MemoryAccesses: totalMemoryAccesses,
-		MissRate: MissRate,
-		HitRate: HitRate,
-		ReadRequests: mps.Interconnect.ReadRequests,
+		Transactions:          transactions,
+		PowerConsumption:      mps.Interconnect.PowerConsumption,
+		CacheMisses:           CacheMisses,
+		CacheHits:             CacheHits,
+		MemoryAccesses:        totalMemoryAccesses,
+		MissRate:              MissRate,
+		HitRate:               HitRate,
+		ReadRequests:          mps.Interconnect.ReadRequests,
 		ReadExclusiveRequests: mps.Interconnect.ReadExclusiveRequests,
-		DataResponses: mps.Interconnect.DataResponses,
-		Invalidates: mps.Interconnect.Invalidates,
-		MemoryReads: mps.Interconnect.MemoryReads,
-		MemoryWrites: mps.Interconnect.MemoryWrites,
+		DataResponses:         mps.Interconnect.DataResponses,
+		Invalidates:           mps.Interconnect.Invalidates,
+		MemoryReads:           mps.Interconnect.MemoryReads,
+		MemoryWrites:          mps.Interconnect.MemoryWrites,
 	}
 	// Marshal the PE struct into a JSON string
 	jsonData, err := json.MarshalIndent(resultsJSON, "", "    ")
@@ -433,12 +429,12 @@ func (mps *MultiprocessingSystem) AboutResults() (string, error) {
 // Function to check if the Multiprocesing System has finished smoothly
 func (mps *MultiprocessingSystem) AreWeFinished() bool {
 	allDone := true
-		for _, pe := range mps.ProcessingElements {
-			if !pe.IsDone {
-				allDone = false
-				break
-			}
+	for _, pe := range mps.ProcessingElements {
+		if !pe.IsDone {
+			allDone = false
+			break
 		}
+	}
 	return allDone
 }
 
@@ -489,6 +485,6 @@ func FileIsEmpty(filename string) (bool, error) {
 	if stat.Size() == 0 {
 		return true, nil
 	}
-	
+
 	return false, nil
 }

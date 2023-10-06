@@ -9,23 +9,13 @@ import (
 	"sync"
 
 	"github.com/gorilla/mux"
-	"github.com/gorilla/websocket"
 
 	"Backend/components/MultiprocessingSystem"
 )
 
-// Estructura para los datos que quieres compartir con el frontend.
-type Datos struct {
-	Valor string `json:"valor"`
-}
-
 var (
-	mutex    sync.Mutex
-	data     Datos
-	upgrader = websocket.Upgrader{
-		ReadBufferSize:  1024,
-		WriteBufferSize: 1024,
-	}
+	mutex         sync.Mutex
+	BroadcastData string
 
 	terminateRESTfulAPI chan struct{}
 
@@ -48,9 +38,6 @@ func Restfulapi() {
 	router.HandleFunc("/setinitialize", SetInitialize).Methods("POST")
 	router.HandleFunc("/setaction", SetAction).Methods("POST")
 	router.HandleFunc("/setlj", SetLj).Methods("POST")
-
-	// Inicia el servidor web.
-	go StartWebSocketServer()
 
 	// Servidor HTTP.
 	router.HandleFunc("/", homeLink)
@@ -92,10 +79,19 @@ func GetMetrics(w http.ResponseWriter, r *http.Request) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	aboutMetrics, _ := mps.GetState()
-	fmt.Println(aboutMetrics)
-	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintf(w, aboutMetrics)
+	if mps.AreWeFinished() {
+		fmt.Println("The Multiprocessing System has already finished.")
+		aboutMetrics, _ := mps.AboutResults()
+		fmt.Println(aboutMetrics)
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprintf(w, aboutMetrics)
+	} else {
+		fmt.Println("The Multiprocessing System has not finished yet.")
+		aboutMetrics := "false"
+		fmt.Println(aboutMetrics)
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprintf(w, aboutMetrics)
+	}
 }
 
 // Handler para establecer datos.
@@ -164,8 +160,9 @@ func SetAction(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "Solicitud Step"+newData3.Number+"procesada exitosamente")
 			return
 		}
-		if newData3.Action == "start" {
+		if newData3.Action == "all" {
 			// Procesar solicitud de inicio aquí
+			mps.StartProcessingElements()
 			fmt.Println("Execute all done.")
 			w.WriteHeader(http.StatusOK)
 			fmt.Fprintf(w, "Solicitud ALL procesada exitosamente")
@@ -205,59 +202,6 @@ func SetLj(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Error(w, "JSON no válido", http.StatusBadRequest)
-}
-
-// Función para enviar actualizaciones a través del websocket.
-func BroadcastUpdate() {
-	mutex.Lock()
-	defer mutex.Unlock()
-
-	// Convierte los datos en formato JSON.
-	jsonData, err := json.Marshal(data)
-	if err != nil {
-		fmt.Println("Error al convertir a JSON:", err)
-		return
-	}
-
-	// Envía el JSON a todos los clientes conectados a través del websocket.
-	for client := range clients {
-		err := client.WriteMessage(websocket.TextMessage, jsonData)
-		if err != nil {
-			fmt.Println("Error al escribir mensaje:", err)
-			client.Close()
-			delete(clients, client)
-		}
-	}
-}
-
-var clients = make(map[*websocket.Conn]bool)
-
-// Función para iniciar el servidor WebSocket.
-func StartWebSocketServer() {
-	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		conn, err := upgrader.Upgrade(w, r, nil)
-		if err != nil {
-			fmt.Println("Error al actualizar la conexión:", err)
-			return
-		}
-
-		defer conn.Close()
-
-		// Agrega el cliente a la lista de clientes.
-		clients[conn] = true
-
-		// Lee mensajes del cliente (puedes implementar más acciones aquí).
-		for {
-			_, _, err := conn.ReadMessage()
-			if err != nil {
-				fmt.Println("Error al leer mensaje:", err)
-				delete(clients, conn)
-				break
-			}
-		}
-	})
-
-	http.ListenAndServe(":8081", nil)
 }
 
 // Handler para cerrar el servidor por http
