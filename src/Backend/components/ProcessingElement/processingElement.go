@@ -229,97 +229,8 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                 pe.Status = "Forced to quit"
                 return
         }
-
     }
 }
-
-// // Run simulates the execution of instructions for a ProcessingElement.
-// func (pe *ProcessingElement) ManualRun(wg *sync.WaitGroup) {
-//     pe.Logger.Printf(" - PE%d is ready to execute instructions.\n", pe.ID)
-//     pe.Status = "Ready"
-//     for {
-//         select {
-//             // When the PE receives a signal to execute an instruction
-//             case <- pe.Control:
-//                 // Let others know the PE is currently busy executing an instruction
-//                 pe.IsExecutingInstruction = true
-//                 pe.Status = "Signal Received"
-
-//                 // Extract the instruction
-//                 instruction := pe.readInstructionFromFile(pe.Filename)
-
-//                 pe.Logger.Printf(" - PE%d received external signal to execute instruction: %s.\n", pe.ID, instruction)
-//                 words := strings.Fields(instruction)
-//                 operation := words[0]
-
-//                 switch operation {
-//                 // Increment
-//                 case "INC":
-//                     pe.Status = "Executing INC"
-//                     pe.Logger.Printf(" - PE%d is executing a %s operation.\n", pe.ID, operation)
-//                     pe.register++
-//                     pe.Logger.Printf(" - Now the value of the register is %d.\n", pe.register)
-//                     pe.Logger.Printf(" - PE%d has finished with the instruction.\n", pe.ID)
-//                     // Let others know the PE is now available
-//                     pe.IsExecutingInstruction = false
-
-//                 // Read a data from an specific memory address
-//                 case "READ":
-//                     pe.Status = "Executing READ"
-//                     pe.Logger.Printf(" - PE%d is executing a %s operation.\n", pe.ID, operation)
-//                     // Create a request structure
-//                     address, err := strconv.Atoi(words[1])
-//                     if err != nil {
-//                         // Error parsing the integer
-//                         return
-//                     }
-                    
-//                     // Send a READ request to the Cache Controller
-//                     Data, _ := pe.RequestCacheController(operation, address, 0)
-
-//                     // Process the response values
-//                     pe.Logger.Printf(" - PE%d received Data: %d.\n", pe.ID, Data)
-//                     pe.Status = "Updating Register"
-//                     pe.register = Data
-//                     pe.Logger.Printf(" - Updated local register: Rs = %d.\n", pe.register)
-//                     pe.Logger.Printf(" - PE%d has finished with the instruction.\n", pe.ID)
-
-//                     // Let others know the PE is now available
-//                     pe.IsExecutingInstruction = false
-//                     pe.Status = "Free"
-
-//                 // Write dato into an specific memory address
-//                 case "WRITE":
-//                     pe.Status = "Executing WRITE"
-//                     pe.Logger.Printf(" - PE%d is executing a %s operation.\n", pe.ID, operation)
-//                     // Create a request structure
-//                     address, err := strconv.Atoi(words[1])
-//                     if err != nil {
-//                         // Error parsing the integer
-//                         return
-//                     }
-
-//                     // Send a READ request to the Cache Controller
-//                     _, Status := pe.RequestCacheController(operation, address, pe.register)
-
-//                     // Process the response values
-//                     pe.Logger.Printf(" - PE%d received --> Status: %v.\n", pe.ID, Status)
-//                     pe.Logger.Printf(" - PE%d has finished with the instruction.\n", pe.ID)
-
-//                     // Let others know the PE is now available
-//                     pe.IsExecutingInstruction = false
-//                     pe.Status = "Free"
-
-//                 }
-
-//             // When the PE receives a signal terminate
-//             case <- pe.Quit:
-//                 pe.Logger.Printf(" - PE%d received termination signal and is exiting gracefully.\n", pe.ID)
-//                 pe.Status = "Forced to quit"
-//                 return
-//         }
-//     }
-// }
 
 // Reads lines from a text file and returns them as a slice of strings.
 func readInstructionsFromFile(filename string) (utils.QueueS, error) {
@@ -352,28 +263,6 @@ func readInstructionsFromFile(filename string) (utils.QueueS, error) {
     // If not, return the queue with the instructions
     return Instructions, nil
 }
-
-// // Function that reads the first line of the program and returns it.
-// func (pe *ProcessingElement) readInstructionFromFile(filename string) string {
-
-//     file, err := os.Open(filename)
-//     if err != nil {
-//         return ""
-//     }
-
-//     defer file.Close()
-
-//     scanner := bufio.NewScanner(file)
-//     scanner.Scan()
-//     line := strings.TrimSpace(scanner.Text())
-//     if (isValidInstruction(line)){
-//         return line
-//     } else  {
-//         return ""
-//     }
-
-// }
-
 
 // isValidInstruction checks if an instruction is valid.
 func isValidInstruction(instruction string) bool {
