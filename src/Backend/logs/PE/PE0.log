@@ -1,29 +1,29 @@
-PE0_2023/10/06 02:53:47  - PE0 is ready to execute instructions.
-PE0_2023/10/06 02:59:12  - PE0 received external signal to execute instruction: READ 3.
-PE0_2023/10/06 02:59:12  - PE0 is executing a READ operation.
-PE0_2023/10/06 02:59:12  - PE0 sent (Type: READ, Address: 3) to the Cache Controller.
-PE0_2023/10/06 02:59:12  - PE0 is waiting for a response from the Cache Controller....
-PE0_2023/10/06 02:59:23  - PE0 received a response from the Cache Controller.
-PE0_2023/10/06 02:59:23  - PE0 received Data: 48.
-PE0_2023/10/06 02:59:23  - Updated local register: Rs = 48.
-PE0_2023/10/06 02:59:23  - PE0 has finished with the instruction.
-PE0_2023/10/06 02:59:23  - PE0 received external signal to execute instruction: WRITE 3.
-PE0_2023/10/06 02:59:23  - PE0 is executing a WRITE operation.
-PE0_2023/10/06 02:59:45  - PE0 sent (Type: WRITE, Address: 3) to the Cache Controller.
-PE0_2023/10/06 02:59:45  - PE0 is waiting for a response from the Cache Controller....
-PE0_2023/10/06 02:59:46  - PE0 received a response from the Cache Controller.
-PE0_2023/10/06 02:59:46  - PE0 received --> Status: true.
-PE0_2023/10/06 02:59:46  - PE0 has finished with the instruction.
-PE0_2023/10/06 02:59:47  - PE0 received external signal to execute instruction: READ 12.
-PE0_2023/10/06 02:59:47  - PE0 is executing a READ operation.
-PE0_2023/10/06 03:00:08  - PE0 sent (Type: READ, Address: 12) to the Cache Controller.
-PE0_2023/10/06 03:00:08  - PE0 is waiting for a response from the Cache Controller....
-PE0_2023/10/06 03:00:19  - PE0 received a response from the Cache Controller.
-PE0_2023/10/06 03:00:19  - PE0 received Data: 50.
-PE0_2023/10/06 03:00:19  - Updated local register: Rs = 50.
-PE0_2023/10/06 03:00:19  - PE0 has finished with the instruction.
-PE0_2023/10/06 03:00:19  - PE0 received external signal to execute instruction: INC.
-PE0_2023/10/06 03:00:19  - PE0 is executing a INC operation.
-PE0_2023/10/06 03:00:19  - Now the value of the register is 51.
-PE0_2023/10/06 03:00:19  - PE0 has finished with the instruction.
-PE0_2023/10/06 03:00:21  - PE0 has executed all instructions.
+PE0_2023/10/06 03:14:05  - PE0 is ready to execute instructions.
+PE0_2023/10/06 03:14:10  - PE0 received external signal to execute instruction: READ 3.
+PE0_2023/10/06 03:14:10  - PE0 is executing a READ operation.
+PE0_2023/10/06 03:14:10  - PE0 sent (Type: READ, Address: 3) to the Cache Controller.
+PE0_2023/10/06 03:14:10  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 03:14:21  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 03:14:21  - PE0 received Data: 15.
+PE0_2023/10/06 03:14:21  - Updated local register: Rs = 15.
+PE0_2023/10/06 03:14:21  - PE0 has finished with the instruction.
+PE0_2023/10/06 03:14:21  - PE0 received external signal to execute instruction: WRITE 3.
+PE0_2023/10/06 03:14:21  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 03:14:43  - PE0 sent (Type: WRITE, Address: 3) to the Cache Controller.
+PE0_2023/10/06 03:14:43  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 03:14:44  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 03:14:44  - PE0 received --> Status: true.
+PE0_2023/10/06 03:14:44  - PE0 has finished with the instruction.
+PE0_2023/10/06 03:14:45  - PE0 received external signal to execute instruction: READ 12.
+PE0_2023/10/06 03:14:45  - PE0 is executing a READ operation.
+PE0_2023/10/06 03:15:06  - PE0 sent (Type: READ, Address: 12) to the Cache Controller.
+PE0_2023/10/06 03:15:06  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 03:15:17  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 03:15:17  - PE0 received Data: 31.
+PE0_2023/10/06 03:15:17  - Updated local register: Rs = 31.
+PE0_2023/10/06 03:15:17  - PE0 has finished with the instruction.
+PE0_2023/10/06 03:15:17  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 03:15:17  - PE0 is executing a INC operation.
+PE0_2023/10/06 03:15:17  - Now the value of the register is 32.
+PE0_2023/10/06 03:15:17  - PE0 has finished with the instruction.
+PE0_2023/10/06 03:15:19  - PE0 has executed all instructions.
