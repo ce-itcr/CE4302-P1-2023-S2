@@ -19,7 +19,7 @@ func main() {
 	// Create a new Multiprocessing system
 	go restfulapi.Restfulapi()
 	// THIS IS WHERE THE CLI STARTS *****************************************************************************
-	fmt.Println("WELCOME TO MCKEVINHO CLI")
+	// fmt.Println("WELCOME TO MCKEVINHO CLI")
 	fmt.Println("Enter 'C ' (c and space) to end the server")
 
 	reader := bufio.NewReader(os.Stdin)

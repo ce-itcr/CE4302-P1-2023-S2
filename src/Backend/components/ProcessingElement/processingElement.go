@@ -172,6 +172,7 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                     pe.Logger.Printf(" - PE%d has finished with the instruction.\n", pe.ID)
                     // Let others know the PE is now available
                     pe.IsExecutingInstruction = false
+                    pe.Status = "Done"
 
                 // Read a data from an specific memory address
                 case "READ":
