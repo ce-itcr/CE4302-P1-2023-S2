@@ -113,14 +113,14 @@ func SetInitialize(w http.ResponseWriter, r *http.Request) {
 		// Verificar y manejar newData1
 		if newData1.Type == "MESI" && newData1.LastCode {
 			// Procesar solicitud MESI aquí
-			mps = MultiprocessingSystem.Start("MESI", true, 10)
+			mps = MultiprocessingSystem.Start("MESI", true, 4)
 			w.WriteHeader(http.StatusOK)
 			fmt.Fprintf(w, "Solicitud MESI procesada exitosamente")
 			return
 		}
 		if newData1.Type == "MOESI" && newData1.LastCode {
 			// Procesar solicitud MOESI aquí
-			mps = MultiprocessingSystem.Start("MOESI", true, 10)
+			mps = MultiprocessingSystem.Start("MOESI", true, 4)
 			w.WriteHeader(http.StatusOK)
 			fmt.Fprintf(w, "Solicitud MOESI procesada exitosamente")
 			return
