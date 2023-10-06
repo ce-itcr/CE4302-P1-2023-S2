@@ -8,18 +8,17 @@ import (
 	"strconv"
 	"sync"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 
 	"Backend/components/MultiprocessingSystem"
 )
 
 var (
-	mutex         sync.Mutex
-	BroadcastData string
-
+	mutex               sync.Mutex
+	BroadcastData       string
 	terminateRESTfulAPI chan struct{}
-
-	mps *MultiprocessingSystem.MultiprocessingSystem
+	mps                 *MultiprocessingSystem.MultiprocessingSystem
 )
 
 func homeLink(w http.ResponseWriter, r *http.Request) {
@@ -30,6 +29,11 @@ func Restfulapi() {
 	// Configura el enrutador.
 	router := mux.NewRouter().StrictSlash(true)
 
+	// Enable CORS middleware
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
+
 	// Ruta para obtener información sobre PE.
 	router.HandleFunc("/about", GetAbouts).Methods("GET")
 	router.HandleFunc("/aboutmetrics", GetMetrics).Methods("GET")
@@ -39,14 +43,14 @@ func Restfulapi() {
 	router.HandleFunc("/setaction", SetAction).Methods("POST")
 	router.HandleFunc("/setlj", SetLj).Methods("POST")
 
-	// Servidor HTTP.
-	router.HandleFunc("/", homeLink)
+	// Servidor HTTP con CORS middleware.
+	handlerWithCORS := handlers.CORS(originsOk, headersOk, methodsOk)(router)
 
 	terminateRESTfulAPI = make(chan struct{})
 
 	// Inicia el servidor HTTP en una goroutine.
 	go func() {
-		err := http.ListenAndServe(":8080", router)
+		err := http.ListenAndServe(":8080", handlerWithCORS)
 		log.Fatal(err)
 		if err != nil {
 			fmt.Println("Error al iniciar el servidor:", err)
@@ -56,6 +60,13 @@ func Restfulapi() {
 	// Espera hasta que se reciba un mensaje en el canal de terminación.
 	<-terminateRESTfulAPI
 }
+
+// ... (rest of your code remains unchanged)
+
+
+// ... (rest of your code remains unchanged)
+
+
 
 func Test() {
 	mutex.Lock()
@@ -111,16 +122,16 @@ func SetInitialize(w http.ResponseWriter, r *http.Request) {
 	// Intenta decodificar en newData1
 	if err := json.NewDecoder(r.Body).Decode(&newData1); err == nil {
 		// Verificar y manejar newData1
-		if newData1.Type == "MESI" && newData1.LastCode {
+		if newData1.Type == "MESI"  {
 			// Procesar solicitud MESI aquí
-			mps = MultiprocessingSystem.Start("MESI", true, 10)
+			mps = MultiprocessingSystem.Start("MESI", newData1.LastCode, 4)
 			w.WriteHeader(http.StatusOK)
 			fmt.Fprintf(w, "Solicitud MESI procesada exitosamente")
 			return
 		}
-		if newData1.Type == "MOESI" && newData1.LastCode {
+		if newData1.Type == "MOESI"{
 			// Procesar solicitud MOESI aquí
-			mps = MultiprocessingSystem.Start("MOESI", true, 10)
+			mps = MultiprocessingSystem.Start("MOESI", newData1.LastCode, 4)
 			w.WriteHeader(http.StatusOK)
 			fmt.Fprintf(w, "Solicitud MOESI procesada exitosamente")
 			return
