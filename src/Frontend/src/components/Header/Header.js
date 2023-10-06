@@ -13,7 +13,7 @@ export default function Header({ title, onResume, onClose, onDownload }) {
                     style={{ backgroundColor: "#271744" }}
                     onClick={onResume}
                 >
-                    <i className="fas fa-chart-simple"></i> Resumen
+                    <i className="fas fa-chart-simple"></i> Summary
                 </button>
             </li>)
         }
@@ -22,16 +22,6 @@ export default function Header({ title, onResume, onClose, onDownload }) {
     const checkSummary = () => {
         if (title === '/app/summary') {
             return (<>
-            {/* <li className="flex items-center">
-                <button
-                    className="bg-lightBlue-500 text-white active:bg-lightBlue-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
-                    type="button"
-                    style={{ backgroundColor: "#271744" }}
-                    onClick={onClose}
-                >
-                    <i className="fas fa-arrow-alt-circle-down"></i> Descargar
-                </button>
-            </li> */}
             <li className="flex items-center">
                     <button
                         className="bg-lightBlue-500 text-white active:bg-lightBlue-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
@@ -39,7 +29,7 @@ export default function Header({ title, onResume, onClose, onDownload }) {
                         style={{ backgroundColor: "#271744" }}
                         onClick={onClose}
                     >
-                        <i className="fas fa-close"></i> Cerrar
+                        <i className="fas fa-close"></i> Close
                     </button>
                 </li></>)
         }

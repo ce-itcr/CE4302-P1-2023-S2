@@ -9,10 +9,10 @@ export default function CardLogger({ protocol, logs
                     <div className="flex flex-wrap">
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                             <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-                                Protocolo actual: <b style={{color: '#FF6100'}}>{protocol}</b>
+                                Current Protocol: <b style={{color: '#FF6100'}}>{protocol}</b>
                             </h5>
                             <span className="font-semibold text-xl text-blueGray-700">
-                                Logger de Transacciones del Bus
+                                 Transactional Bus Logger
                             </span>
                         </div>
                     </div>

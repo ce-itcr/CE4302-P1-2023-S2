@@ -39,7 +39,7 @@ export default function CardStats({
                 className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                 htmlFor="full-name"
               >
-                Código actual
+                Actual code
               </label>
               <div style={{ height: 150, width: 190, backgroundColor: '#282c34', color: '#fff', padding: 20, borderRadius: 5, fontFamily: 'monospace', overflow: 'auto' }}>
                 <span>
@@ -53,16 +53,16 @@ export default function CardStats({
                 className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                 htmlFor="full-name"
               >
-                Lineas de caché
+                Cache lines
               </label>
               <div >
                 <div >
                   <span>
                     <div className="flex flex-wrap">
                       <p style={{ borderColor: '#000', border: 'solid', borderWidth: 0.5, backgroundColor: '#e2e8f0', color: '#000', width: 30, height: 30, paddingLeft: 5 }}></p>
-                      <p style={{ borderColor: '#000', border: 'solid', borderWidth: 0.5, backgroundColor: '#e2e8f0', color: '#000', width: 70, height: 30, paddingLeft: 5 }}>Bloque</p>
-                      <p style={{ borderColor: '#000', border: 'solid', borderWidth: 0.5, backgroundColor: '#e2e8f0', color: '#000', width: 80, height: 30, paddingLeft: 5 }}>Dirección</p>
-                      <p style={{ borderColor: '#000', border: 'solid', borderWidth: 0.5, backgroundColor: '#e2e8f0', color: '#000', width: 70, height: 30, paddingLeft: 5 }}>Dato</p>
+                      <p style={{ borderColor: '#000', border: 'solid', borderWidth: 0.5, backgroundColor: '#e2e8f0', color: '#000', width: 70, height: 30, paddingLeft: 5 }}>Block</p>
+                      <p style={{ borderColor: '#000', border: 'solid', borderWidth: 0.5, backgroundColor: '#e2e8f0', color: '#000', width: 80, height: 30, paddingLeft: 5 }}>Direction</p>
+                      <p style={{ borderColor: '#000', border: 'solid', borderWidth: 0.5, backgroundColor: '#e2e8f0', color: '#000', width: 70, height: 30, paddingLeft: 5 }}>Data</p>
                     </div>
                     {lines.map((line) =>
                       <div className="flex flex-wrap">
@@ -86,7 +86,7 @@ export default function CardStats({
                   "fas fa-arrow-right"
                 }
               ></i>{" "}
-              Estado:
+              Status:
             </span>
             <span className="whitespace-nowrap" style={{ color: '#40B714', fontWeight: 'bold' }}>{status}</span>
           </p>

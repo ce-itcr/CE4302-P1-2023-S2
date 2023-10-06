@@ -27,7 +27,7 @@ export default function CardLines({ onClick, data
                     <div className="flex flex-wrap">
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                             <span className="font-semibold text-xl text-blueGray-700">
-                                Memoria
+                                Memory
                             </span>
                         </div>
                         <button
