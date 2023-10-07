@@ -38,9 +38,9 @@ const Selector = () => {
   }
 
   const startProcess = async () => {
-    console.log(selectedOption, lastCode)
+    // console.log(selectedOption, !lastCode)
     localStorage.setItem('protocol', selectedOption);
-    postRequest('setinitialize', { "type": selectedOption, "lastCode": lastCode }).then((data) => {
+    postRequest('setinitialize', { "type": selectedOption, "lastCode": !lastCode }).then((data) => {
       history.push('/app/dashboard');
     })
   }

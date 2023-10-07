@@ -23,7 +23,7 @@ const Summary = () => {
             console.log(data)
             setTransactions(data.Transactions)
             console.log(data.Transactions)
-            let currentMetrics = { "PowerConsumption": data.PowerConsumption.toFixed(2), "CacheMisses": data.CacheMisses, "MemoryAccesses": data.MemoryAccesses, "MissRate": data.MissRate, "HitRate": data.HitRate, "ReadRequests": data.ReadRequests, "ReadExclusiveRequest": data.ReadExclusiveRequest, "DataResponses": data.DataResponses, "Invalidates": data.Invalidates, "MemoryReads": data.MemoryReads, "MemoryWrites": data.MemoryWrites };
+            let currentMetrics = { "PowerConsumption": data.PowerConsumption.toFixed(2), "CacheMisses": data.CacheMisses,"CacheHits": data.CacheHits, "MemoryAccesses": data.MemoryAccesses, "MissRate": data.MissRate.toFixed(2), "HitRate": data.HitRate.toFixed(2), "ReadRequests": data.ReadRequests, "ReadExclusiveRequest": data.ReadExclusiveRequest, "DataResponses": data.DataResponses, "Invalidates": data.Invalidates, "MemoryReads": data.MemoryReads, "MemoryWrites": data.MemoryWrites };
             console.log("🚀 ~ file: Summary.js:26 ~ getMetricsData ~ currentMetrics:", currentMetrics)
             setMetrics(currentMetrics);
         })
