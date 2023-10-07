@@ -20,8 +20,13 @@ type MainMemory struct {
 	Logger          *log.Logger
 }
 
-func New(requestChannel chan utils.RequestMainMemory, responseChannel chan utils.ResponseMainMemory, quit chan struct{}) (*MainMemory, error) {
-	logFile, err := os.Create("logs/MM/MM.log")
+func New(
+		requestChannel chan utils.RequestMainMemory,
+		responseChannel chan utils.ResponseMainMemory,
+		logfilepath string,
+		quit chan struct{}) (*MainMemory, error) {
+
+	logFile, err := os.Create(logfilepath + "MM.log")
 	if err != nil {
 		log.Fatalf("Error creating log file for Main Memory: %v", err)
 	}
@@ -115,7 +120,7 @@ func (mm *MainMemory) Run(wg *sync.WaitGroup) {
 			case "READ":
 				mm.Logger.Printf(" - MM is processing a READ request.\n")
 				mm.Logger.Printf(" - Address: %d.\n", request.Address)
-				time.Sleep(5 * time.Second)
+				time.Sleep(3 * time.Second)
 				response.Value = mm.Read(request.Address)
 				response.Time = READTIMECOST
 				response.Status = true

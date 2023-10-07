@@ -44,10 +44,11 @@ func New(
 		requestChannelsCCp []chan utils.RequestBroadcast,
 		responseChannelsCCp []chan utils.ResponseBroadcast,
 		protocol string,
+		logfilename string,
 		quit chan struct{}) (*Interconnect, error) {
 
     // Create the log file for the Interconnect
-    logFile, err := os.Create("logs/IC/IC.log")
+    logFile, err := os.Create(logfilename + "IC.log")
     if err != nil {
         log.Fatalf("Error creating log file for Interconnect: %v", err)
     }

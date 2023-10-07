@@ -110,8 +110,6 @@ func SetInitialize(w http.ResponseWriter, r *http.Request) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	//BroadcastUpdate()
-
 	var (
 		newData1 struct {
 			Type     string `json:"type"`

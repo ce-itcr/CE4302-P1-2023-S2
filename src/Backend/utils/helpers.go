@@ -39,7 +39,6 @@ type RequestBroadcast struct {
 type ResponseBroadcast struct {
     Match bool
     Status string
-    Address string 
     Data int 
 }
 

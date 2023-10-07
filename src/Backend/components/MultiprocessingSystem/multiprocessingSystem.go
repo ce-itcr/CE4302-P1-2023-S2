@@ -36,7 +36,7 @@ type MultiprocessingSystem struct {
 // Function that initializes a new Multiprocessing System
 func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *MultiprocessingSystem {
 	fmt.Println("Starting a new Multiprocessing System...")
-	fmt.Printf("Initializing %s protocol...\n\n\n", Protocol)
+	fmt.Printf("Initializing %s protocol...\n", Protocol)
 	// Is it necessary to generate a random program for the Processing Elements??
 	if CodeGenerator {
 		instructions := utils.GenerateRandomInstructions(3, InstructionsPerCore)
@@ -62,7 +62,6 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 			if isEmpty {
 				fmt.Printf("generated-programs/program%d.txt is not valid\n", i)
 			}
-
 		}
 	}
 
@@ -115,6 +114,7 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 			responseChannelBroadcast,
 			semaphore,
 			Protocol,
+			"logs/CC/CC",
 			terminate)
 		if err != nil {
 			fmt.Printf("Error initializing CacheController %d: %v\n", i+1, err)
@@ -143,7 +143,13 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 	pes := make([]*processingElement.ProcessingElement, 3) // Create an array of PEs
 
 	for i := 0; i < 3; i++ {
-		pe, err := processingElement.New(i, RequestChannelsM1[i], ResponseChannelsM1[i], fmt.Sprintf("generated-programs/program%d.txt", i), terminate)
+		pe, err := processingElement.New(
+			i, 
+			RequestChannelsM1[i], 
+			ResponseChannelsM1[i], 
+			fmt.Sprintf("generated-programs/program%d.txt", i),
+			"logs/PE/PE",
+			terminate)
 		if err != nil {
 			fmt.Printf("Error initializing ProcessingElement %d: %v\n", i+1, err)
 		}
@@ -167,6 +173,7 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 		RequestChannelsBroadcast,
 		ResponseChannelsBroadcast,
 		Protocol,
+		"logs/IC/",
 		terminate)
 	if err != nil {
 		fmt.Printf("Error initializing Interconnect: %v\n", err)
@@ -180,7 +187,11 @@ func Start(Protocol string, CodeGenerator bool, InstructionsPerCore int) *Multip
 	}()
 
 	// Create Main Memory with two channels, ready to connect the interconect
-	mainMemory, err := mainMemory.New(RequestChannelM3, ResponseChannelM3, terminate)
+	mainMemory, err := mainMemory.New(
+		RequestChannelM3, 
+		ResponseChannelM3,
+		"logs/MM/",
+		terminate)
 	if err != nil {
 		fmt.Printf("Error initializing Main Memory: %v\n", err)
 	}

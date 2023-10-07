@@ -44,10 +44,11 @@ func New(
 			responseChannelBroadcast chan utils.ResponseBroadcast,
 			semaphore chan struct{},
 			protocol string,
+			logfilename string,
 			quit chan struct{}) (*CacheController, error) {
 
     // Create the log file
-    logFile, err := os.Create("logs/CC/CC" + strconv.Itoa(id) + ".log")
+    logFile, err := os.Create(logfilename + strconv.Itoa(id) + ".log")
     if err != nil {
         log.Fatalf("Error creating log file for CC%d: %v", id, err)
     }

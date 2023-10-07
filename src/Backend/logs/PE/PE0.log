@@ -1,29 +1,295 @@
-PE0_2023/10/06 03:14:05  - PE0 is ready to execute instructions.
-PE0_2023/10/06 03:14:10  - PE0 received external signal to execute instruction: READ 3.
-PE0_2023/10/06 03:14:10  - PE0 is executing a READ operation.
-PE0_2023/10/06 03:14:10  - PE0 sent (Type: READ, Address: 3) to the Cache Controller.
-PE0_2023/10/06 03:14:10  - PE0 is waiting for a response from the Cache Controller....
-PE0_2023/10/06 03:14:21  - PE0 received a response from the Cache Controller.
-PE0_2023/10/06 03:14:21  - PE0 received Data: 15.
-PE0_2023/10/06 03:14:21  - Updated local register: Rs = 15.
-PE0_2023/10/06 03:14:21  - PE0 has finished with the instruction.
-PE0_2023/10/06 03:14:21  - PE0 received external signal to execute instruction: WRITE 3.
-PE0_2023/10/06 03:14:21  - PE0 is executing a WRITE operation.
-PE0_2023/10/06 03:14:43  - PE0 sent (Type: WRITE, Address: 3) to the Cache Controller.
-PE0_2023/10/06 03:14:43  - PE0 is waiting for a response from the Cache Controller....
-PE0_2023/10/06 03:14:44  - PE0 received a response from the Cache Controller.
-PE0_2023/10/06 03:14:44  - PE0 received --> Status: true.
-PE0_2023/10/06 03:14:44  - PE0 has finished with the instruction.
-PE0_2023/10/06 03:14:45  - PE0 received external signal to execute instruction: READ 12.
-PE0_2023/10/06 03:14:45  - PE0 is executing a READ operation.
-PE0_2023/10/06 03:15:06  - PE0 sent (Type: READ, Address: 12) to the Cache Controller.
-PE0_2023/10/06 03:15:06  - PE0 is waiting for a response from the Cache Controller....
-PE0_2023/10/06 03:15:17  - PE0 received a response from the Cache Controller.
-PE0_2023/10/06 03:15:17  - PE0 received Data: 31.
-PE0_2023/10/06 03:15:17  - Updated local register: Rs = 31.
-PE0_2023/10/06 03:15:17  - PE0 has finished with the instruction.
-PE0_2023/10/06 03:15:17  - PE0 received external signal to execute instruction: INC.
-PE0_2023/10/06 03:15:17  - PE0 is executing a INC operation.
-PE0_2023/10/06 03:15:17  - Now the value of the register is 32.
-PE0_2023/10/06 03:15:17  - PE0 has finished with the instruction.
-PE0_2023/10/06 03:15:19  - PE0 has executed all instructions.
+PE0_2023/10/06 19:47:15  - PE0 is ready to execute instructions.
+PE0_2023/10/06 19:47:15  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:15  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:15  - Now the value of the register is 1.
+PE0_2023/10/06 19:47:15  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:16  - PE0 received external signal to execute instruction: WRITE 8.
+PE0_2023/10/06 19:47:16  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:16  - PE0 sent (Type: WRITE, Address: 8) to the Cache Controller.
+PE0_2023/10/06 19:47:16  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:16  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:16  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:16  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:16  - PE0 received external signal to execute instruction: WRITE 5.
+PE0_2023/10/06 19:47:16  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:16  - PE0 sent (Type: WRITE, Address: 5) to the Cache Controller.
+PE0_2023/10/06 19:47:16  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:16  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:16  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:16  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:16  - PE0 received external signal to execute instruction: WRITE 7.
+PE0_2023/10/06 19:47:16  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:16  - PE0 sent (Type: WRITE, Address: 7) to the Cache Controller.
+PE0_2023/10/06 19:47:16  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:16  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:16  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:16  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:16  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:16  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:16  - Now the value of the register is 2.
+PE0_2023/10/06 19:47:16  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:17  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:17  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:17  - Now the value of the register is 3.
+PE0_2023/10/06 19:47:17  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:17  - PE0 received external signal to execute instruction: WRITE 5.
+PE0_2023/10/06 19:47:17  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:17  - PE0 sent (Type: WRITE, Address: 5) to the Cache Controller.
+PE0_2023/10/06 19:47:17  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:17  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:17  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:17  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:17  - PE0 received external signal to execute instruction: WRITE 10.
+PE0_2023/10/06 19:47:17  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:17  - PE0 sent (Type: WRITE, Address: 10) to the Cache Controller.
+PE0_2023/10/06 19:47:17  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:17  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:17  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:17  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:18  - PE0 received external signal to execute instruction: WRITE 8.
+PE0_2023/10/06 19:47:18  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:18  - PE0 sent (Type: WRITE, Address: 8) to the Cache Controller.
+PE0_2023/10/06 19:47:18  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:18  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:18  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:18  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:18  - PE0 received external signal to execute instruction: WRITE 15.
+PE0_2023/10/06 19:47:18  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:18  - PE0 sent (Type: WRITE, Address: 15) to the Cache Controller.
+PE0_2023/10/06 19:47:18  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:18  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:18  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:18  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:18  - PE0 received external signal to execute instruction: READ 0.
+PE0_2023/10/06 19:47:18  - PE0 is executing a READ operation.
+PE0_2023/10/06 19:47:18  - PE0 sent (Type: READ, Address: 0) to the Cache Controller.
+PE0_2023/10/06 19:47:18  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:18  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:18  - PE0 received Data: 10.
+PE0_2023/10/06 19:47:18  - Updated local register: Rs = 10.
+PE0_2023/10/06 19:47:18  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:19  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:19  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:19  - Now the value of the register is 11.
+PE0_2023/10/06 19:47:19  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:19  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:19  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:19  - Now the value of the register is 12.
+PE0_2023/10/06 19:47:19  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:19  - PE0 received external signal to execute instruction: WRITE 10.
+PE0_2023/10/06 19:47:19  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:19  - PE0 sent (Type: WRITE, Address: 10) to the Cache Controller.
+PE0_2023/10/06 19:47:19  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:19  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:19  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:19  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:19  - PE0 received external signal to execute instruction: READ 1.
+PE0_2023/10/06 19:47:19  - PE0 is executing a READ operation.
+PE0_2023/10/06 19:47:19  - PE0 sent (Type: READ, Address: 1) to the Cache Controller.
+PE0_2023/10/06 19:47:19  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:19  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:19  - PE0 received Data: 10.
+PE0_2023/10/06 19:47:19  - Updated local register: Rs = 10.
+PE0_2023/10/06 19:47:19  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:20  - PE0 received external signal to execute instruction: WRITE 2.
+PE0_2023/10/06 19:47:20  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:20  - PE0 sent (Type: WRITE, Address: 2) to the Cache Controller.
+PE0_2023/10/06 19:47:20  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:20  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:20  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:20  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:20  - PE0 received external signal to execute instruction: WRITE 9.
+PE0_2023/10/06 19:47:20  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:20  - PE0 sent (Type: WRITE, Address: 9) to the Cache Controller.
+PE0_2023/10/06 19:47:20  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:20  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:20  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:20  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:20  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:20  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:20  - Now the value of the register is 11.
+PE0_2023/10/06 19:47:20  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:21  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:21  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:21  - Now the value of the register is 12.
+PE0_2023/10/06 19:47:21  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:21  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:21  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:21  - Now the value of the register is 13.
+PE0_2023/10/06 19:47:21  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:21  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:21  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:21  - Now the value of the register is 14.
+PE0_2023/10/06 19:47:21  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:22  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:22  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:22  - Now the value of the register is 15.
+PE0_2023/10/06 19:47:22  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:22  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:22  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:22  - Now the value of the register is 16.
+PE0_2023/10/06 19:47:22  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:22  - PE0 received external signal to execute instruction: WRITE 6.
+PE0_2023/10/06 19:47:22  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:22  - PE0 sent (Type: WRITE, Address: 6) to the Cache Controller.
+PE0_2023/10/06 19:47:22  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:22  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:22  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:22  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:22  - PE0 received external signal to execute instruction: READ 1.
+PE0_2023/10/06 19:47:22  - PE0 is executing a READ operation.
+PE0_2023/10/06 19:47:22  - PE0 sent (Type: READ, Address: 1) to the Cache Controller.
+PE0_2023/10/06 19:47:22  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:22  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:22  - PE0 received Data: 10.
+PE0_2023/10/06 19:47:22  - Updated local register: Rs = 10.
+PE0_2023/10/06 19:47:22  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:23  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:23  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:23  - Now the value of the register is 11.
+PE0_2023/10/06 19:47:23  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:23  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:23  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:23  - Now the value of the register is 12.
+PE0_2023/10/06 19:47:23  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:23  - PE0 received external signal to execute instruction: READ 4.
+PE0_2023/10/06 19:47:23  - PE0 is executing a READ operation.
+PE0_2023/10/06 19:47:23  - PE0 sent (Type: READ, Address: 4) to the Cache Controller.
+PE0_2023/10/06 19:47:23  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:23  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:23  - PE0 received Data: 10.
+PE0_2023/10/06 19:47:23  - Updated local register: Rs = 10.
+PE0_2023/10/06 19:47:23  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:24  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:24  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:24  - Now the value of the register is 11.
+PE0_2023/10/06 19:47:24  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:24  - PE0 received external signal to execute instruction: WRITE 8.
+PE0_2023/10/06 19:47:24  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:24  - PE0 sent (Type: WRITE, Address: 8) to the Cache Controller.
+PE0_2023/10/06 19:47:24  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:24  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:24  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:24  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:24  - PE0 received external signal to execute instruction: WRITE 9.
+PE0_2023/10/06 19:47:24  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:24  - PE0 sent (Type: WRITE, Address: 9) to the Cache Controller.
+PE0_2023/10/06 19:47:24  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:24  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:24  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:24  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:25  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:25  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:25  - Now the value of the register is 12.
+PE0_2023/10/06 19:47:25  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:25  - PE0 received external signal to execute instruction: WRITE 6.
+PE0_2023/10/06 19:47:25  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:25  - PE0 sent (Type: WRITE, Address: 6) to the Cache Controller.
+PE0_2023/10/06 19:47:25  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:25  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:25  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:25  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:25  - PE0 received external signal to execute instruction: WRITE 7.
+PE0_2023/10/06 19:47:25  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:25  - PE0 sent (Type: WRITE, Address: 7) to the Cache Controller.
+PE0_2023/10/06 19:47:25  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:25  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:25  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:25  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:25  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:25  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:25  - Now the value of the register is 13.
+PE0_2023/10/06 19:47:25  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:26  - PE0 received external signal to execute instruction: READ 2.
+PE0_2023/10/06 19:47:26  - PE0 is executing a READ operation.
+PE0_2023/10/06 19:47:26  - PE0 sent (Type: READ, Address: 2) to the Cache Controller.
+PE0_2023/10/06 19:47:26  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:26  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:26  - PE0 received Data: 10.
+PE0_2023/10/06 19:47:26  - Updated local register: Rs = 10.
+PE0_2023/10/06 19:47:26  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:26  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:26  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:26  - Now the value of the register is 11.
+PE0_2023/10/06 19:47:26  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:26  - PE0 received external signal to execute instruction: READ 14.
+PE0_2023/10/06 19:47:26  - PE0 is executing a READ operation.
+PE0_2023/10/06 19:47:26  - PE0 sent (Type: READ, Address: 14) to the Cache Controller.
+PE0_2023/10/06 19:47:26  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:26  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:26  - PE0 received Data: 10.
+PE0_2023/10/06 19:47:26  - Updated local register: Rs = 10.
+PE0_2023/10/06 19:47:26  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:27  - PE0 received external signal to execute instruction: READ 2.
+PE0_2023/10/06 19:47:27  - PE0 is executing a READ operation.
+PE0_2023/10/06 19:47:27  - PE0 sent (Type: READ, Address: 2) to the Cache Controller.
+PE0_2023/10/06 19:47:27  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:27  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:27  - PE0 received Data: 10.
+PE0_2023/10/06 19:47:27  - Updated local register: Rs = 10.
+PE0_2023/10/06 19:47:27  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:27  - PE0 received external signal to execute instruction: WRITE 7.
+PE0_2023/10/06 19:47:27  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:27  - PE0 sent (Type: WRITE, Address: 7) to the Cache Controller.
+PE0_2023/10/06 19:47:27  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:27  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:27  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:27  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:27  - PE0 received external signal to execute instruction: READ 4.
+PE0_2023/10/06 19:47:27  - PE0 is executing a READ operation.
+PE0_2023/10/06 19:47:27  - PE0 sent (Type: READ, Address: 4) to the Cache Controller.
+PE0_2023/10/06 19:47:27  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:27  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:27  - PE0 received Data: 10.
+PE0_2023/10/06 19:47:27  - Updated local register: Rs = 10.
+PE0_2023/10/06 19:47:27  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:28  - PE0 received external signal to execute instruction: WRITE 9.
+PE0_2023/10/06 19:47:28  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:28  - PE0 sent (Type: WRITE, Address: 9) to the Cache Controller.
+PE0_2023/10/06 19:47:28  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:28  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:28  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:28  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:28  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:28  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:28  - Now the value of the register is 11.
+PE0_2023/10/06 19:47:28  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:28  - PE0 received external signal to execute instruction: READ 15.
+PE0_2023/10/06 19:47:28  - PE0 is executing a READ operation.
+PE0_2023/10/06 19:47:28  - PE0 sent (Type: READ, Address: 15) to the Cache Controller.
+PE0_2023/10/06 19:47:28  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:28  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:28  - PE0 received Data: 10.
+PE0_2023/10/06 19:47:28  - Updated local register: Rs = 10.
+PE0_2023/10/06 19:47:28  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:28  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:28  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:28  - Now the value of the register is 11.
+PE0_2023/10/06 19:47:28  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:29  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:29  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:29  - Now the value of the register is 12.
+PE0_2023/10/06 19:47:29  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:29  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:29  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:29  - Now the value of the register is 13.
+PE0_2023/10/06 19:47:29  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:29  - PE0 received external signal to execute instruction: WRITE 1.
+PE0_2023/10/06 19:47:29  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:29  - PE0 sent (Type: WRITE, Address: 1) to the Cache Controller.
+PE0_2023/10/06 19:47:29  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:29  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:29  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:29  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:30  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 19:47:30  - PE0 is executing a INC operation.
+PE0_2023/10/06 19:47:30  - Now the value of the register is 14.
+PE0_2023/10/06 19:47:30  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:30  - PE0 received external signal to execute instruction: WRITE 5.
+PE0_2023/10/06 19:47:30  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 19:47:30  - PE0 sent (Type: WRITE, Address: 5) to the Cache Controller.
+PE0_2023/10/06 19:47:30  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 19:47:30  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 19:47:30  - PE0 received --> Status: true.
+PE0_2023/10/06 19:47:30  - PE0 has finished with the instruction.
+PE0_2023/10/06 19:47:30  - PE0 has executed all instructions.

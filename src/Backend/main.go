@@ -13,13 +13,8 @@ func trimNewline(s string) string {
 	return s[:len(s)-1]
 }
 
-// Function
-
 func main() {
-	// Create a new Multiprocessing system
 	go restfulapi.Restfulapi()
-	// THIS IS WHERE THE CLI STARTS *****************************************************************************
-	// fmt.Println("WELCOME TO MCKEVINHO CLI")
 	fmt.Println("Enter 'C ' (c and space) to end the server")
 
 	reader := bufio.NewReader(os.Stdin)

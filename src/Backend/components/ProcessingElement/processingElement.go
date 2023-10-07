@@ -34,7 +34,8 @@ func New(
         id int, 
         RequestChannelCC chan utils.RequestProcessingElement , 
         ResponseChannelCC chan utils.ResponseProcessingElement,
-        filename string, 
+        filename string,
+        logfilepath string,
         quit chan struct{}) (*ProcessingElement, error) {
 
     // Load the program from the text file
@@ -44,7 +45,7 @@ func New(
     }
 
     // Create the log file for this object
-    logFile, err := os.Create("logs/PE/PE" + strconv.Itoa(id) + ".log")
+    logFile, err := os.Create(logfilepath + strconv.Itoa(id) + ".log")
     if err != nil {
         log.Fatalf("Error creating log file for PE%d: %v", id, err)
     }
@@ -68,6 +69,7 @@ func New(
         Filename: filename,
     }, nil
 }
+
 
 // Function to get a JSON string with the current state of the Processing Element
 func (pe *ProcessingElement) About()(string, error){
