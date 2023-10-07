@@ -1,0 +1,4 @@
+READ 4
+INC
+WRITE 3
+INC

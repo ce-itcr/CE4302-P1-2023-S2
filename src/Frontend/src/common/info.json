@@ -1,0 +1,501 @@
+{
+    "PEs": [
+        {
+            "ID": 0,
+            "Register": 2,
+            "Status": "Done",
+            "Instructions":  [
+                {
+                    "Position": 0,
+                    "Instruction": "WRITE 6"
+                },
+                {
+                    "Position": 1,
+                    "Instruction": "READ 15"
+                },
+                {
+                    "Position": 2,
+                    "Instruction": "INC"
+                },
+                {
+                    "Position": 3,
+                    "Instruction": "INC"
+                }
+            ]
+        },
+        {
+            "ID": 1,
+            "Register": 31,
+            "Status": "Done",
+            "Instructions":  [
+                {
+                    "Position": 0,
+                    "Instruction": "WRITE 6"
+                },
+                {
+                    "Position": 1,
+                    "Instruction": "READ 15"
+                },
+                {
+                    "Position": 2,
+                    "Instruction": "INC"
+                },
+                {
+                    "Position": 3,
+                    "Instruction": "READ 12"
+                }
+            ]
+        },
+        {
+            "ID": 2,
+            "Register": 27,
+            "Status": "Done",
+            "Instructions": [
+                {
+                    "Position": 0,
+                    "Instruction": "WRITE 6"
+                },
+                {
+                    "Position": 1,
+                    "Instruction": "READ 15"
+                },
+                {
+                    "Position": 2,
+                    "Instruction": "INC"
+                },
+                {
+                    "Position": 3,
+                    "Instruction": "READ 12"
+                }
+            ]
+        }
+    ],
+    "CCs": [
+        {
+            "ID": 0,
+            "Status": "Active",
+            "Cache": [
+                {
+                    "Block": 0,
+                    "Address": 2,
+                    "Data": 0,
+                    "State": "M"
+                },
+                {
+                    "Block": 1,
+                    "Address": 6,
+                    "Data": 1,
+                    "State": "M"
+                },
+                {
+                    "Block": 2,
+                    "Address": -1,
+                    "Data": 0,
+                    "State": "I"
+                },
+                {
+                    "Block": 3,
+                    "Address": -1,
+                    "Data": 0,
+                    "State": "I"
+                }
+            ],
+            "CacheMisses": 2,
+            "CacheHits": 0
+        },
+        {
+            "ID": 1,
+            "Status": "Active",
+            "Cache": [
+                {
+                    "Block": 0,
+                    "Address": 15,
+                    "Data": 0,
+                    "State": "M"
+                },
+                {
+                    "Block": 1,
+                    "Address": 3,
+                    "Data": 31,
+                    "State": "E"
+                },
+                {
+                    "Block": 2,
+                    "Address": -1,
+                    "Data": 0,
+                    "State": "I"
+                },
+                {
+                    "Block": 3,
+                    "Address": -1,
+                    "Data": 0,
+                    "State": "I"
+                }
+            ],
+            "CacheMisses": 2,
+            "CacheHits": 0
+        },
+        {
+            "ID": 2,
+            "Status": "Active",
+            "Cache": [
+                {
+                    "Block": 0,
+                    "Address": 1,
+                    "Data": 0,
+                    "State": "M"
+                },
+                {
+                    "Block": 1,
+                    "Address": 9,
+                    "Data": 37,
+                    "State": "E"
+                },
+                {
+                    "Block": 2,
+                    "Address": 0,
+                    "Data": 27,
+                    "State": "E"
+                },
+                {
+                    "Block": 3,
+                    "Address": -1,
+                    "Data": 0,
+                    "State": "I"
+                }
+            ],
+            "CacheMisses": 3,
+            "CacheHits": 0
+        }
+    ],
+    "IC": {
+        "Status": "Active",
+        "Logs": [
+            {
+                "Order": 0,
+                "Log": "18:40:17 - Ready to handle bus requests."
+            },
+            {
+                "Order": 1,
+                "Log": "18:40:22 - Received a ReadExclusiveRequest from CC0"
+            },
+            {
+                "Order": 2,
+                "Log": "18:40:22 - IC will send a broadcast message to the CCs."
+            },
+            {
+                "Order": 3,
+                "Log": "18:40:22 - IC sent a broadcast ReadExclusiveRequest to CC2."
+            },
+            {
+                "Order": 4,
+                "Log": "18:40:22 - CC2 doesn't have the data."
+            },
+            {
+                "Order": 5,
+                "Log": "18:40:22 - IC sent a broadcast ReadExclusiveRequest to CC1."
+            },
+            {
+                "Order": 6,
+                "Log": "18:40:22 - CC1 doesn't have the data."
+            },
+            {
+                "Order": 7,
+                "Log": "18:40:25 - Reading address 2 from memory..."
+            },
+            {
+                "Order": 8,
+                "Log": "18:40:30 - Received the value 6 from memory."
+            },
+            {
+                "Order": 9,
+                "Log": "18:40:30 - Sent data response to CC0."
+            },
+            {
+                "Order": 10,
+                "Log": "18:40:33 - Received a ReadExclusiveRequest from CC1"
+            },
+            {
+                "Order": 11,
+                "Log": "18:40:33 - IC will send a broadcast message to the CCs."
+            },
+            {
+                "Order": 12,
+                "Log": "18:40:33 - IC sent a broadcast ReadExclusiveRequest to CC2."
+            },
+            {
+                "Order": 13,
+                "Log": "18:40:33 - CC2 doesn't have the data."
+            },
+            {
+                "Order": 14,
+                "Log": "18:40:33 - IC sent a broadcast ReadExclusiveRequest to CC0."
+            },
+            {
+                "Order": 15,
+                "Log": "18:40:33 - CC0 doesn't have the data."
+            },
+            {
+                "Order": 16,
+                "Log": "18:40:36 - Reading address 15 from memory..."
+            },
+            {
+                "Order": 17,
+                "Log": "18:40:41 - Received the value 14 from memory."
+            },
+            {
+                "Order": 18,
+                "Log": "18:40:41 - Sent data response to CC1."
+            },
+            {
+                "Order": 19,
+                "Log": "18:40:44 - Received a ReadExclusiveRequest from CC2"
+            },
+            {
+                "Order": 20,
+                "Log": "18:40:44 - IC will send a broadcast message to the CCs."
+            },
+            {
+                "Order": 21,
+                "Log": "18:40:44 - IC sent a broadcast ReadExclusiveRequest to CC1."
+            },
+            {
+                "Order": 22,
+                "Log": "18:40:44 - IC sent a broadcast ReadExclusiveRequest to CC0."
+            },
+            {
+                "Order": 23,
+                "Log": "18:40:44 - CC1 doesn't have the data."
+            },
+            {
+                "Order": 24,
+                "Log": "18:40:44 - CC0 doesn't have the data."
+            },
+            {
+                "Order": 25,
+                "Log": "18:40:47 - Reading address 1 from memory..."
+            },
+            {
+                "Order": 26,
+                "Log": "18:40:52 - Received the value 29 from memory."
+            },
+            {
+                "Order": 27,
+                "Log": "18:40:52 - Sent data response to CC2."
+            },
+            {
+                "Order": 28,
+                "Log": "18:40:55 - Received a ReadExclusiveRequest from CC0"
+            },
+            {
+                "Order": 29,
+                "Log": "18:40:55 - IC will send a broadcast message to the CCs."
+            },
+            {
+                "Order": 30,
+                "Log": "18:40:55 - IC sent a broadcast ReadExclusiveRequest to CC2."
+            },
+            {
+                "Order": 31,
+                "Log": "18:40:55 - CC2 doesn't have the data."
+            },
+            {
+                "Order": 32,
+                "Log": "18:40:55 - IC sent a broadcast ReadExclusiveRequest to CC1."
+            },
+            {
+                "Order": 33,
+                "Log": "18:40:55 - CC1 doesn't have the data."
+            },
+            {
+                "Order": 34,
+                "Log": "18:40:58 - Reading address 6 from memory..."
+            },
+            {
+                "Order": 35,
+                "Log": "18:41:03 - Received the value 29 from memory."
+            },
+            {
+                "Order": 36,
+                "Log": "18:41:03 - Sent data response to CC0."
+            },
+            {
+                "Order": 37,
+                "Log": "18:41:06 - Received a ReadRequest from CC1"
+            },
+            {
+                "Order": 38,
+                "Log": "18:41:06 - IC will send a broadcast message to the CCs."
+            },
+            {
+                "Order": 39,
+                "Log": "18:41:06 - IC sent a broadcast ReadRequest to CC0."
+            },
+            {
+                "Order": 40,
+                "Log": "18:41:06 - IC sent a broadcast ReadRequest to CC2."
+            },
+            {
+                "Order": 41,
+                "Log": "18:41:06 - CC2 doesn't have the data."
+            },
+            {
+                "Order": 42,
+                "Log": "18:41:06 - CC0 doesn't have the data."
+            },
+            {
+                "Order": 43,
+                "Log": "18:41:09 - Reading address 3 from memory..."
+            },
+            {
+                "Order": 44,
+                "Log": "18:41:14 - Received the value 31 from memory."
+            },
+            {
+                "Order": 45,
+                "Log": "18:41:14 - Sent data response to CC1."
+            },
+            {
+                "Order": 46,
+                "Log": "18:41:17 - Received a ReadRequest from CC2"
+            },
+            {
+                "Order": 47,
+                "Log": "18:41:17 - IC will send a broadcast message to the CCs."
+            },
+            {
+                "Order": 48,
+                "Log": "18:41:17 - IC sent a broadcast ReadRequest to CC1."
+            },
+            {
+                "Order": 49,
+                "Log": "18:41:17 - CC1 doesn't have the data."
+            },
+            {
+                "Order": 50,
+                "Log": "18:41:17 - IC sent a broadcast ReadRequest to CC0."
+            },
+            {
+                "Order": 51,
+                "Log": "18:41:17 - CC0 doesn't have the data."
+            },
+            {
+                "Order": 52,
+                "Log": "18:41:20 - Reading address 9 from memory..."
+            },
+            {
+                "Order": 53,
+                "Log": "18:41:25 - Received the value 37 from memory."
+            },
+            {
+                "Order": 54,
+                "Log": "18:41:25 - Sent data response to CC2."
+            },
+            {
+                "Order": 55,
+                "Log": "18:41:34 - Received a ReadRequest from CC2"
+            },
+            {
+                "Order": 56,
+                "Log": "18:41:34 - IC will send a broadcast message to the CCs."
+            },
+            {
+                "Order": 57,
+                "Log": "18:41:34 - IC sent a broadcast ReadRequest to CC1."
+            },
+            {
+                "Order": 58,
+                "Log": "18:41:34 - IC sent a broadcast ReadRequest to CC0."
+            },
+            {
+                "Order": 59,
+                "Log": "18:41:34 - CC1 doesn't have the data."
+            },
+            {
+                "Order": 60,
+                "Log": "18:41:34 - CC0 doesn't have the data."
+            },
+            {
+                "Order": 61,
+                "Log": "18:41:37 - Reading address 0 from memory..."
+            },
+            {
+                "Order": 62,
+                "Log": "18:41:42 - Received the value 27 from memory."
+            },
+            {
+                "Order": 63,
+                "Log": "18:41:42 - Sent data response to CC2."
+            }
+        ]
+    },
+    "MM": {
+        "Status": "Active",
+        "Blocks": [
+            {
+                "Address": 0,
+                "Data": 27
+            },
+            {
+                "Address": 1,
+                "Data": 29
+            },
+            {
+                "Address": 2,
+                "Data": 6
+            },
+            {
+                "Address": 3,
+                "Data": 31
+            },
+            {
+                "Address": 4,
+                "Data": 4
+            },
+            {
+                "Address": 5,
+                "Data": 45
+            },
+            {
+                "Address": 6,
+                "Data": 29
+            },
+            {
+                "Address": 7,
+                "Data": 47
+            },
+            {
+                "Address": 8,
+                "Data": 20
+            },
+            {
+                "Address": 9,
+                "Data": 37
+            },
+            {
+                "Address": 10,
+                "Data": 24
+            },
+            {
+                "Address": 11,
+                "Data": 13
+            },
+            {
+                "Address": 12,
+                "Data": 1
+            },
+            {
+                "Address": 13,
+                "Data": 21
+            },
+            {
+                "Address": 14,
+                "Data": 22
+            },
+            {
+                "Address": 15,
+                "Data": 14
+            }
+        ]
+    }
+}

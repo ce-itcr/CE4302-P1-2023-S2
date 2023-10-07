@@ -1,0 +1,26 @@
+PE1_2023/10/06 21:13:08  - PE1 is ready to execute instructions.
+PE1_2023/10/06 21:13:14  - PE1 received external signal to execute instruction: INC.
+PE1_2023/10/06 21:13:14  - PE1 is executing a INC operation.
+PE1_2023/10/06 21:13:14  - Now the value of the register is 1.
+PE1_2023/10/06 21:13:14  - PE1 has finished with the instruction.
+PE1_2023/10/06 21:13:18  - PE1 received external signal to execute instruction: READ 9.
+PE1_2023/10/06 21:13:18  - PE1 is executing a READ operation.
+PE1_2023/10/06 21:13:21  - PE1 sent (Type: READ, Address: 9) to the Cache Controller.
+PE1_2023/10/06 21:13:21  - PE1 is waiting for a response from the Cache Controller....
+PE1_2023/10/06 21:13:30  - PE1 received a response from the Cache Controller.
+PE1_2023/10/06 21:13:30  - PE1 received Data: 11.
+PE1_2023/10/06 21:13:30  - Updated local register: Rs = 11.
+PE1_2023/10/06 21:13:30  - PE1 has finished with the instruction.
+PE1_2023/10/06 21:13:30  - PE1 received external signal to execute instruction: READ 11.
+PE1_2023/10/06 21:13:30  - PE1 is executing a READ operation.
+PE1_2023/10/06 21:13:48  - PE1 sent (Type: READ, Address: 11) to the Cache Controller.
+PE1_2023/10/06 21:13:48  - PE1 is waiting for a response from the Cache Controller....
+PE1_2023/10/06 21:13:57  - PE1 received a response from the Cache Controller.
+PE1_2023/10/06 21:13:57  - PE1 received Data: 39.
+PE1_2023/10/06 21:13:57  - Updated local register: Rs = 39.
+PE1_2023/10/06 21:13:57  - PE1 has finished with the instruction.
+PE1_2023/10/06 21:13:57  - PE1 received external signal to execute instruction: INC.
+PE1_2023/10/06 21:13:57  - PE1 is executing a INC operation.
+PE1_2023/10/06 21:13:57  - Now the value of the register is 40.
+PE1_2023/10/06 21:13:57  - PE1 has finished with the instruction.
+PE1_2023/10/06 21:13:59  - PE1 has executed all instructions.

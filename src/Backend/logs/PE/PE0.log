@@ -1,0 +1,29 @@
+PE0_2023/10/06 21:13:08  - PE0 is ready to execute instructions.
+PE0_2023/10/06 21:13:12  - PE0 received external signal to execute instruction: WRITE 14.
+PE0_2023/10/06 21:13:12  - PE0 is executing a WRITE operation.
+PE0_2023/10/06 21:13:12  - PE0 sent (Type: WRITE, Address: 14) to the Cache Controller.
+PE0_2023/10/06 21:13:12  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 21:13:21  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 21:13:21  - PE0 received --> Status: true.
+PE0_2023/10/06 21:13:21  - PE0 has finished with the instruction.
+PE0_2023/10/06 21:13:21  - PE0 received external signal to execute instruction: READ 0.
+PE0_2023/10/06 21:13:21  - PE0 is executing a READ operation.
+PE0_2023/10/06 21:13:39  - PE0 sent (Type: READ, Address: 0) to the Cache Controller.
+PE0_2023/10/06 21:13:39  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 21:13:48  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 21:13:48  - PE0 received Data: 5.
+PE0_2023/10/06 21:13:48  - Updated local register: Rs = 5.
+PE0_2023/10/06 21:13:48  - PE0 has finished with the instruction.
+PE0_2023/10/06 21:13:48  - PE0 received external signal to execute instruction: INC.
+PE0_2023/10/06 21:13:48  - PE0 is executing a INC operation.
+PE0_2023/10/06 21:13:48  - Now the value of the register is 6.
+PE0_2023/10/06 21:13:48  - PE0 has finished with the instruction.
+PE0_2023/10/06 21:13:50  - PE0 received external signal to execute instruction: READ 6.
+PE0_2023/10/06 21:13:50  - PE0 is executing a READ operation.
+PE0_2023/10/06 21:14:06  - PE0 sent (Type: READ, Address: 6) to the Cache Controller.
+PE0_2023/10/06 21:14:06  - PE0 is waiting for a response from the Cache Controller....
+PE0_2023/10/06 21:14:15  - PE0 received a response from the Cache Controller.
+PE0_2023/10/06 21:14:15  - PE0 received Data: 49.
+PE0_2023/10/06 21:14:15  - Updated local register: Rs = 49.
+PE0_2023/10/06 21:14:15  - PE0 has finished with the instruction.
+PE0_2023/10/06 21:14:15  - PE0 has executed all instructions.

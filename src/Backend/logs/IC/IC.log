@@ -1,0 +1,79 @@
+IC_2023/10/06 21:13:08  - IC is running.
+IC_2023/10/06 21:13:14  - IC received a ReadExclusiveRequest from CC0.
+IC_2023/10/06 21:13:14  - IC will send a broadcast message to the CCs.
+IC_2023/10/06 21:13:14  - IC sent a broadcast ReadExclusiveRequest to CC2.
+IC_2023/10/06 21:13:14  - IC sent a broadcast ReadExclusiveRequest to CC1.
+IC_2023/10/06 21:13:14  - CC1 doesn't have the data.
+IC_2023/10/06 21:13:14  - CC2 doesn't have the data.
+IC_2023/10/06 21:13:14  - IC finished broadcast.
+IC_2023/10/06 21:13:17  - IC has sent a READ request to the Main Memory.
+IC_2023/10/06 21:13:20  - IC received the value 43 from Main Memory.
+IC_2023/10/06 21:13:20  - IC sent a data response back to CC0.
+IC_2023/10/06 21:13:20  - Sent the value 43 to CC0.
+IC_2023/10/06 21:13:23  - IC received a ReadRequest from CC1.
+IC_2023/10/06 21:13:23  - IC will send a broadcast message to the CCs.
+IC_2023/10/06 21:13:23  - IC sent a broadcast ReadRequest to CC2.
+IC_2023/10/06 21:13:23  - CC2 doesn't have the data.
+IC_2023/10/06 21:13:23  - IC sent a broadcast ReadRequest to CC0.
+IC_2023/10/06 21:13:23  - CC0 doesn't have the data.
+IC_2023/10/06 21:13:23  - IC finished broadcast.
+IC_2023/10/06 21:13:26  - IC has sent a READ request to the Main Memory.
+IC_2023/10/06 21:13:29  - IC received the value 11 from Main Memory.
+IC_2023/10/06 21:13:29  - IC sent a data response back to CC1.
+IC_2023/10/06 21:13:29  - Sent the value 11 to CC1.
+IC_2023/10/06 21:13:32  - IC received a ReadRequest from CC2.
+IC_2023/10/06 21:13:32  - IC will send a broadcast message to the CCs.
+IC_2023/10/06 21:13:32  - IC sent a broadcast ReadRequest to CC1.
+IC_2023/10/06 21:13:32  - IC sent a broadcast ReadRequest to CC0.
+IC_2023/10/06 21:13:32  - CC1 doesn't have the data.
+IC_2023/10/06 21:13:32  - CC0 doesn't have the data.
+IC_2023/10/06 21:13:32  - IC finished broadcast.
+IC_2023/10/06 21:13:35  - IC has sent a READ request to the Main Memory.
+IC_2023/10/06 21:13:38  - IC received the value 33 from Main Memory.
+IC_2023/10/06 21:13:38  - IC sent a data response back to CC2.
+IC_2023/10/06 21:13:38  - Sent the value 33 to CC2.
+IC_2023/10/06 21:13:41  - IC received a ReadRequest from CC0.
+IC_2023/10/06 21:13:41  - IC will send a broadcast message to the CCs.
+IC_2023/10/06 21:13:41  - IC sent a broadcast ReadRequest to CC2.
+IC_2023/10/06 21:13:41  - IC sent a broadcast ReadRequest to CC1.
+IC_2023/10/06 21:13:41  - CC2 doesn't have the data.
+IC_2023/10/06 21:13:41  - CC1 doesn't have the data.
+IC_2023/10/06 21:13:41  - IC finished broadcast.
+IC_2023/10/06 21:13:44  - IC has sent a READ request to the Main Memory.
+IC_2023/10/06 21:13:47  - IC received the value 5 from Main Memory.
+IC_2023/10/06 21:13:47  - IC sent a data response back to CC0.
+IC_2023/10/06 21:13:47  - Sent the value 5 to CC0.
+IC_2023/10/06 21:13:50  - IC received a ReadRequest from CC1.
+IC_2023/10/06 21:13:50  - IC will send a broadcast message to the CCs.
+IC_2023/10/06 21:13:50  - IC sent a broadcast ReadRequest to CC2.
+IC_2023/10/06 21:13:50  - IC sent a broadcast ReadRequest to CC0.
+IC_2023/10/06 21:13:50  - CC0 doesn't have the data.
+IC_2023/10/06 21:13:50  - CC2 doesn't have the data.
+IC_2023/10/06 21:13:50  - IC finished broadcast.
+IC_2023/10/06 21:13:53  - IC has sent a READ request to the Main Memory.
+IC_2023/10/06 21:13:56  - IC received the value 39 from Main Memory.
+IC_2023/10/06 21:13:56  - IC sent a data response back to CC1.
+IC_2023/10/06 21:13:56  - Sent the value 39 to CC1.
+IC_2023/10/06 21:13:59  - IC received a ReadExclusiveRequest from CC2.
+IC_2023/10/06 21:13:59  - IC will send a broadcast message to the CCs.
+IC_2023/10/06 21:13:59  - IC sent a broadcast ReadExclusiveRequest to CC0.
+IC_2023/10/06 21:13:59  - IC sent a broadcast ReadExclusiveRequest to CC1.
+IC_2023/10/06 21:13:59  - CC0 doesn't have the data.
+IC_2023/10/06 21:13:59  - CC1 doesn't have the data.
+IC_2023/10/06 21:13:59  - IC finished broadcast.
+IC_2023/10/06 21:14:02  - IC has sent a READ request to the Main Memory.
+IC_2023/10/06 21:14:05  - IC received the value 48 from Main Memory.
+IC_2023/10/06 21:14:05  - IC sent a data response back to CC2.
+IC_2023/10/06 21:14:05  - Sent the value 48 to CC2.
+IC_2023/10/06 21:14:08  - IC received a ReadRequest from CC0.
+IC_2023/10/06 21:14:08  - IC will send a broadcast message to the CCs.
+IC_2023/10/06 21:14:08  - IC sent a broadcast ReadRequest to CC2.
+IC_2023/10/06 21:14:08  - IC sent a broadcast ReadRequest to CC1.
+IC_2023/10/06 21:14:08  - CC1 doesn't have the data.
+IC_2023/10/06 21:14:08  - CC2 doesn't have the data.
+IC_2023/10/06 21:14:08  - IC finished broadcast.
+IC_2023/10/06 21:14:11  - IC has sent a READ request to the Main Memory.
+IC_2023/10/06 21:14:14  - IC received the value 49 from Main Memory.
+IC_2023/10/06 21:14:14  - IC sent a data response back to CC0.
+IC_2023/10/06 21:14:14  - Sent the value 49 to CC0.
+IC_2023/10/06 21:14:18  - IC has received an external signal to terminate.
