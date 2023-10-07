@@ -121,7 +121,7 @@ const Dashboard = () => {
 
     useInterval(() => {
         getData();
-    }, 500)
+    }, 100)
 
     const onStep = async (pe) => {
         switch (pe) {

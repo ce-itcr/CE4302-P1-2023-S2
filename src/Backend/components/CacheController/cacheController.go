@@ -280,7 +280,6 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 				return
 
 			case cc.Semaphore <- struct{}{}:
-				go func() {
 					select {
 						// Listen for the requests from the Processing Element
 						case request := <-cc.RequestChannelProcessingElement:
@@ -371,14 +370,11 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 										cc.CacheHits++
 										cc.Logger.Printf(" - The address %d is in the local cache.\n", requestAddress)
 
-										// Send a Read-Request to the Interconnect
-										Data, NewStatus := cc.RequestToInterconnect("ReadRequest", "DataResponse", requestAddress)
-
-										// Update the cache line with the new data and line status
-										cc.WriteDataToCache(requestAddress, Data, NewStatus)
-
+										// Get the data from the local cache
+										DataFromCache := cc.GetDataFromCache(requestAddress)
+							
 										// Send the local copy to the Processing Element
-										cc.RespondToProcessingElement(Data, true)
+										cc.RespondToProcessingElement(DataFromCache, true)
 									}
 								}
 			
@@ -527,7 +523,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 						case <-cc.Quit:
 							return
 					}
-				}()
+
 			}
 	
 		}
@@ -596,7 +592,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 								cc.ChangeCacheLineStatus(address, "S")
 					
 							} else if (addressStatus == "S") {
-								cc.RespondToBroadcast(true, addressStatus, -1)
+								cc.RespondToBroadcast(true, addressStatus, Data)
 
 							}
 						}
@@ -654,5 +650,3 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 	<-cc.Quit
 	cc.Logger.Printf(" - CC%d has received an external signal to terminate.\n", cc.ID)
 }
-
-

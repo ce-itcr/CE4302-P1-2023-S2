@@ -368,7 +368,7 @@ func (mps *MultiprocessingSystem) StartProcessingElements() {
 					if !pe.IsDone && !pe.IsExecutingInstruction {
 						pe.Control <- true
 						// Introduce a delay here to avoid tight loops
-						time.Sleep(2 * time.Second)
+						time.Sleep(700 * time.Millisecond)
 					}
 				}
 

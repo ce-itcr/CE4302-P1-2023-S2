@@ -8,6 +8,7 @@ import (
     "strings"
     "log"
     "encoding/json"
+    "fmt"
 
     "Backend/utils"
 )
@@ -116,16 +117,13 @@ func (pe *ProcessingElement) RequestCacheController(Type string, Address int, Da
         Data: Data,                      
     }
     // Send the request to the CacheController
-    pe.Status = "Sending request to CC"
+    pe.Status = fmt.Sprintf("Executing %s %d", Type, Address)
     pe.RequestChannel <- request
-    pe.Status = "Sent request to CC"
     pe.Logger.Printf(" - PE%d sent (Type: %s, Address: %d) to the Cache Controller.\n", pe.ID, Type, Address)
 
     // Wait for the response from the CacheController
     pe.Logger.Printf(" - PE%d is waiting for a response from the Cache Controller....\n", pe.ID)
-    pe.Status = "Waiting for a response from CC"
     response := <- pe.ResponseChannel
-    pe.Status = "Received response from CC"
     DataResponse := response.Data
     StatusResponse := response.Status
 
@@ -176,9 +174,18 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                     pe.IsExecutingInstruction = false
                     pe.Status = "Free"
 
+
+                    // Check if there are still instructions to execute
+                    if pe.Instructions.IsEmpty() {
+                        pe.Logger.Printf(" - PE%d has executed all instructions.\n", pe.ID)
+                        // Notify the main that this PE has executed all instructions
+                        pe.IsDone = true
+                        pe.Status = "Done"
+                        return
+                    }
+
                 // Read a data from an specific memory address
                 case "READ":
-                    pe.Status = "Executing READ"
                     pe.Logger.Printf(" - PE%d is executing a %s operation.\n", pe.ID, operation)
                     // Create a request structure
                     address, err := strconv.Atoi(words[1])
@@ -201,9 +208,17 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                     pe.IsExecutingInstruction = false
                     pe.Status = "Free"
 
+                    // Check if there are still instructions to execute
+                    if pe.Instructions.IsEmpty() {
+                        pe.Logger.Printf(" - PE%d has executed all instructions.\n", pe.ID)
+                        // Notify the main that this PE has executed all instructions
+                        pe.IsDone = true
+                        pe.Status = "Done"
+                        return
+                    }
+
                 // Write dato into an specific memory address
                 case "WRITE":
-                    pe.Status = "Executing WRITE"
                     pe.Logger.Printf(" - PE%d is executing a %s operation.\n", pe.ID, operation)
                     // Create a request structure
                     address, err := strconv.Atoi(words[1])
@@ -222,6 +237,16 @@ func (pe *ProcessingElement) Run(wg *sync.WaitGroup) {
                     // Let others know the PE is now available
                     pe.IsExecutingInstruction = false
                     pe.Status = "Free"
+
+
+                    // Check if there are still instructions to execute
+                    if pe.Instructions.IsEmpty() {
+                        pe.Logger.Printf(" - PE%d has executed all instructions.\n", pe.ID)
+                        // Notify the main that this PE has executed all instructions
+                        pe.IsDone = true
+                        pe.Status = "Done"
+                        return
+                    }
 
                 }
 

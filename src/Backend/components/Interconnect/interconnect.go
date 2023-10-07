@@ -282,16 +282,19 @@ func (ic *Interconnect) BroadcastMessage(ccID int, requestType string, AR string
 				ic.Logger.Printf(" - CC%d has the data and its status is Modified.\n", cc)
 				ic.Logs.Enqueue(fmt.Sprintf("%s - CC%d has the data and its status is 'Modified'.", time.Now().Format("15:04:05"), cc))
 				Found = true
+				Data = broadcastResponse.Data
 				M++
 			case "O":
 				ic.Logger.Printf(" - CC%d has the data and its status is Owned.\n", cc)
 				ic.Logs.Enqueue(fmt.Sprintf("%s - CC%d has the data and its status is 'Owned'.", time.Now().Format("15:04:05"), cc))
 				Found = true
+				Data = broadcastResponse.Data
 				O++
 			case "E":
 				ic.Logger.Printf(" - CC%d has the data and its status is Exclusive.\n", cc)
 				ic.Logs.Enqueue(fmt.Sprintf("%s - CC%d has the data and its status is 'Exclusive'.", time.Now().Format("15:04:05"), cc))
 				Found = true
+				Data = broadcastResponse.Data
 				E++
 			case "S":
 				ic.Logger.Printf(" - CC%d has the data and its status is Shared.\n", cc)
