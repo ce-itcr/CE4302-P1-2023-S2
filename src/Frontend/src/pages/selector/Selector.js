@@ -3,6 +3,7 @@ import Header from "src/components/Header/Header";
 import { useHistory } from "react-router-dom";
 import Modal from "react-modal";
 import { postRequest } from "src/common/communication";
+import toast, { Toaster } from "react-hot-toast";
 
 export const customStyles = {
   content: {
@@ -41,12 +42,18 @@ const Selector = () => {
     // console.log(selectedOption, !lastCode)
     localStorage.setItem('protocol', selectedOption);
     postRequest('setinitialize', { "type": selectedOption, "lastCode": !lastCode }).then((data) => {
-      history.push('/app/dashboard');
+      if (typeof data === 'undefined') {
+        toast.error("Error de conexión");
+        closeModal();
+      } else {
+        history.push('/app/dashboard');
+      }
     })
   }
 
   return (
     <>
+      <div><Toaster /></div>
       <Header title='/app/selector' />
       <section className="header relative pt-16 items-center flex h-screen max-h-860-px">
 
@@ -124,7 +131,7 @@ const Selector = () => {
                               onChange={onChangeLastCode}
                             />
                             <span className="ml-2 text-sm font-semibold text-blueGray-600">
-                            Use previously generated code
+                              Use previously generated code
                             </span>
                           </div>
 
@@ -160,7 +167,7 @@ const Selector = () => {
             Start execution process
           </div>
           <div style={{ paddingBottom: 30 }}>
-          Are you sure you want to start the execution process for the protocol <b style={{ color: "#271744" }}>{selectedOption}</b>  and the latest code {lastCode ? '' : 'not'} selected?
+            Are you sure you want to start the execution process for the protocol <b style={{ color: "#271744" }}>{selectedOption}</b>  and the latest code {lastCode ? '' : 'not'} selected?
           </div>
           <div className="text-center mt-6">
             <button

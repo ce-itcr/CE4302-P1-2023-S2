@@ -42,11 +42,8 @@ const getDashboardData = async (
 
         return res.data
     } catch (error) {
-        if (error.response) {
-            console.log(error.response)
-        } else {
-            console.log(error.message)
-        }
+            return null;
+        
     }
 }
 
