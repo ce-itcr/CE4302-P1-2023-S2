@@ -1,26 +1,31 @@
-PE1_2023/10/06 21:13:08  - PE1 is ready to execute instructions.
-PE1_2023/10/06 21:13:14  - PE1 received external signal to execute instruction: INC.
-PE1_2023/10/06 21:13:14  - PE1 is executing a INC operation.
-PE1_2023/10/06 21:13:14  - Now the value of the register is 1.
-PE1_2023/10/06 21:13:14  - PE1 has finished with the instruction.
-PE1_2023/10/06 21:13:18  - PE1 received external signal to execute instruction: READ 9.
-PE1_2023/10/06 21:13:18  - PE1 is executing a READ operation.
-PE1_2023/10/06 21:13:21  - PE1 sent (Type: READ, Address: 9) to the Cache Controller.
-PE1_2023/10/06 21:13:21  - PE1 is waiting for a response from the Cache Controller....
-PE1_2023/10/06 21:13:30  - PE1 received a response from the Cache Controller.
-PE1_2023/10/06 21:13:30  - PE1 received Data: 11.
-PE1_2023/10/06 21:13:30  - Updated local register: Rs = 11.
-PE1_2023/10/06 21:13:30  - PE1 has finished with the instruction.
-PE1_2023/10/06 21:13:30  - PE1 received external signal to execute instruction: READ 11.
-PE1_2023/10/06 21:13:30  - PE1 is executing a READ operation.
-PE1_2023/10/06 21:13:48  - PE1 sent (Type: READ, Address: 11) to the Cache Controller.
-PE1_2023/10/06 21:13:48  - PE1 is waiting for a response from the Cache Controller....
-PE1_2023/10/06 21:13:57  - PE1 received a response from the Cache Controller.
-PE1_2023/10/06 21:13:57  - PE1 received Data: 39.
-PE1_2023/10/06 21:13:57  - Updated local register: Rs = 39.
-PE1_2023/10/06 21:13:57  - PE1 has finished with the instruction.
-PE1_2023/10/06 21:13:57  - PE1 received external signal to execute instruction: INC.
-PE1_2023/10/06 21:13:57  - PE1 is executing a INC operation.
-PE1_2023/10/06 21:13:57  - Now the value of the register is 40.
-PE1_2023/10/06 21:13:57  - PE1 has finished with the instruction.
-PE1_2023/10/06 21:13:59  - PE1 has executed all instructions.
+PE1_2023/10/07 19:31:38  - PE1 is ready to execute instructions.
+PE1_2023/10/07 19:31:43  - PE1 received external signal to execute instruction: WRITE 11.
+PE1_2023/10/07 19:31:43  - PE1 is executing a WRITE operation.
+PE1_2023/10/07 19:32:01  - PE1 sent (Type: WRITE, Address: 11) to the Cache Controller.
+PE1_2023/10/07 19:32:01  - PE1 is waiting for a response from the Cache Controller....
+PE1_2023/10/07 19:32:10  - PE1 received a response from the Cache Controller.
+PE1_2023/10/07 19:32:10  - PE1 received --> Status: true.
+PE1_2023/10/07 19:32:10  - PE1 has finished with the instruction.
+PE1_2023/10/07 19:32:11  - PE1 received external signal to execute instruction: WRITE 9.
+PE1_2023/10/07 19:32:11  - PE1 is executing a WRITE operation.
+PE1_2023/10/07 19:32:28  - PE1 sent (Type: WRITE, Address: 9) to the Cache Controller.
+PE1_2023/10/07 19:32:28  - PE1 is waiting for a response from the Cache Controller....
+PE1_2023/10/07 19:32:37  - PE1 received a response from the Cache Controller.
+PE1_2023/10/07 19:32:37  - PE1 received --> Status: true.
+PE1_2023/10/07 19:32:37  - PE1 has finished with the instruction.
+PE1_2023/10/07 19:32:39  - PE1 received external signal to execute instruction: WRITE 9.
+PE1_2023/10/07 19:32:39  - PE1 is executing a WRITE operation.
+PE1_2023/10/07 19:32:47  - PE1 sent (Type: WRITE, Address: 9) to the Cache Controller.
+PE1_2023/10/07 19:32:47  - PE1 is waiting for a response from the Cache Controller....
+PE1_2023/10/07 19:32:48  - PE1 received a response from the Cache Controller.
+PE1_2023/10/07 19:32:48  - PE1 received --> Status: true.
+PE1_2023/10/07 19:32:48  - PE1 has finished with the instruction.
+PE1_2023/10/07 19:32:49  - PE1 received external signal to execute instruction: READ 10.
+PE1_2023/10/07 19:32:49  - PE1 is executing a READ operation.
+PE1_2023/10/07 19:32:49  - PE1 sent (Type: READ, Address: 10) to the Cache Controller.
+PE1_2023/10/07 19:32:49  - PE1 is waiting for a response from the Cache Controller....
+PE1_2023/10/07 19:32:55  - PE1 received a response from the Cache Controller.
+PE1_2023/10/07 19:32:55  - PE1 received Data: 1.
+PE1_2023/10/07 19:32:55  - Updated local register: Rs = 1.
+PE1_2023/10/07 19:32:55  - PE1 has finished with the instruction.
+PE1_2023/10/07 19:32:55  - PE1 has executed all instructions.

@@ -41,7 +41,6 @@ func GenerateRandomInstructions(numCores, numInstructions int) [][]Instruction {
 				inst.Type = "WRITE"
 				inst.Address = getRandomMemoryAddress(memoryAddresses)
 			}
-
 			instructionsPerCore[coreID] = append(instructionsPerCore[coreID], inst)
 		}
 	}

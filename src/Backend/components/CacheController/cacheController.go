@@ -162,10 +162,12 @@ func (cc *CacheController) WriteDataToCache(address int, data int, status string
 
 	if (!cc.DataInCache(address)){
 		cc.Logger.Printf(" - The address doesn't exist in the local cache.\n")
-		if (newLine >= 3){
+		if (newLine > 3){
 			newLine = cc.ReplacementQueue.Dequeue()
 			cc.Logger.Printf(" - CC%d is replacing the the block %d.\n", cc.ID, newLine)
 		}
+		// Add the cache line to the queue
+		cc.ReplacementQueue.Enqueue(newLine)
 	}
 	
 	// Replace the contents of the cache line
@@ -173,8 +175,6 @@ func (cc *CacheController) WriteDataToCache(address int, data int, status string
 	cc.Cache.SetAddress(newLine, address)
 	cc.Cache.SetState(newLine, status)
 
-	// Add the cache line to the queue
-	cc.ReplacementQueue.Enqueue(newLine)
 	cc.Logger.Printf(" - CC%d stored the value %d at the memory address %d and the cache block %d.\n", cc.ID, data, address, newLine)
 	cc.Logger.Printf(" - The new state of address %d is '%s'.\n", address, status)
 }
@@ -375,6 +375,9 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 							
 										// Send the local copy to the Processing Element
 										cc.RespondToProcessingElement(DataFromCache, true)
+				
+										// Release the semaphore
+										<-cc.Semaphore
 									}
 								}
 			
@@ -447,7 +450,7 @@ func (cc *CacheController) Run(wg *sync.WaitGroup) {
 										cc.Logger.Printf(" - The address %d is not in the local cache.\n", requestAddress)
 				
 										// Send a Read-Exclusive-Request to the Interconnect
-										Data, NewStatus := cc.RequestToInterconnect("ReadExclusiveRequest", "DataResponse", requestAddress)
+										Data, NewStatus := cc.RequestToInterconnect("ReadExclusiveRequest", "Invalidate", requestAddress)
 									
 										// Update the cache line with the new data and line status
 										cc.WriteDataToCache(requestAddress, requestData, NewStatus)

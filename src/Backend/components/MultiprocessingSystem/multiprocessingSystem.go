@@ -367,10 +367,10 @@ func (mps *MultiprocessingSystem) StartProcessingElements() {
 				for _, pe := range mps.ProcessingElements {
 					if !pe.IsDone && !pe.IsExecutingInstruction {
 						pe.Control <- true
-						// Introduce a delay here to avoid tight loops
-						time.Sleep(2 * time.Second)
 					}
 				}
+				// Introduce a delay here to avoid tight loops
+				time.Sleep(time.Second * 2)
 
 				// Check the condition to exit the loop
 				allDone = true

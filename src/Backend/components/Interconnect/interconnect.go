@@ -257,15 +257,15 @@ func (ic *Interconnect) BroadcastMessage(ccID int, requestType string, AR string
 			ic.Logs.Enqueue(fmt.Sprintf("%s - IC sent a broadcast %s to CC%d.", time.Now().Format("15:04:05"), requestType, cc))
 		
 			// Wait for a response from the Cache Controller
+			// Update counters inside a critical section
+			mu.Lock()
+			defer mu.Unlock()
 			broadcastResponse := <- ic.ResponseChannelsBroadcast[cc]
 
 			// Process the incoming response
 			Matched := broadcastResponse.Match
 			BlockStatus := broadcastResponse.Status
 
-			// Update counters inside a critical section
-			mu.Lock()
-			defer mu.Unlock()
 
 			// For each core broadcast message, sum the request power consumption
 			ic.PowerConsumption += BPC1
@@ -300,6 +300,7 @@ func (ic *Interconnect) BroadcastMessage(ccID int, requestType string, AR string
 				ic.Logger.Printf(" - CC%d has the data and its status is Shared.\n", cc)
 				ic.Logs.Enqueue(fmt.Sprintf("%s - CC%d has the data and its status is 'Shared'.", time.Now().Format("15:04:05"), cc))
 				Found = true
+				Data = broadcastResponse.Data
 				S++
 			}
 		}(cc)
@@ -441,7 +442,13 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 					ic.Invalidates++
 					ic.Logs.Enqueue(fmt.Sprintf("%s - Sent Invalidate.", time.Now().Format("15:04:05")))
 					// The data was found with a 'S' status
-					if (RemoteStatus == "S" || RemoteStatus == "M" || RemoteStatus == "E"){
+					if (RemoteStatus == "S" || RemoteStatus == "E"){
+						// Send the status response back to the requesting Cache Controller
+						ic.SendStatusResponseToCacheController(ccID, "M")
+					}
+					if (RemoteStatus == "M"){
+						// Flush the data back to Main Memory
+						ic.WriteToMainMemory(requestAddress, RemoteData)
 						// Send the status response back to the requesting Cache Controller
 						ic.SendStatusResponseToCacheController(ccID, "M")
 					}
@@ -478,6 +485,10 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 						// Send the Data provided by the remote cache back to the requesting Cache Controller
 						ic.SendDataResponseToCacheController(ccID, RemoteData, "M")
 					}
+					if (RemoteStatus == "S"){
+						// Send the Data provided by the remote cache back to the requesting Cache Controller
+						ic.SendDataResponseToCacheController(ccID, RemoteData, "E")
+					}
 				}
 				// The Action Required is Invalidate
 				if (requestAR == "Invalidate"){
@@ -485,7 +496,7 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 					ic.Invalidates++
 					ic.Logs.Enqueue(fmt.Sprintf("%s - Sent Invalidate.", time.Now().Format("15:04:05")))
 					// The data was found with a 'S' status
-					if (RemoteStatus == "S" || RemoteStatus == "O"){
+					if (RemoteStatus == "S" || RemoteStatus == "O" || RemoteStatus == "M" || RemoteStatus == "E"){
 						// Send the status response back to the requesting Cache Controller
 						ic.SendStatusResponseToCacheController(ccID, "M")
 					}
@@ -494,7 +505,7 @@ func (ic *Interconnect) handleRequestFromCC(ccID int, request utils.RequestInter
 			// The data was not found in a remote cache
 			if (!RemoteFound){
 				// The Action Required is a Data Response
-				if (requestAR == "DataResponse"){
+				if (requestAR == "DataResponse" || requestAR == "Invalidate"){
 					// Bring the data from Main Memory
 					dataFromMemory := ic.ReadFromMainMemory(requestAddress)
 					// Send the data response back to the Cache Controller waiting for a response
